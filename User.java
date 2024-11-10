@@ -40,14 +40,16 @@ public class User {
 
     //edit expense
     //throw NoSuchElementException of none found
-    public void editExpense(int id, Calendar date, int amount, Category cat) throws NoSuchElementException {
+    public void editExpense(Expense e, int id) throws NoSuchElementException {
         Expense expense = find(id);
         if (expense == null) {
             throw new NoSuchElementException();
         }
-        expense.setAmount(amount);
-        expense.setCategory(cat);
-        expense.setDate(date);
+
+        //create new expense object to avoid escaping reference
+        expense.setAmount(e.getAmount());
+        expense.setCategory(e.getCategory());
+        expense.setDate(e.getDate());
         alert();
     }
 
@@ -83,8 +85,8 @@ public class User {
     }
 
     //get expenses based on categry
-    public ArrayList<Expense> getByCategor() {
-        return new ArrayList<>() /
+    public ArrayList<Expense> getByCategory() {
+        return new ArrayList<>() 
     }
 
     //helper method to find expense by id
@@ -96,6 +98,20 @@ public class User {
         }
 
         return null;
+    }
+
+    //function takes file as imput at adds all expenses
+    public String addFile(String inFile){
+        //TODO use scanner to read all lines. Create a string
+        // representing the expenses that were not added due to incorrect input
+        alert();
+        return "";
+    }
+
+    //method returns a csv file with current expenses
+    public void exportExpenses(){
+        //TODO use FileWriter to create text file in date,category,amount, info
+
     }
 
     //function checks if current budget is above set budget and alerts window to
