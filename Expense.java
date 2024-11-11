@@ -2,13 +2,14 @@ import java.time.LocalDate;
 
 public class Expense {
 	
+	private int id;
 	private double amount;
 	private LocalDate date;
 	private String description;
 	private Categories category;	// TODO: waiting for enum class
 	
 	// Constructor
-	public Expense(double amount, LocalDate date, String description, Categories category) {
+	public Expense(int id, double amount, LocalDate date, String description, Categories category) {
 		this.amount = amount;
 		this.date = date;
 		this.description = description;
@@ -17,6 +18,7 @@ public class Expense {
 	
 	// Copy constructor
 	public Expense(Expense expense) {
+		this.id = expense.id;
 		this.amount = expense.amount;
 		this.date = expense.date;
 		this.description = expense.description;
@@ -25,6 +27,10 @@ public class Expense {
 	
 	
 	// Setters
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
@@ -43,6 +49,10 @@ public class Expense {
 	
 	
 	// Getters
+	public int getAmount() {
+		return this.id;
+	}
+	
 	public double setAmount() {
 		return this.amount;
 	}
