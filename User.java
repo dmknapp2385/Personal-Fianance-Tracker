@@ -86,6 +86,7 @@ public class User {
         
         
         
+        
         );
         }
         alert();
@@ -146,8 +147,7 @@ public class User {
 
     //Methods to get % of spending by category and current month
     public int getPercentSpending(Category cat) {
-return 0;
+        return 0;
     }
-
 
 }
