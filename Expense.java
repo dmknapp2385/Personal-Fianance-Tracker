@@ -51,6 +51,10 @@ public class Expense {
         return this.category;
     }
 
+    public long getId(){
+        return this.id;
+    }
+
     @Override
     public String toString() {
         return this.date + ", "
