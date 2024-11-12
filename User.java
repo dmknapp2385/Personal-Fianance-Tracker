@@ -18,7 +18,7 @@ public class User {
     private ArrayList<Expense> utilities = new ArrayList<>();
     private ArrayList<Expense> misc = new ArrayList<>();
     private HashMap<Expense, Long> budget = new HashMap<>();
-    private Observer window;
+    private ArrayList<Observer> observers;
 
     //constructor
     public User(String first, String last, String email, String password, String username) {
@@ -27,6 +27,15 @@ public class User {
         this.email = email;
         this.password = password;
         this.username = username;
+    }
+
+    //getters
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getPassword() {
+        return this.password;
     }
 
     //Add expense
@@ -74,6 +83,9 @@ public class User {
         } else {
             budget.put(cat, amount)
         
+        
+        
+        
         );
         }
         alert();
@@ -101,7 +113,7 @@ public class User {
     }
 
     //function takes file as imput at adds all expenses
-    public String addFile(String inFile){
+    public String addFile(String inFile) {
         //TODO use scanner to read all lines. Create a string
         // representing the expenses that were not added due to incorrect input
         alert();
@@ -109,7 +121,7 @@ public class User {
     }
 
     //method returns a csv file with current expenses
-    public void exportExpenses(){
+    public void exportExpenses() {
         //TODO use FileWriter to create text file in date,category,amount, info
 
     }
@@ -121,5 +133,21 @@ public class User {
         //Loop through all categories and check to budget amount
         //alert observer
     }
+
+    //method adds observer 
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    //method removes observer
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    //Methods to get % of spending by category and current month
+    public int getPercentSpending(Category cat) {
+return 0;
+    }
+
 
 }
