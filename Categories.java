@@ -1,0 +1,7 @@
+
+public enum Categories {
+	FOOD, TRANSPORTATION, ENTERTAINMENT, UTILITIES, MISCELLANEOUS;
+	
+	
+
+}
