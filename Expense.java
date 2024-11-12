@@ -6,10 +6,10 @@ public class Expense {
 	private double amount;
 	private LocalDate date;
 	private String description;
-	private Categories category;	// TODO: waiting for enum class
+	private Category category;	// TODO: waiting for enum class
 	
 	// Constructor
-	public Expense(int id, double amount, LocalDate date, String description, Categories category) {
+	public Expense(int id, double amount, LocalDate date, String description, Category category) {
 		this.amount = amount;
 		this.date = date;
 		this.description = description;
@@ -43,7 +43,7 @@ public class Expense {
 		this.description = description;
 	}
 	
-	public void setCategory(Categories category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 	
@@ -65,7 +65,7 @@ public class Expense {
 		return this.description;
 	}
 	
-	public Categories getCategory() {
+	public Category getCategory() {
 		return this.category;
 	}
 
