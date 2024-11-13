@@ -64,34 +64,27 @@ public class User {
 
     public void deleteExpense(int id) throws NoSuchElementException {
         Expense expense = find(id);
-        if (expense == null) {
-            throw new NoSuchElementException();
-        }
-        expense.remove(expense);
+        // if (expense == null) {
+        //     throw new NoSuchElementException();
+        // }
+        // expense.remove(expense);
 
-        //TODO:
-        //use category to remove from category list
-        if (expense.getCategory == Category.FOOD) {
-            food.remove(expense);
-        }
+        // //TODO:
+        // //use category to remove from category list
+        // if (expense.getCategory == Category.FOOD) {
+        //     food.remove(expense);
+        // }
     }
 
     //add budget amount
-    public void addBudget(Category cat, int amount) {
-        if (budget.containsKey(cat)) {
-            budget.replace(cat, amount);
-        } else {
-            budget.put(cat, amount)
-        
-        
-        
-        
-        
-        );
-        }
-        alert();
-    }
-
+    // public void addBudget(Category cat, int amount) {
+    //     if (budget.containsKey(cat)) {
+    //         budget.replace(cat, amount);
+    //     } else {
+    //         budget.put(cat, amount);
+    //     }
+    //     alert();
+    // }
     //get expenses based on date ranges
     public ArrayList<Expense> getByDate() {
         return new ArrayList<>();
@@ -99,16 +92,16 @@ public class User {
 
     //get expenses based on categry
     public ArrayList<Expense> getByCategory() {
-        return new ArrayList<>() 
+        return new ArrayList<>();
     }
 
     //helper method to find expense by id
     private Expense find(int id) {
-        for (Expense e : expenses) {
-            if (e.id == id) {
-                return e;
-            }
-        }
+        // for (Expense e : expenses) {
+        //     if (e.id == id) {
+        //         return e;
+        //     }
+        // }
 
         return null;
     }
@@ -146,8 +139,7 @@ public class User {
     }
 
     //Methods to get % of spending by category and current month
-    public int getPercentSpending(Category cat) {
-        return 0;
-    }
-
+    // public int getPercentSpending(Category cat) {
+    //     return 0;
+    // }
 }

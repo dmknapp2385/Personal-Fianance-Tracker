@@ -1,8 +1,11 @@
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,19 +19,16 @@ public class Login extends JPanel {
 
     public Login() {
         this.setLayout(new BorderLayout());
-
+        this.setPreferredSize(new Dimension(600, 700));
         //create header text label
-        JLabel title = new JLabel("Login or Register if new user");
-        this.add(title, BorderLayout.NORTH);
+        JLabel title = new JLabel("Login or Register if  you are a new user");
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        //center Panel
-        JPanel centerPanel = new JPanel(new GridLayout(3, 1));
-        this.add(centerPanel, BorderLayout.CENTER);
+        this.add(title);
 
         //creat login panel
         JPanel login = new JPanel();
-        centerPanel.add(login);
-
+        this.add(login);
         //create text field and label
         JLabel usernameTxt = new JLabel("Username: ");
         login.add(usernameTxt);
