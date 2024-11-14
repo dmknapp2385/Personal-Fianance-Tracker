@@ -35,29 +35,27 @@ public class Controller {
         }
     }
 
- 
     //method logs out curr user
-    public void logout(){
+    public void logout() {
 
     }
 
     //method creates new user and sets to curr user
-    public void resgister(String fName, String lName,String email, String usename, String password){
+    public void resgister(String fName, String lName, String email, String usename, String password) {
 
     }
 
     //method saves all data when program quits
-    public void saveData(){
+    public void saveData() {
 
     }
 
     //method loads all data on start up of program(if exists)
-    public void loadData(){
+    public void loadData() {
 
     }
 
     //All methods to access currUser public methods here
-
     //method returns user with input username
     public User findUser(String username) {
         for (User user : users) {
@@ -69,8 +67,8 @@ public class Controller {
         return null;
     }
 
-       //method to check password (using encryption?? need to ask)
-       private boolean checkPassword(User user, String pw) {
+    //method to check password (using encryption?? need to ask)
+    private boolean checkPassword(User user, String pw) {
         return false;
     }
 
