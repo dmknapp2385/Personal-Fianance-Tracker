@@ -1,7 +1,7 @@
+
 import java.time.LocalDate;
 
-public class Expense {
-	
+public class Expense {	
 	private int id;
 	private double amount;
 	private LocalDate date;
@@ -77,3 +77,4 @@ public class Expense {
 				this.description;
 	}
 }
+
