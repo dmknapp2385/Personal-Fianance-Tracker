@@ -3,26 +3,39 @@ import java.time.LocalDate;
 
 public class Expense {
 
-    private final long id;
+    private int id;
     private double amount;
     private LocalDate date;
     private String description;
-    private Categories category;
+    private Category category;	// TODO: waiting for enum class
 
     // Constructor
-    public Expense(int id, double amount, LocalDate date, String description, Categories category) {
+    public Expense(int id, double amount, LocalDate date, String description, Category category) {
         this.amount = amount;
         this.date = date;
         this.description = description;
         this.category = category;
-        this.id = System.currentTimeMillis();
+    }
+
+    // Copy constructor
+    public Expense(Expense expense) {
+        this.id = expense.id;
+        this.amount = expense.amount;
+        this.date = expense.date;
+        this.description = expense.description;
+        this.category = expense.category;
+    }
+
+    // Setters
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public void setDate(LocalDate date) {
+    public void getDate(LocalDate date) {
         this.date = date;
     }
 
@@ -30,12 +43,16 @@ public class Expense {
         this.description = description;
     }
 
-    public void setCategory(Categories category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
     // Getters
-    public double getAmount() {
+    public int getAmount() {
+        return this.id;
+    }
+
+    public double setAmount() {
         return this.amount;
     }
 
@@ -47,12 +64,8 @@ public class Expense {
         return this.description;
     }
 
-    public Categories getCategory() {
+    public Category getCategory() {
         return this.category;
-    }
-
-    public long getId(){
-        return this.id;
     }
 
     @Override
