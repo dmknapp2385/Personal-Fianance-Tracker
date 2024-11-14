@@ -35,7 +35,7 @@ public class Expense {
         this.amount = amount;
     }
 
-    public void getDate(LocalDate date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
