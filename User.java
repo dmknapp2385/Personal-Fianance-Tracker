@@ -1,12 +1,16 @@
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -24,7 +28,7 @@ public class User implements Serializable {
     private ArrayList<Expense> entertainment = new ArrayList<>();
     private ArrayList<Expense> utilities = new ArrayList<>();
     private ArrayList<Expense> misc = new ArrayList<>();
-    private HashMap<Expense, Long> budget = new HashMap<>();
+    private HashMap<Category, Double> budget = new HashMap<>();
     private ArrayList<Observer> observers;
 
     //constructor
@@ -45,11 +49,10 @@ public class User implements Serializable {
         return this.password;
     }
 
-    //Add expense
+    //Add expense to expense list and category list
     public void addExpense(Expense expense) {
         this.expenses.add(expense);
 
-        //TODO:
         //add expense to list with category
         Category c = expense.getCategory();
         switch (c) {
@@ -70,7 +73,7 @@ public class User implements Serializable {
                 break;
         }
 
-        alert();
+        alertBudget();
 
     }
 
@@ -82,11 +85,13 @@ public class User implements Serializable {
             throw new NoSuchElementException();
         }
 
-        //create new expense object to avoid escaping reference
+        //update current expense with updates
         expense.setAmount(e.getAmount());
         expense.setCategory(e.getCategory());
         expense.setDate(e.getDate());
-        alert();
+        expense.setDescription(e.getDescription());
+
+        alertBudget();
     }
 
     public void deleteExpense(long id) throws NoSuchElementException {
@@ -116,19 +121,21 @@ public class User implements Serializable {
                 break;
         }
 
-        alert();
+        alertBudget();
 
     }
 
     //add budget amount
-    // public void addBudget(Category cat, int amount) {
-    //     if (budget.containsKey(cat)) {
-    //         budget.replace(cat, amount);
-    //     } else {
-    //         budget.put(cat, amount);
-    //     }
-    //     alert();
-    // }
+    public void addBudget(Category cat, double amount) {
+        if (budget.containsKey(cat)) {
+            budget.replace(cat, amount);
+        } else {
+            budget.put(cat, amount);
+        }
+
+        alertBudget();
+    }
+
     //get expenses based on date ranges
     public ArrayList<Expense> getByDate(LocalDate lowerRangeDate, LocalDate upperRangeDate) {
 
@@ -140,7 +147,6 @@ public class User implements Serializable {
             //Positive integer if the specified date is later than the otherDate.
             //Negative integer if the specified date is earlier than the otherDate.
             if (currDate.compareTo(lowerRangeDate) >= 0 && currDate.compareTo(upperRangeDate) <= 0) {
-
                 dateRangeExpenses.add(e);
             }
 
@@ -171,7 +177,7 @@ public class User implements Serializable {
     }
 
     //helper method to find expense by id
-    private Expense find(int id) {
+    private Expense find(long id) {
         for (Expense e : expenses) {
             if (e.getId() == id) {
                 return e;
@@ -182,36 +188,87 @@ public class User implements Serializable {
     }
 
     //function takes file as imput at adds all expenses
-    public void addFile(String inFile) {
-        //TODO use scanner to read all lines. Create a string
-        // representing the expenses that were not added due to incorrect input
-        String incorrectInputs;
+    //throws file not found exception
+    public String addFile(String inFile) throws FileNotFoundException {
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(inFile))) {
+        //Create error string for lines not read
+        String incorrectInputs = "";
 
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        Scanner scanner = new Scanner(new File(inFile));
+
+        //read each line in file
+        while (scanner.hasNext()) {
+            String line = scanner.next();
+            try {
+                String[] details = line.split(",");
+
+                //get date
+                String dateStr = details[0];
+                String[] yrMo = dateStr.split("-");
+                Integer year = Integer.parseInt(yrMo[0]);
+                Integer month = Integer.parseInt(yrMo[1]);
+                LocalDate date = LocalDate.of(year, month, 1);
+
+                //category
+                Category cat = Category.valueOf(details[1].toUpperCase());
+
+                //amount
+                Double amount = Double.parseDouble(details[2]);
+
+                //add expense
+                this.addExpense(new Expense(amount, date, details[3], cat));
+            } catch (Exception e) {
+                //catch any erros in line input
+                incorrectInputs += "Could not read line: " + line;
+            }
+
         }
 
+        return incorrectInputs;
     }
 
     //method create csv file, return true if successful, false if not
     public boolean exportExpenses() {
-        //TODO use FileWriter to create text file in date,category,amount, info
-        return false;
+        File f = new File("exports.txt");
+        if (f.exists()) {
+            f.delete();
+        }
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Could not create file");
+        }
+        try {
+            f.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter("exports.txt"));
+            for (Expense e : expenses) {
+                LocalDate date = e.getDate();
+                Integer year = date.getYear();
+                Integer month = date.getMonthValue();
+                Integer day = date.getDayOfMonth();
+                String line = String.format("%d-%02d-%02d,%s,%.2f,%s",
+                        year, month, day, e.getCategory().toString().toLowerCase(), e.getAmount(), e.getDescription());
+                writer.write(line);
+            }
+            writer.close();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     //function checks if current budget is above set budget and alerts window to
     //change
-    private void alert() {
-        //TODO:
-        //Loop through all categories and check to budget amount
-        //alert observer
+    private void alertBudget() {
+        for (Observer o : observers) {
+            o.budgetChange();
+        }
+    }
 
+    public void alertLogin() {
+        for (Observer o : observers) {
+            o.loginChange();
+        }
     }
 
     //method adds observer 
