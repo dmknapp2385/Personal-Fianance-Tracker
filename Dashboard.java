@@ -1,7 +1,7 @@
 
 import javax.swing.JPanel;
 
-class Dashboard extends JPanel implements Observer{
+public class Dashboard extends JPanel implements Observer{
 
     public Dashboard(){
         

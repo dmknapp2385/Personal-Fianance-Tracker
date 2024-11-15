@@ -10,7 +10,7 @@ public class Expense {
     private Category category;
 
     // Constructor
-    public Expense(int id, double amount, LocalDate date, String description, Category category) {
+    public Expense(double amount, LocalDate date, String description, Category category) {
         this.amount = amount;
         this.date = date;
         this.description = description;

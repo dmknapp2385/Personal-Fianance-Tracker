@@ -33,6 +33,7 @@ public class Controller {
 
         if (checkPassword(user, password)) {
             this.currUser = Optional.of(user);
+            
         } else {
             throw new NoSuchElementException();
         }
@@ -103,12 +104,12 @@ public class Controller {
         user.editExpense(expense, id);
     }
 
-    public void addBudget(Category cat, double amount) {
-        assert !currUser.isEmpty();
+    // public void addBudget(Category cat, double amount) {
+    //     assert !currUser.isEmpty();
 
-        User user = currUser.get();
-        user.addBudget(cat, amount);
-    }
+    //     User user = currUser.get();
+    //     user.addBudget(cat, amount);
+    // }
 
     public ArrayList<Expense> getByDate() {
         assert !currUser.isEmpty();
@@ -152,12 +153,12 @@ public class Controller {
         user.removeObserver(o);
     }
 
-    public int getpercentSpending(Category cat) {
-        assert !currUser.isEmpty();
+    // public int getpercentSpending(Category cat) {
+    //     assert !currUser.isEmpty();
 
-        User user = currUser.get();
-        return user.getPercentSpending(cat);
-    }
+    //     User user = currUser.get();
+    //     return user.getPercentSpending(cat);
+    // }
 
     //method returns user with input username
     public User findUser(String username) {
