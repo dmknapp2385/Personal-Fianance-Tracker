@@ -1,12 +1,13 @@
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
-public class User {
-
-    private String first;
+public class User implements Serializable{
+    private static final long serialVersionUID = 1L;
+	private String first;
     private String last;
     private String email;
     private String username;
