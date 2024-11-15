@@ -1,6 +1,8 @@
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class View extends JFrame implements Observer {
         this.setBackground(color);
         this.setSize(800, 700);
 
+        //TODO!!! add this panel to controller observers
         //create Menu bar
         mbar = new JMenuBar();
 
@@ -34,6 +37,16 @@ public class View extends JFrame implements Observer {
         JMenuItem budgetItem = new JMenuItem("Budget");
         JMenuItem financeItem = new JMenuItem("Finance Report");
         JMenuItem logout = new JMenuItem("Logout");
+
+        //add action listeners and commands
+        expenseItem.setActionCommand("Expenses");
+        expenseItem.addActionListener(new MenuBarListener());
+        budgetItem.setActionCommand("Budget");
+        budgetItem.addActionListener(new MenuBarListener());
+        financeItem.setActionCommand("Finance");
+        financeItem.addActionListener(new MenuBarListener());
+        logout.setActionCommand("Logout");
+        logout.addActionListener(new MenuBarListener());
 
         menu.add(expenseItem);
         menu.add(budgetItem);
@@ -58,6 +71,20 @@ public class View extends JFrame implements Observer {
         Dashboard dashPanel = new Dashboard();
         this.add(dashPanel, "Dashboard");
 
+        //create ExpenseView card
+        ExpenseView expenseView = new ExpenseView();
+        this.add(expenseView, "Expenses");
+
+        //create Budget View
+        BudgetView budgetView = new BudgetView();
+        this.add(budgetView, "Budget");
+
+        //create Finance View
+        FianceView financeView = new FianceView();
+        this.add(financeView, "Finance");
+
+        this.loginChange();
+
         //adding a window listener for closing the app
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
@@ -79,12 +106,32 @@ public class View extends JFrame implements Observer {
         throw new UnsupportedOperationException("Unimplemented method 'budgetChange'");
     }
 
-    //maybe use this????
+    //Callback to alert view of login
     @Override
     public void loginChange() {
         this.setJMenuBar(mbar);
         //show dashboard panel
         cards.show(this.getContentPane(), "Dashboard");
+    }
+
+    //method switches the card view
+    private void changeCards(String card) {
+        if (!card.equals("Logout")) {
+            cards.show(this.getContentPane(), card);
+        } else {
+            //remove menu bar and return to login panel
+            this.setJMenuBar(null);
+            cards.show(this.getContentPane(), "Login");
+        }
+    }
+
+    private class MenuBarListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+            changeCards(command);
+        }
     }
 
 }
