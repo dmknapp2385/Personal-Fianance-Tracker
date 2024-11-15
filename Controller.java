@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.io.*;
 
 public class Controller {
 
@@ -49,15 +50,38 @@ public class Controller {
     }
 
     //method saves all data when program quits
-    public void saveData() {
 
+    public void saveData(){
+    	try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
+            for (User user: this.users) {
+            	userOutputStream.writeObject(user);
+            }
+            userOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //method loads all data on start up of program(if exists)
-    public void loadData() {
-
+    public void loadData(){
+    	ArrayList<User> loadedUsers = new ArrayList<>();
+        try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.dat"))) {
+        	User user = (User)(userInputStream.readObject());
+            while (user != null) {
+            	loadedUsers.add(user);
+                user = (User)(userInputStream.readObject());
+            }
+            userInputStream.close();
+        } catch (EOFException e) {
+        	// end of file
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (loadedUsers.size() > 0) {
+        	this.users = new ArrayList<>(loadedUsers);
+        }
     }
-
+  
     //All methods to access currUser public methods here
     public void addExpense(Expense expense) {
         assert !currUser.isEmpty();
