@@ -1,7 +1,6 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 
 public class User {
@@ -49,7 +48,7 @@ public class User {
 
     //edit expense
     //throw NoSuchElementException of none found
-    public void editExpense(Expense e, int id) throws NoSuchElementException {
+    public void editExpense(Expense e, long id) throws NoSuchElementException {
         Expense expense = find(id);
         if (expense == null) {
             throw new NoSuchElementException();
@@ -62,7 +61,7 @@ public class User {
         alert();
     }
 
-    public void deleteExpense(int id) throws NoSuchElementException {
+    public void deleteExpense(long id) throws NoSuchElementException {
         Expense expense = find(id);
         // if (expense == null) {
         //     throw new NoSuchElementException();
@@ -96,7 +95,7 @@ public class User {
     }
 
     //helper method to find expense by id
-    private Expense find(int id) {
+    private Expense find(long id) {
         // for (Expense e : expenses) {
         //     if (e.id == id) {
         //         return e;
@@ -107,17 +106,17 @@ public class User {
     }
 
     //function takes file as imput at adds all expenses
-    public String addFile(String inFile) {
+    public void addFile(String inFile) {
         //TODO use scanner to read all lines. Create a string
         // representing the expenses that were not added due to incorrect input
         alert();
-        return "";
+
     }
 
-    //method returns a csv file with current expenses
-    public void exportExpenses() {
+    //method create csv file, return true if successful, false if not
+    public boolean exportExpenses() {
         //TODO use FileWriter to create text file in date,category,amount, info
-
+        return false;
     }
 
     //function checks if current budget is above set budget and alerts window to
