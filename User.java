@@ -1,9 +1,15 @@
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class User implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -14,7 +20,7 @@ public class User implements Serializable{
     private String password;
     private ArrayList<Expense> expenses = new ArrayList<>();
     private ArrayList<Expense> food = new ArrayList<>();
-    private ArrayList<Expense> transporation = new ArrayList<>();
+    private ArrayList<Expense> transportation = new ArrayList<>();
     private ArrayList<Expense> entertainment = new ArrayList<>();
     private ArrayList<Expense> utilities = new ArrayList<>();
     private ArrayList<Expense> misc = new ArrayList<>();
@@ -45,7 +51,31 @@ public class User implements Serializable{
 
         //TODO:
         //add expense to list with category
-        alert();
+      
+        Category c = expense.getCategory();
+        switch (c) {
+        case FOOD:
+            this.food.add(expense);
+            break;
+        case TRANSPORTATION:
+            this.transportation.add(expense);
+            break;
+        case ENTERTAINMENT:
+            this.entertainment.add(expense);
+            break;
+        case UTILITIES:
+            this.utilities.add(expense);
+            break;
+        default:
+            this.misc.add(expense);
+            break;
+    }
+    
+    alert();
+        
+        	
+     
+        
     }
 
     //edit expense
@@ -65,16 +95,33 @@ public class User implements Serializable{
 
     public void deleteExpense(int id) throws NoSuchElementException {
         Expense expense = find(id);
-        // if (expense == null) {
-        //     throw new NoSuchElementException();
-        // }
-        // expense.remove(expense);
-
-        // //TODO:
-        // //use category to remove from category list
-        // if (expense.getCategory == Category.FOOD) {
-        //     food.remove(expense);
-        // }
+        if (expense == null) {
+             throw new NoSuchElementException();
+         }
+        
+        this.expenses.remove(expense);
+        
+        Category c= expense.getCategory();
+        switch (c) {
+        case FOOD:
+            this.food.remove(expense);
+            break;
+        case TRANSPORTATION:
+            this.transportation.remove(expense);
+            break;
+        case ENTERTAINMENT:
+            this.entertainment.remove(expense);
+            break;
+        case UTILITIES:
+            this.utilities.remove(expense);
+            break;
+        default:
+            this.misc.remove(expense);
+            break;
+    }
+    
+    alert();
+       
     }
 
     //add budget amount
@@ -87,22 +134,54 @@ public class User implements Serializable{
     //     alert();
     // }
     //get expenses based on date ranges
-    public ArrayList<Expense> getByDate() {
-        return new ArrayList<>();
+    public ArrayList<Expense> getByDate(LocalDate lowerRangeDate, LocalDate upperRangeDate) {
+    	
+    	ArrayList<Expense> dateRangeExpenses= new ArrayList<Expense>();
+    	for (Expense e: expenses) {
+    		LocalDate currDate= e.getDate();
+    		// only add if it is within the range. compareTo gives :
+    		//0 (Zero) if both the dates represent the same calendar date.
+    		//Positive integer if the specified date is later than the otherDate.
+    		//Negative integer if the specified date is earlier than the otherDate.
+    		 if (currDate.compareTo(lowerRangeDate)>=0 && currDate.compareTo(upperRangeDate)<=0) {
+    			 
+    			 dateRangeExpenses.add(e);
+    		}
+    		
+    	}
+    	return dateRangeExpenses; 
     }
 
     //get expenses based on categry
-    public ArrayList<Expense> getByCategory() {
-        return new ArrayList<>();
+    public ArrayList<Expense> getByCategory(Category c) {
+    	switch (c) {
+        case FOOD:
+            return new ArrayList<Expense> (this.food);
+            
+        case TRANSPORTATION:
+        	return new ArrayList<Expense> (this.transportation);
+            
+        case ENTERTAINMENT:
+        	return new ArrayList<Expense> (this.entertainment);
+            
+        case UTILITIES:
+        	return new ArrayList<Expense> (this.utilities);
+            
+        default:
+        	return new ArrayList<Expense> (this.misc);
+            
+    	}
+    
+   
     }
 
     //helper method to find expense by id
     private Expense find(int id) {
-        // for (Expense e : expenses) {
-        //     if (e.id == id) {
-        //         return e;
-        //     }
-        // }
+        for (Expense e : expenses) {
+          if (e.getId() == id) {
+              return e;
+           }
+         }
 
         return null;
     }
@@ -111,8 +190,23 @@ public class User implements Serializable{
     public String addFile(String inFile) {
         //TODO use scanner to read all lines. Create a string
         // representing the expenses that were not added due to incorrect input
-        alert();
-        return "";
+       String incorrectInputs;
+       
+       try(BufferedReader reader= new BufferedReader(new FileReader(inFile))){
+    	   
+       } catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+       
+       
+       
+       
+       
+       
     }
 
     //method returns a csv file with current expenses
@@ -127,6 +221,8 @@ public class User implements Serializable{
         //TODO:
         //Loop through all categories and check to budget amount
         //alert observer
+    	
+    	
     }
 
     //method adds observer 
