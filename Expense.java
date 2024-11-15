@@ -3,11 +3,11 @@ import java.time.LocalDate;
 
 public class Expense {
 
-    private int id;
+    private long id;
     private double amount;
     private LocalDate date;
     private String description;
-    private Category category;	// TODO: waiting for enum class
+    private Category category;
 
     // Constructor
     public Expense(int id, double amount, LocalDate date, String description, Category category) {
@@ -15,22 +15,10 @@ public class Expense {
         this.date = date;
         this.description = description;
         this.category = category;
+        this.id = System.currentTimeMillis();
     }
 
-    // Copy constructor
-    public Expense(Expense expense) {
-        this.id = expense.id;
-        this.amount = expense.amount;
-        this.date = expense.date;
-        this.description = expense.description;
-        this.category = expense.category;
-    }
-
-    // Setters
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    //setters
     public void setAmount(double amount) {
         this.amount = amount;
     }
@@ -48,11 +36,11 @@ public class Expense {
     }
 
     // Getters
-    public int getAmount() {
+    public long getId() {
         return this.id;
     }
 
-    public double setAmount() {
+    public double getAmount() {
         return this.amount;
     }
 
