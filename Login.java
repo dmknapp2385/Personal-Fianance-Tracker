@@ -143,6 +143,7 @@ public class Login extends JPanel {
         registerBtn.setPreferredSize(btDimension);
         registerBtn.setBorder(new BevelBorder(BevelBorder.RAISED));
         registerBtn.setActionCommand("Register");
+        registerBtn.addActionListener(new ButtonActionListener());
         centerP.add(registerBtn);
 
         //layout components
@@ -214,17 +215,26 @@ public class Login extends JPanel {
             if (command.equals("Login")) {
                 char[] passwordChars = password.getPassword();
                 String pw = new String(passwordChars);
+                System.out.println(pw);
+                System.out.println(username.getText());
+
                 // try {
                 //     View.controller.login(username.getText(), pw);
                 // } catch (Exception excpetion) {
                 //     error.setText("Invalid login");
                 // }
-                
             } else {
                 char[] regChars = regPasswordField.getPassword();
                 char[] confirmChars = pwConfirm.getPassword();
                 String regPw = new String(regChars);
                 String confirmPw = new String(confirmChars);
+                System.out.println(regPw);
+                System.out.println(confirmPw);
+                System.out.println(emailField.getText());
+                System.out.println(fNameField.getText());
+                System.out.println(lNameField.getText());
+                System.out.println(regUsernameField.getText());
+
                 if (!regPw.equals(confirmPw)) {
                     error.setText("Passwords Must Match!");
                 } else {
