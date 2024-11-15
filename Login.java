@@ -49,11 +49,15 @@ public class Login extends JPanel {
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
 
+        //create dimension for textfields and buttons
+        Dimension fieldDimension = new Dimension(200, 28);
+        Dimension btDimension = new Dimension(125, 25);
+
         //create text fields and labels for login
         //username
         JLabel usernameTxt = new JLabel("Username: ");
         this.username = new JTextField();
-        username.setPreferredSize(new Dimension(150, 28));
+        username.setPreferredSize(fieldDimension);
         username.setBorder(new BevelBorder(BevelBorder.LOWERED));
         centerP.add(usernameTxt);
         centerP.add(username);
@@ -62,11 +66,11 @@ public class Login extends JPanel {
         JLabel passwordTxt = new JLabel("Password: ");
         this.password = new JPasswordField();
         password.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        password.setPreferredSize(new Dimension(150, 28));
+        password.setPreferredSize(fieldDimension);
 
         //login button
         JButton usernameBtn = new JButton("Login");
-        usernameBtn.setPreferredSize(new Dimension(150, 28));
+        usernameBtn.setPreferredSize(btDimension);
         usernameBtn.setBorder(new BevelBorder(BevelBorder.RAISED));
         usernameBtn.setActionCommand("Login");
         centerP.add(passwordTxt);
@@ -89,7 +93,7 @@ public class Login extends JPanel {
         //firstName
         JLabel fName = new JLabel("First Name: ");
         this.fNameField = new JTextField();
-        fNameField.setPreferredSize(new Dimension(150, 28));
+        fNameField.setPreferredSize(fieldDimension);
         fNameField.setBorder(new BevelBorder(BevelBorder.LOWERED));
         centerP.add(fName);
         centerP.add(fNameField);
@@ -97,7 +101,7 @@ public class Login extends JPanel {
         //last name
         JLabel lName = new JLabel("Last Name: ");
         this.lNameField = new JTextField();
-        lNameField.setPreferredSize(new Dimension(150, 28));
+        lNameField.setPreferredSize(fieldDimension);
         lNameField.setBorder(new BevelBorder(BevelBorder.LOWERED));
         centerP.add(lName);
         centerP.add(lNameField);
@@ -106,7 +110,7 @@ public class Login extends JPanel {
         JLabel regUsername = new JLabel("Username: ");
         this.regUsernameField = new JTextField();
         regUsernameField.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        regUsernameField.setPreferredSize(new Dimension(150, 28));
+        regUsernameField.setPreferredSize(fieldDimension);
         centerP.add(regUsername);
         centerP.add(regUsernameField);
 
@@ -114,7 +118,7 @@ public class Login extends JPanel {
         JLabel email = new JLabel("Email: ");
         this.emailField = new JTextField();
         emailField.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        emailField.setPreferredSize(new Dimension(150, 28));
+        emailField.setPreferredSize(fieldDimension);
         centerP.add(email);
         centerP.add(emailField);
 
@@ -122,7 +126,7 @@ public class Login extends JPanel {
         JLabel regPassword = new JLabel("Password: ");
         this.regPasswordField = new JPasswordField();
         regPasswordField.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        regPasswordField.setPreferredSize(new Dimension(150, 28));
+        regPasswordField.setPreferredSize(fieldDimension);
         centerP.add(regPassword);
         centerP.add(regPasswordField);
 
@@ -130,13 +134,13 @@ public class Login extends JPanel {
         JLabel confirmpw = new JLabel("Confirm Password: ");
         this.pwConfirm = new JPasswordField();
         pwConfirm.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        pwConfirm.setPreferredSize(new Dimension(150, 28));
+        pwConfirm.setPreferredSize(fieldDimension);
         centerP.add(confirmpw);
         centerP.add(pwConfirm);
 
         //add Register button
         JButton registerBtn = new JButton("Register");
-        registerBtn.setPreferredSize(new Dimension(150, 28));
+        registerBtn.setPreferredSize(btDimension);
         registerBtn.setBorder(new BevelBorder(BevelBorder.RAISED));
         registerBtn.setActionCommand("Register");
         centerP.add(registerBtn);
@@ -210,11 +214,12 @@ public class Login extends JPanel {
             if (command.equals("Login")) {
                 char[] passwordChars = password.getPassword();
                 String pw = new String(passwordChars);
-                try {
-                    View.controller.login(username.getText(), pw);
-                } catch (Exception excpetion) {
-                    error.setText("Invalid login");
-                }
+                // try {
+                //     View.controller.login(username.getText(), pw);
+                // } catch (Exception excpetion) {
+                //     error.setText("Invalid login");
+                // }
+                
             } else {
                 char[] regChars = regPasswordField.getPassword();
                 char[] confirmChars = pwConfirm.getPassword();
