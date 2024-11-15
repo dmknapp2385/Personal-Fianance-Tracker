@@ -1,8 +1,9 @@
 
+import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.io.*;
 
 public class Controller {
 
@@ -33,7 +34,7 @@ public class Controller {
 
         if (checkPassword(user, password)) {
             this.currUser = Optional.of(user);
-            
+
         } else {
             throw new NoSuchElementException();
         }
@@ -50,11 +51,10 @@ public class Controller {
     }
 
     //method saves all data when program quits
-
-    public void saveData(){
-    	try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
-            for (User user: this.users) {
-            	userOutputStream.writeObject(user);
+    public void saveData() {
+        try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
+            for (User user : this.users) {
+                userOutputStream.writeObject(user);
             }
             userOutputStream.close();
         } catch (IOException e) {
@@ -63,25 +63,25 @@ public class Controller {
     }
 
     //method loads all data on start up of program(if exists)
-    public void loadData(){
-    	ArrayList<User> loadedUsers = new ArrayList<>();
+    public void loadData() {
+        ArrayList<User> loadedUsers = new ArrayList<>();
         try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.dat"))) {
-        	User user = (User)(userInputStream.readObject());
+            User user = (User) (userInputStream.readObject());
             while (user != null) {
-            	loadedUsers.add(user);
-                user = (User)(userInputStream.readObject());
+                loadedUsers.add(user);
+                user = (User) (userInputStream.readObject());
             }
             userInputStream.close();
         } catch (EOFException e) {
-        	// end of file
+            // end of file
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         if (loadedUsers.size() > 0) {
-        	this.users = new ArrayList<>(loadedUsers);
+            this.users = new ArrayList<>(loadedUsers);
         }
     }
-  
+
     //All methods to access currUser public methods here
     public void addExpense(Expense expense) {
         assert !currUser.isEmpty();
@@ -104,28 +104,29 @@ public class Controller {
         user.editExpense(expense, id);
     }
 
-    // public void addBudget(Category cat, double amount) {
-    //     assert !currUser.isEmpty();
+    public void addBudget(Category cat, double amount) {
+        assert !currUser.isEmpty();
+        User user = currUser.get();
+        user.addBudget(cat, amount);
+    }
 
-    //     User user = currUser.get();
-    //     user.addBudget(cat, amount);
-    // }
-
-    public ArrayList<Expense> getByDate() {
+    public ArrayList<Expense> getByDate(LocalDate low, LocalDate high) {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
-        return user.getByDate();
+        return user.getByDate(low, high);
     }
 
-    public ArrayList<Expense> getByCategory() {
+    public ArrayList<Expense> getByCategory(Category c) {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
-        return user.getByCategory();
+        return user.getByCategory(c);
     }
 
-    public void addFile(String inFile) {
+    //upload file of expenses to user
+    //throws file not found exception
+    public void addFile(String inFile) throws FileNotFoundException {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
@@ -155,11 +156,9 @@ public class Controller {
 
     // public int getpercentSpending(Category cat) {
     //     assert !currUser.isEmpty();
-
     //     User user = currUser.get();
     //     return user.getPercentSpending(cat);
     // }
-
     //method returns user with input username
     public User findUser(String username) {
         for (User user : users) {
