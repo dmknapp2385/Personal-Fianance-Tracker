@@ -48,11 +48,16 @@ public class Controller {
     //method creates new user and sets to curr user
     public void register(String fName, String lName, String email, String username, String password) {
     	//only creating account, if user doesn't already exist
-    	if (findUser(username) == null) {
+    	User user = this.findUser(username);
+    	if (user == null) {
         	String encryptedPassword = this.encryptPassword(password);
         	User newUser = new User(fName, lName, email, username, encryptedPassword);
         	this.currUser = Optional.of(newUser);
     	}
+    	else {
+    		this.currUser = Optional.of(user);
+    	}
+    	//should there be a message stating the account already exists?
     	
     }
 
