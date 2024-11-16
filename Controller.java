@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.io.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.MessageDigest;
 
 public class Controller {
 
@@ -36,8 +39,8 @@ public class Controller {
 
         if (checkPassword(user, password)) {
             this.currUser = Optional.of(user);
-            for(Observer o: observers){
-                
+            for (Observer o : observers) {
+
             }
 
         } else {
@@ -51,7 +54,17 @@ public class Controller {
     }
 
     //method creates new user and sets to curr user
-    public void resgister(String fName, String lName, String email, String usename, String password) {
+    public void register(String fName, String lName, String email, String username, String password) {
+        //only creating account, if user doesn't already exist
+        User user = this.findUser(username);
+        if (user == null) {
+            String encryptedPassword = this.encryptPassword(password);
+            User newUser = new User(fName, lName, email, username, encryptedPassword);
+            this.currUser = Optional.of(newUser);
+        } else {
+            this.currUser = Optional.of(user);
+        }
+        //should there be a message stating the account already exists?
 
     }
 
@@ -116,6 +129,7 @@ public class Controller {
     }
 
     public ArrayList<Expense> getByDate(LocalDate low, LocalDate high) {
+
         assert !currUser.isEmpty();
 
         User user = currUser.get();
@@ -159,11 +173,13 @@ public class Controller {
         user.removeObserver(o);
     }
 
-    // public int getpercentSpending(Category cat) {
-    //     assert !currUser.isEmpty();
-    //     User user = currUser.get();
-    //     return user.getPercentSpending(cat);
-    // }
+    public int getpercentSpending(Category cat) {
+        assert !currUser.isEmpty();
+
+        User user = currUser.get();
+        return user.getPercentSpending(cat);
+    }
+
     //method returns user with input username
     public User findUser(String username) {
         for (User user : users) {
@@ -175,9 +191,28 @@ public class Controller {
         return null;
     }
 
+    public boolean checkPassword(User user, String pw) {
+        String encrypted = this.encryptPassword(pw);
+        return user.getPassword().equals(encrypted);
+    }
+
     //method to check password (using encryption?? need to ask)
-    private boolean checkPassword(User user, String pw) {
-        return false;
+    //encrpt pw
+    private String encryptPassword(String pw) {
+        String encryptedPassword = "";
+        try {
+            MessageDigest message = MessageDigest.getInstance("MD5");
+            message.update(pw.getBytes());
+            byte[] bytes = message.digest();
+            StringBuilder str = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                str.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            encryptedPassword = str.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return encryptedPassword;
     }
 
 }
