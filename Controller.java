@@ -3,9 +3,11 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.io.*;
+import java.security.NoSuchAlgorithmException;  
+import java.security.MessageDigest; 
+
 
 public class Controller {
-
     //create singleton variable
     private static final Controller INSTANCE = new Controller();
 
@@ -45,8 +47,19 @@ public class Controller {
     }
 
     //method creates new user and sets to curr user
-    public void resgister(String fName, String lName, String email, String usename, String password) {
-
+    public void register(String fName, String lName, String email, String username, String password) {
+    	//only creating account, if user doesn't already exist
+    	User user = this.findUser(username);
+    	if (user == null) {
+        	String encryptedPassword = this.encryptPassword(password);
+        	User newUser = new User(fName, lName, email, username, encryptedPassword);
+        	this.currUser = Optional.of(newUser);
+    	}
+    	else {
+    		this.currUser = Optional.of(user);
+    	}
+    	//should there be a message stating the account already exists?
+    	
     }
 
     //method saves all data when program quits
@@ -170,10 +183,33 @@ public class Controller {
         }
         return null;
     }
+    
+    
+    public boolean checkPassword(User user, String pw) {
+    	String encrypted = this.encryptPassword(pw);
+    	return user.getPassword().equals(encrypted);
+    }
+    
+     
 
     //method to check password (using encryption?? need to ask)
-    private boolean checkPassword(User user, String pw) {
-        return false;
+	//encrpt pw
+    private String encryptPassword(String pw) {
+        String encryptedPassword = "";
+        try {
+			MessageDigest message = MessageDigest.getInstance("MD5");
+			message.update(pw.getBytes());  
+			 byte[] bytes = message.digest();  
+			 StringBuilder str = new StringBuilder();  
+	            for(int i=0; i< bytes.length ;i++)  
+	            {  
+	                str.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));  
+	            }  
+	            encryptedPassword = str.toString();  
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace(); 
+		}
+        return encryptedPassword;
     }
 
 }
