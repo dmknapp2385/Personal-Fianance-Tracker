@@ -14,6 +14,8 @@ public class Controller {
     private ArrayList<User> users = new ArrayList<>();
     private Optional<User> currUser;
 
+    ArrayList<Observer> observers = new ArrayList<>();
+
     //private constructor, initialize currUser to empty optional
     private Controller() {
         this.currUser = Optional.empty();
@@ -34,6 +36,9 @@ public class Controller {
 
         if (checkPassword(user, password)) {
             this.currUser = Optional.of(user);
+            for(Observer o: observers){
+                
+            }
 
         } else {
             throw new NoSuchElementException();
