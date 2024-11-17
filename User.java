@@ -207,7 +207,8 @@ public class User implements Serializable {
                 String[] yrMo = dateStr.split("-");
                 Integer year = Integer.parseInt(yrMo[0]);
                 Integer month = Integer.parseInt(yrMo[1]);
-                LocalDate date = LocalDate.of(year, month, 1);
+                Integer day = Integer.parseInt(yrMo[2]);
+                LocalDate date = LocalDate.of(year, month, day);
 
                 //category
                 Category cat = Category.valueOf(details[1].toUpperCase());
