@@ -31,8 +31,8 @@ public class Controller {
 
     //method for login
     public void login(String username, String password) throws NoSuchElementException {
-        System.out.println(users);
         User user = findUser(username);
+        System.out.println(user);
 
         if (user == null) {
             throw new NoSuchElementException();
@@ -75,43 +75,42 @@ public class Controller {
         }
 
         users.add(newUser);
-
+        System.out.println(users);
+        System.out.println(newUser);
         this.currUser = Optional.of(newUser);
         currUser.get().alertLogin();
     }
 
     //method saves all data when program quits
-    public void saveData() {
-        try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
-            for (User user : this.users) {
-                userOutputStream.writeObject(user);
-            }
-            userOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    // public void saveData() {
+    //     try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
+    //         for (User user : this.users) {
+    //             userOutputStream.writeObject(user);
+    //         }
+    //         userOutputStream.close();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
     //method loads all data on start up of program(if exists)
-    public void loadData() {
-        ArrayList<User> loadedUsers = new ArrayList<>();
-        try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.dat"))) {
-            User user = (User) (userInputStream.readObject());
-            while (user != null) {
-                loadedUsers.add(user);
-                user = (User) (userInputStream.readObject());
-            }
-            userInputStream.close();
-        } catch (EOFException e) {
-            // end of file
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (loadedUsers.size() > 0) {
-            this.users = new ArrayList<>(loadedUsers);
-        }
-    }
-
+    // public void loadData() {
+    //     ArrayList<User> loadedUsers = new ArrayList<>();
+    //     try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.dat"))) {
+    //         User user = (User) (userInputStream.readObject());
+    //         while (user != null) {
+    //             loadedUsers.add(user);
+    //             user = (User) (userInputStream.readObject());
+    //         }
+    //         userInputStream.close();
+    //     } catch (EOFException e) {
+    //         // end of file
+    //     } catch (IOException | ClassNotFoundException e) {
+    //         e.printStackTrace();
+    //     }
+    //     if (loadedUsers.size() > 0) {
+    //         this.users = new ArrayList<>(loadedUsers);
+    //     }
+    // }
     //All methods to access currUser public methods here
     public void addExpense(Expense expense) {
         assert !currUser.isEmpty();

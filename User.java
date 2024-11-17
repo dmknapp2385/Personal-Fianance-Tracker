@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class User implements Serializable {
+public class User {
 
     private static final long serialVersionUID = 1L;
     private String first;
@@ -32,7 +32,7 @@ public class User implements Serializable {
     private ArrayList<Observer> observers = new ArrayList<>();
 
     //constructor
-    public User(String first, String last, String email, String password, String username) {
+    public User(String first, String last, String email, String username, String password) {
         this.first = first;
         this.last = last;
         this.email = email;
@@ -285,5 +285,10 @@ public class User implements Serializable {
     //Methods to get % of spending by category and current month
     public int getPercentSpending(Category cat) {
         return 0;
+    }
+
+    public String toString() {
+        String output = String.format("%s %s email: %s, username: %s, password: %s", this.first, this.last, this.email, this.username, this.password);
+        return output;
     }
 }
