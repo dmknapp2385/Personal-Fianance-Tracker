@@ -84,8 +84,6 @@ public class View extends JFrame implements Observer {
         //create Finance View
         FianceView financeView = new FianceView();
         this.add(financeView, "Finance");
-        
-        this.loginChange();
 
         //adding a window listener for closing the app
         this.addWindowListener(new WindowAdapter() {

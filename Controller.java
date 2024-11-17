@@ -31,6 +31,7 @@ public class Controller {
 
     //method for login
     public void login(String username, String password) throws NoSuchElementException {
+        System.out.println(users);
         User user = findUser(username);
 
         if (user == null) {
@@ -45,6 +46,7 @@ public class Controller {
             for (Observer o : observers) {
                 currUser.get().addObserver(o);
             }
+            currUser.get().alertLogin();
 
         } else {
             throw new NoSuchElementException();
@@ -61,16 +63,21 @@ public class Controller {
     public void register(String fName, String lName, String email, String username, String password) throws IllegalArgumentException {
         //only creating account, if user doesn't already exist
         User user = this.findUser(username);
-        if (user != null) {
-            throw new IllegalArgumentException();
-        }
+
+        // if (user != null) {
+        //     throw new IllegalArgumentException();
+        // }
         String encryptedPassword = this.encryptPassword(password);
         User newUser = new User(fName, lName, email, username, encryptedPassword);
         //add observers to user
-        for(Observer o:observers){
+        for (Observer o : observers) {
             newUser.addObserver(o);
         }
+
+        users.add(newUser);
+
         this.currUser = Optional.of(newUser);
+        currUser.get().alertLogin();
     }
 
     //method saves all data when program quits
