@@ -99,6 +99,7 @@ public class User implements Serializable {
         alertBudget();
     }
 
+    //delete expense by id
     public void deleteExpense(long id) throws NoSuchElementException {
         Expense expense = find(id);
         if (expense == null) {

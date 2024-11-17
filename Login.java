@@ -230,11 +230,6 @@ public class Login extends JPanel {
                     error.setText("Invalid login");
                 }
 
-                //alert user login if no exception
-                if (error.getText().equals("")) {
-                    View.controller.userLogin();
-                }
-
             } else {
                 //reset error text
                 error.setText("");
@@ -264,11 +259,6 @@ public class Login extends JPanel {
                     } catch (Exception exception) {
                         error.setText("User Already Exists");
                     }
-                }
-
-                //alert user login if no exception
-                if (error.getText().equals("")) {
-                    View.controller.userLogin();
                 }
 
             }

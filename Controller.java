@@ -44,6 +44,7 @@ public class Controller {
             for (Observer o : observers) {
                 currUser.get().addObserver(o);
             }
+            userLogin();
 
         } else {
             throw new NoSuchElementException();
@@ -74,6 +75,7 @@ public class Controller {
 
         users.add(newUser);
         this.currUser = Optional.of(newUser);
+        userLogin();
     }
 
     //method saves all data when program quits
@@ -140,11 +142,12 @@ public class Controller {
     }
 
     //get all expenses
-    public ArrayList<Expense> getAllExpenses(){
+    public ArrayList<Expense> getAllExpenses() {
         assert !currUser.isEmpty();
 
         return currUser.get().getAllExpenses();
     }
+
     //adds a budge amount for category
     public void addBudget(Category cat, double amount) {
         assert !currUser.isEmpty();

@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -78,15 +77,14 @@ public class ExpenseView extends JPanel implements Observer {
             String command = e.getActionCommand();
             if (command.equals("search")) {
                 //show expenses sorted by category and date range
+
             } else if (command.equals("add")) {
                 JFrame popup = new AddFrame();
                 popup.setVisible(true);
             } else {
                 //get expense id
                 Long id = Long.parseLong(command.split(":")[1]);
-                System.out.println(id);
                 Expense expense = View.controller.getExpense(id);
-                System.out.println(expense);
                 JFrame editpopup = new AddFrame(expense);
                 editpopup.setVisible(true);
             }
@@ -95,22 +93,20 @@ public class ExpenseView extends JPanel implements Observer {
 
     @Override
     public void budgetChange() {
+        System.out.println("iNside budgetchange expense view");
+        expensePanel.removeAll();
         showAllExpenses();
     }
 
     @Override
     public void loginChange() {
-
         showAllExpenses();
     }
 
     private void showAllExpenses() {
-        // ArrayList<Expense> expenses = View.controller.getAllExpenses();
-        ArrayList<Expense> expenses = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            expenses.add(new Expense(i, LocalDate.now(), "description", Category.FOOD));
-        }
-
+        ArrayList<Expense> expenses = View.controller.getAllExpenses();
+        System.out.println(expenses);
+        
         for (Expense e : expenses) {
             //create button with expense and edit button with expense id
             JButton btn = new JButton(e.toString());
