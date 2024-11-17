@@ -113,9 +113,8 @@ public class AddFrame extends JFrame {
                     LocalDate locDate = LocalDate.of(year, month, day);
                     Double amountD = Double.parseDouble(amount.trim());
                     Expense addEx = new Expense(amountD, locDate, description, cat);
-                    System.out.println(addEx);
                     if (command.equals("add")) {
-                        //creat new expense
+                        System.out.println(addEx);
                         View.controller.addExpense(addEx);
                     } else if (command.equals("edit")) {
                         View.controller.editExpense(addEx, expenseId);
@@ -129,6 +128,8 @@ public class AddFrame extends JFrame {
                     amountField.setText("");
 
                 } catch (Exception exception) {
+                    System.out.println(exception);
+                    exception.printStackTrace();
                     errorTxt.setText("Data not properly formatted, use YYYY-MM-DD and proper amount");
                 }
             }

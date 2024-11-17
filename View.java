@@ -105,13 +105,12 @@ public class View extends JFrame implements Observer {
             //remove menu bar and return to login panel
             this.setJMenuBar(null);
             cards.show(this.getContentPane(), "Login");
+            View.controller.logout();
         }
     }
 
     @Override
     public void budgetChange() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'budgetChange'");
     }
 
     @Override
