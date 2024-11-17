@@ -1,12 +1,11 @@
 
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.io.*;
-import java.security.NoSuchAlgorithmException;
-import java.security.MessageDigest;
 
 public class Controller {
 
@@ -32,7 +31,6 @@ public class Controller {
     //method for login
     public void login(String username, String password) throws NoSuchElementException {
         User user = findUser(username);
-        System.out.println(user);
 
         if (user == null) {
             throw new NoSuchElementException();
@@ -46,7 +44,6 @@ public class Controller {
             for (Observer o : observers) {
                 currUser.get().addObserver(o);
             }
-            currUser.get().alertLogin();
 
         } else {
             throw new NoSuchElementException();
@@ -64,9 +61,10 @@ public class Controller {
         //only creating account, if user doesn't already exist
         User user = this.findUser(username);
 
-        // if (user != null) {
-        //     throw new IllegalArgumentException();
-        // }
+        if (user != null) {
+            throw new IllegalArgumentException();
+        }
+
         String encryptedPassword = this.encryptPassword(password);
         User newUser = new User(fName, lName, email, username, encryptedPassword);
         //add observers to user
@@ -75,42 +73,41 @@ public class Controller {
         }
 
         users.add(newUser);
-        System.out.println(users);
-        System.out.println(newUser);
         this.currUser = Optional.of(newUser);
-        currUser.get().alertLogin();
     }
 
     //method saves all data when program quits
-    // public void saveData() {
-    //     try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
-    //         for (User user : this.users) {
-    //             userOutputStream.writeObject(user);
-    //         }
-    //         userOutputStream.close();
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+    public void saveData() {
+        try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
+            for (User user : this.users) {
+                userOutputStream.writeObject(user);
+            }
+            userOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     //method loads all data on start up of program(if exists)
-    // public void loadData() {
-    //     ArrayList<User> loadedUsers = new ArrayList<>();
-    //     try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.dat"))) {
-    //         User user = (User) (userInputStream.readObject());
-    //         while (user != null) {
-    //             loadedUsers.add(user);
-    //             user = (User) (userInputStream.readObject());
-    //         }
-    //         userInputStream.close();
-    //     } catch (EOFException e) {
-    //         // end of file
-    //     } catch (IOException | ClassNotFoundException e) {
-    //         e.printStackTrace();
-    //     }
-    //     if (loadedUsers.size() > 0) {
-    //         this.users = new ArrayList<>(loadedUsers);
-    //     }
-    // }
+    public void loadData() {
+        ArrayList<User> loadedUsers = new ArrayList<>();
+        try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.dat"))) {
+            User user = (User) (userInputStream.readObject());
+            while (user != null) {
+                loadedUsers.add(user);
+                user = (User) (userInputStream.readObject());
+            }
+            userInputStream.close();
+        } catch (EOFException e) {
+            // end of file
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (loadedUsers.size() > 0) {
+            this.users = new ArrayList<>(loadedUsers);
+        }
+    }
+
     //All methods to access currUser public methods here
     public void addExpense(Expense expense) {
         assert !currUser.isEmpty();
@@ -223,4 +220,8 @@ public class Controller {
         return encryptedPassword;
     }
 
+    //Method alerts current user to loginchange
+    public void userLogin() {
+        this.currUser.get().alertLogin();
+    }
 }

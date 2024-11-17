@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class User {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String first;
@@ -266,6 +266,7 @@ public class User {
         }
     }
 
+    //method alerts observers to user login
     public void alertLogin() {
         for (Observer o : observers) {
             o.loginChange();
