@@ -49,6 +49,11 @@ public class User implements Serializable {
         return this.password;
     }
 
+    //get all expenses
+    public ArrayList<Expense> getAllExpenses() {
+        return new ArrayList<Expense>(expenses);
+    }
+
     //Add expense to expense list and category list
     public void addExpense(Expense expense) {
         this.expenses.add(expense);
@@ -127,6 +132,7 @@ public class User implements Serializable {
 
     //gets expense by id
     public Expense getExpense(long id) {
+
         for (Expense e : expenses) {
             if (e.getId() == id) {
                 return e;

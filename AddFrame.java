@@ -128,8 +128,6 @@ public class AddFrame extends JFrame {
                     amountField.setText("");
 
                 } catch (Exception exception) {
-                    System.out.println(exception);
-                    exception.printStackTrace();
                     errorTxt.setText("Data not properly formatted, use YYYY-MM-DD and proper amount");
                 }
             }

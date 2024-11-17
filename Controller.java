@@ -136,10 +136,15 @@ public class Controller {
     //gets expense by id
     public Expense getExpense(long id) {
         assert !currUser.isEmpty();
-
         return currUser.get().getExpense(id);
     }
 
+    //get all expenses
+    public ArrayList<Expense> getAllExpenses(){
+        assert !currUser.isEmpty();
+
+        return currUser.get().getAllExpenses();
+    }
     //adds a budge amount for category
     public void addBudget(Category cat, double amount) {
         assert !currUser.isEmpty();

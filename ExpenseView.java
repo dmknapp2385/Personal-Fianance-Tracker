@@ -1,19 +1,25 @@
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 public class ExpenseView extends JPanel implements Observer {
 
     private JTextField fromField;
     private JTextField toField;
+    private JPanel expensePanel;
 
     public ExpenseView() {
         View.controller.addObserver(this);
@@ -57,6 +63,12 @@ public class ExpenseView extends JPanel implements Observer {
         searchBtn.addActionListener(new ButtonActionListener());
         addBtn.addActionListener(new ButtonActionListener());
 
+        //add scroll panel for expense list
+        this.expensePanel = new JPanel(new GridLayout(15, 1, 0, 5));
+        JScrollPane scroll = new JScrollPane(expensePanel);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.add(scroll, BorderLayout.CENTER);
     }
 
     private class ButtonActionListener implements ActionListener {
@@ -65,19 +77,54 @@ public class ExpenseView extends JPanel implements Observer {
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             if (command.equals("search")) {
-
-            } else {
+                //show expenses sorted by category and date range
+            } else if (command.equals("add")) {
                 JFrame popup = new AddFrame();
                 popup.setVisible(true);
+            } else {
+                //get expense id
+                Long id = Long.parseLong(command.split(":")[1]);
+                System.out.println(id);
+                Expense expense = View.controller.getExpense(id);
+                System.out.println(expense);
+                JFrame editpopup = new AddFrame(expense);
+                editpopup.setVisible(true);
             }
         }
     }
 
     @Override
     public void budgetChange() {
+        showAllExpenses();
     }
 
     @Override
     public void loginChange() {
+
+        showAllExpenses();
+    }
+
+    private void showAllExpenses() {
+        // ArrayList<Expense> expenses = View.controller.getAllExpenses();
+        ArrayList<Expense> expenses = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            expenses.add(new Expense(i, LocalDate.now(), "description", Category.FOOD));
+        }
+
+        for (Expense e : expenses) {
+            //create button with expense and edit button with expense id
+            JButton btn = new JButton(e.toString());
+            btn.setPreferredSize(new Dimension(200, 28));
+            btn.addActionListener(new ButtonActionListener());
+            btn.setActionCommand("edit:" + e.getId());
+            expensePanel.add(btn);
+
+        }
+    }
+
+    //show all expenses by category/date range
+    private void showAllExpenses(ArrayList<Expense> expenses) {
+
+        //get expesense and then show
     }
 }
