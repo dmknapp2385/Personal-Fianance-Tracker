@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 public class ExpenseView extends JPanel implements Observer {
 
     public ExpenseView() {
+        View.controller.addObserver(this);
+
         this.setLayout(new BorderLayout());
 
         //button panel
@@ -33,6 +35,10 @@ public class ExpenseView extends JPanel implements Observer {
 
     @Override
     public void budgetChange() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    @Override
+    public void loginChange() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

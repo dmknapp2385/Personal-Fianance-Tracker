@@ -19,6 +19,7 @@ public class View extends JFrame implements Observer {
     private CardLayout cards;
 
     public View() {
+        View.controller.addObserver(this);
         //Set frame styles
         this.setTitle("Personal Finance Tracker");
         Color color = new Color(217, 214, 176);

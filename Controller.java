@@ -39,8 +39,11 @@ public class Controller {
 
         if (checkPassword(user, password)) {
             this.currUser = Optional.of(user);
+            //remove old observers if any
+            currUser.get().removeAllObservers();
+            //add observers to curr user
             for (Observer o : observers) {
-
+                currUser.get().addObserver(o);
             }
 
         } else {
@@ -54,18 +57,20 @@ public class Controller {
     }
 
     //method creates new user and sets to curr user
-    public void register(String fName, String lName, String email, String username, String password) {
+    //thows IllegalArgument Exception if useralready exits
+    public void register(String fName, String lName, String email, String username, String password) throws IllegalArgumentException {
         //only creating account, if user doesn't already exist
         User user = this.findUser(username);
-        if (user == null) {
-            String encryptedPassword = this.encryptPassword(password);
-            User newUser = new User(fName, lName, email, username, encryptedPassword);
-            this.currUser = Optional.of(newUser);
-        } else {
-            this.currUser = Optional.of(user);
+        if (user != null) {
+            throw new IllegalArgumentException();
         }
-        //should there be a message stating the account already exists?
-
+        String encryptedPassword = this.encryptPassword(password);
+        User newUser = new User(fName, lName, email, username, encryptedPassword);
+        //add observers to user
+        for(Observer o:observers){
+            newUser.addObserver(o);
+        }
+        this.currUser = Optional.of(newUser);
     }
 
     //method saves all data when program quits
@@ -108,6 +113,7 @@ public class Controller {
         user.addExpense(expense);
     }
 
+    //deletes expense with id
     public void deleteExpense(long id) {
         assert !currUser.isEmpty();
 
@@ -115,6 +121,7 @@ public class Controller {
         user.deleteExpense(id);
     }
 
+    //edits expense with id
     public void editExpense(Expense expense, long id) {
         assert !currUser.isEmpty();
 
@@ -122,12 +129,14 @@ public class Controller {
         user.editExpense(expense, id);
     }
 
+    //adds a budge amount for category
     public void addBudget(Category cat, double amount) {
         assert !currUser.isEmpty();
         User user = currUser.get();
         user.addBudget(cat, amount);
     }
 
+    //returns an arraylist of expenses sorted by date range low through high
     public ArrayList<Expense> getByDate(LocalDate low, LocalDate high) {
 
         assert !currUser.isEmpty();
@@ -136,6 +145,7 @@ public class Controller {
         return user.getByDate(low, high);
     }
 
+    //returns an array list of expenses sorted by category
     public ArrayList<Expense> getByCategory(Category c) {
         assert !currUser.isEmpty();
 
@@ -152,6 +162,7 @@ public class Controller {
         user.addFile(inFile);
     }
 
+    //exports current users expenses as a csv file
     public boolean exportExpenses() {
         assert !currUser.isEmpty();
 
@@ -159,20 +170,12 @@ public class Controller {
         return user.exportExpenses();
     }
 
+    //add observers to controller store
     public void addObserver(Observer o) {
-        assert !currUser.isEmpty();
-
-        User user = currUser.get();
-        user.addObserver(o);
+        observers.add(o);
     }
 
-    public void removeObserver(Observer o) {
-        assert !currUser.isEmpty();
-
-        User user = currUser.get();
-        user.removeObserver(o);
-    }
-
+    //gets percentage of current month spending by category
     public int getpercentSpending(Category cat) {
         assert !currUser.isEmpty();
 
@@ -183,7 +186,6 @@ public class Controller {
     //method returns user with input username
     public User findUser(String username) {
         for (User user : users) {
-            //needs getUsername method in user class
             if (user.getUsername().equals(username)) {
                 return user;
             }
@@ -191,13 +193,13 @@ public class Controller {
         return null;
     }
 
+    //Checks if login password is equal to stored user password
     public boolean checkPassword(User user, String pw) {
         String encrypted = this.encryptPassword(pw);
         return user.getPassword().equals(encrypted);
     }
 
-    //method to check password (using encryption?? need to ask)
-    //encrpt pw
+    //Encrypts the password for security
     private String encryptPassword(String pw) {
         String encryptedPassword = "";
         try {
