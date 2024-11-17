@@ -215,32 +215,38 @@ public class Login extends JPanel {
             if (command.equals("Login")) {
                 char[] passwordChars = password.getPassword();
                 String pw = new String(passwordChars);
-                System.out.println(pw);
-                System.out.println(username.getText());
-
-                // try {
-                //     View.controller.login(username.getText(), pw);
-                // } catch (Exception excpetion) {
-                //     error.setText("Invalid login");
-                // }
+                String inputUser = username.getText();
+                password.setText("");
+                username.setText("");
+                try {
+                    View.controller.login(inputUser, pw);
+                } catch (Exception excpetion) {
+                    error.setText("Invalid login");
+                }
             } else {
                 char[] regChars = regPasswordField.getPassword();
                 char[] confirmChars = pwConfirm.getPassword();
                 String regPw = new String(regChars);
                 String confirmPw = new String(confirmChars);
-                System.out.println(regPw);
-                System.out.println(confirmPw);
-                System.out.println(emailField.getText());
-                System.out.println(fNameField.getText());
-                System.out.println(lNameField.getText());
-                System.out.println(regUsernameField.getText());
+                String fn = fNameField.getText();
+                String ln = lNameField.getText();
+                String em = emailField.getText();
+                String un = regUsernameField.getText();
 
+                //reset fields
+                fNameField.setText("");
+                lNameField.setText("");
+                emailField.setText("");
+                regUsernameField.setText("");
+                regPasswordField.setText("");
+                pwConfirm.setText("");
                 if (!regPw.equals(confirmPw)) {
                     error.setText("Passwords Must Match!");
                 } else {
                     try {
-                        //call controller register method here.
+                        View.controller.register(fn, ln, em, un, regPw);
                     } catch (Exception exception) {
+                        error.setText("User Already Exists");
                     }
                 }
 

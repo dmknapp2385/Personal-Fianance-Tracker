@@ -29,7 +29,7 @@ public class User implements Serializable {
     private ArrayList<Expense> utilities = new ArrayList<>();
     private ArrayList<Expense> misc = new ArrayList<>();
     private HashMap<Category, Double> budget = new HashMap<>();
-    private ArrayList<Observer> observers;
+    private ArrayList<Observer> observers = new ArrayList<>();
 
     //constructor
     public User(String first, String last, String email, String password, String username) {
@@ -207,7 +207,8 @@ public class User implements Serializable {
                 String[] yrMo = dateStr.split("-");
                 Integer year = Integer.parseInt(yrMo[0]);
                 Integer month = Integer.parseInt(yrMo[1]);
-                LocalDate date = LocalDate.of(year, month, 1);
+                Integer day = Integer.parseInt(yrMo[2]);
+                LocalDate date = LocalDate.of(year, month, day);
 
                 //category
                 Category cat = Category.valueOf(details[1].toUpperCase());
@@ -277,12 +278,12 @@ public class User implements Serializable {
     }
 
     //method removes observer
-    public void removeObserver(Observer o) {
-        observers.remove(o);
+    public void removeAllObservers() {
+        observers.clear();
     }
 
     //Methods to get % of spending by category and current month
-    // public int getPercentSpending(Category cat) {
-    //     return 0;
-    // }
+    public int getPercentSpending(Category cat) {
+        return 0;
+    }
 }
