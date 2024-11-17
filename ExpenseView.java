@@ -5,14 +5,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class ExpenseView extends JPanel implements Observer {
+
     private JTextField fromField;
     private JTextField toField;
-
 
     public ExpenseView() {
         View.controller.addObserver(this);
@@ -31,16 +32,23 @@ public class ExpenseView extends JPanel implements Observer {
         buttonPanel.add(catDropdown);
 
         //add date filter
+        Dimension textDimension = new Dimension(85, 25);
         JLabel from = new JLabel("From: ");
         this.fromField = new JTextField("YYYY-MM-DD");
+        fromField.setPreferredSize(textDimension);
         JLabel to = new JLabel("To: ");
         this.toField = new JTextField("YYYY-MM-DD");
+        toField.setPreferredSize(textDimension);
         buttonPanel.add(from);
+        buttonPanel.add(fromField);
         buttonPanel.add(to);
+        buttonPanel.add(toField);
+
+        //add buttons
         JButton searchBtn = new JButton("Search");
         JButton addBtn = new JButton("+");
-        searchBtn.setPreferredSize(new Dimension(100,25));
-        addBtn.setPreferredSize(new Dimension(35,25));
+        searchBtn.setPreferredSize(new Dimension(100, 25));
+        addBtn.setPreferredSize(new Dimension(42, 25));
 
         searchBtn.setActionCommand("search");
         addBtn.setActionCommand("add");
@@ -49,20 +57,19 @@ public class ExpenseView extends JPanel implements Observer {
         searchBtn.addActionListener(new ButtonActionListener());
         addBtn.addActionListener(new ButtonActionListener());
 
-
-
-
     }
 
-    private class ButtonActionListener implements ActionListener{
+    private class ButtonActionListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-           String command = e.getActionCommand();
-           if(command.equals("search")){
+            String command = e.getActionCommand();
+            if (command.equals("search")) {
 
-           }else{
-            
-           }
+            } else {
+                JFrame popup = new AddFrame();
+                popup.setVisible(true);
+            }
         }
     }
 
@@ -70,6 +77,7 @@ public class ExpenseView extends JPanel implements Observer {
     public void budgetChange() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
     @Override
     public void loginChange() {
         throw new UnsupportedOperationException("Not supported yet.");

@@ -132,6 +132,13 @@ public class Controller {
         user.editExpense(expense, id);
     }
 
+
+    //gets expense by id
+    public Expense getExpense(long id){
+        assert !currUser.isEmpty();
+
+        return currUser.get().getExpense(id);
+    }
     //adds a budge amount for category
     public void addBudget(Category cat, double amount) {
         assert !currUser.isEmpty();

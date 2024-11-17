@@ -125,6 +125,16 @@ public class User implements Serializable {
 
     }
 
+    //gets expense by id
+    public Expense getExpense(long id) {
+        for (Expense e : expenses) {
+            if (e.getId() == id) {
+                return e;
+            }
+        }
+        return null;
+    }
+
     //add budget amount
     public void addBudget(Category cat, double amount) {
         if (budget.containsKey(cat)) {
