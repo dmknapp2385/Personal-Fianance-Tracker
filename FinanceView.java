@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
-public class FianceView extends JPanel implements Observer{    
+public class FinanceView extends JPanel implements Observer{    
     private JTextField month;
     private JTextField year;
     private JLabel error;
@@ -41,7 +41,7 @@ public class FianceView extends JPanel implements Observer{
     private JLabel utilitiesBudget;
     private JLabel utilitiesPercent;
        
-    public FianceView() {
+    public FinanceView() {
         //set layout for panel
         this.setLayout(new BorderLayout());
         this.setSize(600, 550);
@@ -49,7 +49,6 @@ public class FianceView extends JPanel implements Observer{
         Color color = new Color(217, 214, 176);
         this.setBackground(color);
 
-<<<<<<< HEAD
         //create header text label
         JLabel title = new JLabel("Finance Report");
         title.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -279,13 +278,6 @@ public class FianceView extends JPanel implements Observer{
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                 .addComponent(submitBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-=======
-    public FianceView(){
-        View.controller.addObserver(this);
-        JLabel test = new JLabel("This is the finance page");
-        this.add(test);
-    }
->>>>>>> f7e33fa29c0219cd3600d755d2628beb383fe98c
 
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
@@ -364,7 +356,7 @@ public class FianceView extends JPanel implements Observer{
     public void budgetChange() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-<<<<<<< HEAD
+
     
  
     private class ButtonActionListener implements ActionListener {
@@ -426,11 +418,10 @@ public class FianceView extends JPanel implements Observer{
             repaint();
         }
     }
-}
-=======
+
     @Override
     public void loginChange() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
->>>>>>> f7e33fa29c0219cd3600d755d2628beb383fe98c
+
