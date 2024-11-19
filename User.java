@@ -31,8 +31,9 @@ public class User implements Serializable {
     private HashMap<Category, Double> budget = new HashMap<>();
     private ArrayList<Observer> observers = new ArrayList<>();
 
-    //constructor
+
     public User(String first, String last, String email, String username, String password) {
+
         this.first = first;
         this.last = last;
         this.email = email;
