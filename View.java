@@ -58,6 +58,11 @@ public class View extends JFrame implements Observer {
         Dashboard dashPanel = new Dashboard();
         this.add(dashPanel, "Dashboard");
         
+        //DELETE THIS BEFORE PUSHING
+        FianceView financePane = new FianceView();
+        this.add(financePane, "Finance");
+        panes.add("Finance");
+       cards.show(this.getContentPane(), "Finance");
 
         //adding a window listener for closing the app
         this.addWindowListener(new WindowAdapter() {
@@ -71,7 +76,6 @@ public class View extends JFrame implements Observer {
     public static void main(String[] args) {
         View view = new View();
         view.setVisible(true);
-
     }
 
     @Override
