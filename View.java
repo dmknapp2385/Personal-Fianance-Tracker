@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -16,7 +15,6 @@ public class View extends JFrame implements Observer {
 
     //singleton class for controller
     public static final Controller controller = Controller.instanceOf();
-    private ArrayList<String> panes = new ArrayList<>();
     private JMenuBar mbar;
     private CardLayout cards;
 
@@ -66,7 +64,6 @@ public class View extends JFrame implements Observer {
         //create login card
         Login loginPane = new Login();
         this.add(loginPane, "Login");
-        panes.add("Login");
         cards.show(this.getContentPane(), "Login");
 
         //create dahsboard card
@@ -89,7 +86,7 @@ public class View extends JFrame implements Observer {
         //adding a window listener for closing the app
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
-                View.controller.saveData();
+                // View.controller.saveData();
                 System.exit(0);
             }
         });
@@ -108,16 +105,14 @@ public class View extends JFrame implements Observer {
             //remove menu bar and return to login panel
             this.setJMenuBar(null);
             cards.show(this.getContentPane(), "Login");
+            View.controller.logout();
         }
     }
 
     @Override
     public void budgetChange() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'budgetChange'");
     }
 
-    //maybe use this????
     @Override
     public void loginChange() {
         this.setJMenuBar(mbar);

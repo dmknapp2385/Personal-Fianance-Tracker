@@ -12,11 +12,11 @@ public class BudgetView extends JPanel implements Observer{
 
     @Override
     public void budgetChange() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     public void loginChange() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 }

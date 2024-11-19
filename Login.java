@@ -213,9 +213,15 @@ public class Login extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             if (command.equals("Login")) {
+                //reset error text if set by previous attempt
+                error.setText("");
+
+                //get login fields 
                 char[] passwordChars = password.getPassword();
                 String pw = new String(passwordChars);
                 String inputUser = username.getText();
+
+                //reset textfields
                 password.setText("");
                 username.setText("");
                 try {
@@ -223,7 +229,12 @@ public class Login extends JPanel {
                 } catch (Exception excpetion) {
                     error.setText("Invalid login");
                 }
+
             } else {
+                //reset error text
+                error.setText("");
+
+                //get input fields
                 char[] regChars = regPasswordField.getPassword();
                 char[] confirmChars = pwConfirm.getPassword();
                 String regPw = new String(regChars);
