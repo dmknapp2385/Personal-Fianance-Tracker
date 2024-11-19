@@ -32,7 +32,7 @@ public class User implements Serializable {
     private ArrayList<Observer> observers = new ArrayList<>();
 
     //constructor
-    public User(String first, String last, String email, String password, String username) {
+    public User(String first, String last, String email, String username, String password) {
         this.first = first;
         this.last = last;
         this.email = email;
@@ -47,6 +47,11 @@ public class User implements Serializable {
 
     public String getPassword() {
         return this.password;
+    }
+
+    //get all expenses
+    public ArrayList<Expense> getAllExpenses() {
+        return new ArrayList<Expense>(expenses);
     }
 
     //Add expense to expense list and category list
@@ -94,6 +99,7 @@ public class User implements Serializable {
         alertBudget();
     }
 
+    //delete expense by id
     public void deleteExpense(long id) throws NoSuchElementException {
         Expense expense = find(id);
         if (expense == null) {
@@ -123,6 +129,17 @@ public class User implements Serializable {
 
         alertBudget();
 
+    }
+
+    //gets expense by id
+    public Expense getExpense(long id) {
+
+        for (Expense e : expenses) {
+            if (e.getId() == id) {
+                return e;
+            }
+        }
+        return null;
     }
 
     //add budget amount
@@ -266,6 +283,7 @@ public class User implements Serializable {
         }
     }
 
+    //method alerts observers to user login
     public void alertLogin() {
         for (Observer o : observers) {
             o.loginChange();
@@ -285,5 +303,10 @@ public class User implements Serializable {
     //Methods to get % of spending by category and current month
     public int getPercentSpending(Category cat) {
         return 0;
+    }
+
+    public String toString() {
+        String output = String.format("%s %s email: %s, username: %s, password: %s", this.first, this.last, this.email, this.username, this.password);
+        return output;
     }
 }

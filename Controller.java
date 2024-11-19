@@ -1,12 +1,11 @@
 
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.io.*;
-import java.security.NoSuchAlgorithmException;
-import java.security.MessageDigest;
 
 public class Controller {
 
@@ -31,7 +30,6 @@ public class Controller {
 
     //method for login
     public void login(String username, String password) throws NoSuchElementException {
-        System.out.println(users);
         User user = findUser(username);
 
         if (user == null) {
@@ -46,7 +44,7 @@ public class Controller {
             for (Observer o : observers) {
                 currUser.get().addObserver(o);
             }
-            currUser.get().alertLogin();
+            userLogin();
 
         } else {
             throw new NoSuchElementException();
@@ -55,7 +53,7 @@ public class Controller {
 
     //method logs out curr user
     public void logout() {
-
+        this.currUser = Optional.empty();
     }
 
     //method creates new user and sets to curr user
@@ -64,9 +62,10 @@ public class Controller {
         //only creating account, if user doesn't already exist
         User user = this.findUser(username);
 
-        // if (user != null) {
-        //     throw new IllegalArgumentException();
-        // }
+        if (user != null) {
+            throw new IllegalArgumentException();
+        }
+
         String encryptedPassword = this.encryptPassword(password);
         User newUser = new User(fName, lName, email, username, encryptedPassword);
         //add observers to user
@@ -75,9 +74,8 @@ public class Controller {
         }
 
         users.add(newUser);
-
         this.currUser = Optional.of(newUser);
-        currUser.get().alertLogin();
+        userLogin();
     }
 
     //method saves all data when program quits
@@ -117,6 +115,7 @@ public class Controller {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
+
         user.addExpense(expense);
     }
 
@@ -134,6 +133,19 @@ public class Controller {
 
         User user = currUser.get();
         user.editExpense(expense, id);
+    }
+
+    //gets expense by id
+    public Expense getExpense(long id) {
+        assert !currUser.isEmpty();
+        return currUser.get().getExpense(id);
+    }
+
+    //get all expenses
+    public ArrayList<Expense> getAllExpenses() {
+        assert !currUser.isEmpty();
+
+        return currUser.get().getAllExpenses();
     }
 
     //adds a budge amount for category
@@ -224,4 +236,8 @@ public class Controller {
         return encryptedPassword;
     }
 
+    //Method alerts current user to loginchange
+    public void userLogin() {
+        this.currUser.get().alertLogin();
+    }
 }
