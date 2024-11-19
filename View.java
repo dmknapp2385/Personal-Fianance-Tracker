@@ -72,14 +72,6 @@ public class View extends JFrame implements Observer {
         //create dahsboard card
         Dashboard dashPanel = new Dashboard();
         this.add(dashPanel, "Dashboard");
-<<<<<<< HEAD
-        
-        //DELETE THIS BEFORE PUSHING
-        FianceView financePane = new FianceView();
-        this.add(financePane, "Finance");
-        panes.add("Finance");
-       cards.show(this.getContentPane(), "Finance");
-=======
 
         //create ExpenseView card
         ExpenseView expenseView = new ExpenseView();
@@ -90,9 +82,9 @@ public class View extends JFrame implements Observer {
         this.add(budgetView, "Budget");
 
         //create Finance View
-        FianceView financeView = new FianceView();
+        FinanceView financeView = new FinanceView();
         this.add(financeView, "Finance");
->>>>>>> f7e33fa29c0219cd3600d755d2628beb383fe98c
+
 
         //adding a window listener for closing the app
         this.addWindowListener(new WindowAdapter() {
