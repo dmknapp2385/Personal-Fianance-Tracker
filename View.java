@@ -79,7 +79,7 @@ public class View extends JFrame implements Observer {
         this.add(budgetView, "Budget");
 
         //create Finance View
-        FianceView financeView = new FianceView();
+        FinanceView financeView = new FinanceView();
         this.add(financeView, "Finance");
 
         //adding a window listener for closing the app
