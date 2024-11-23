@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class User implements Serializable {
@@ -31,8 +32,9 @@ public class User implements Serializable {
     private HashMap<Category, Double> budget = new HashMap<>();
     private ArrayList<Observer> observers = new ArrayList<>();
 
-    //constructor
+
     public User(String first, String last, String email, String username, String password) {
+
         this.first = first;
         this.last = last;
         this.email = email;
@@ -151,6 +153,14 @@ public class User implements Serializable {
         }
 
         alertBudget();
+    }
+    
+    
+    public void removeBudget(Category cat) {
+    	if (budget.containsKey(cat)) {
+    		budget.remove(cat);
+    	}
+    	alertBudget();
     }
 
     //get expenses based on date ranges
@@ -304,6 +314,48 @@ public class User implements Serializable {
     public int getPercentSpending(Category cat) {
         return 0;
     }
+    
+    
+    public double getTotalExpensesByCategory(Category category) {
+    	ArrayList<Expense> cat = getByCategory(category);
+    	double totalExpense = 0.0;
+    	for (Expense expense: cat) {
+    		totalExpense += expense.getAmount();
+    	}
+    	return totalExpense;
+    	
+    }
+    
+    public Optional<Double> getBudgetByCategory(Category category) {
+    	if (this.budget.containsKey(category)) {
+    		return Optional.of(this.budget.get(category));
+    	}
+    	return Optional.empty();
+    	}
+    
+    public Optional<Double> getExpensesByCategoryPercent(Category category) {
+    	double getExpense = getTotalExpensesByCategory(category);
+    	Optional<Double> getBudget = getBudgetByCategory(category);
+    	if (getBudget.isEmpty()) {
+    		return Optional.empty();
+    	}
+    	return Optional.of((getExpense/getBudget.get()) * 100);
+    }
+    
+    
+    public double getExpenseShareByCategory(Category category) {
+    	double getExpense = getTotalExpensesByCategory(category);
+    	double getTotal = 0.0;
+    	for (Expense expense: this.expenses) {
+    		getTotal += expense.getAmount();
+    	}
+    	if (getTotal == 0) {
+    		throw new NoSuchElementException("No expenses yet!");
+    	}
+    	return (getExpense/getTotal) * 100;
+    }
+    
+
 
     public String toString() {
         String output = String.format("%s %s email: %s, username: %s, password: %s", this.first, this.last, this.email, this.username, this.password);
