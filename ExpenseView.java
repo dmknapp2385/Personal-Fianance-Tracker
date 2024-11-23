@@ -1,6 +1,7 @@
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 
 public class ExpenseView extends JPanel implements Observer {
 
@@ -71,10 +73,11 @@ public class ExpenseView extends JPanel implements Observer {
         buttonPanel.add(error);
 
         //add scroll panel for expense list
-        // this.expensePanel = new JPanel(new GridLayout(15, 1, 0, 5));
-        this.expenseArea = new JTextArea();
-        expenseArea.setEditable(false);
-        JScrollPane scroll = new JScrollPane(expenseArea);
+        // this.expenseArea = new JTextArea();
+        // expenseArea.setEditable(false);
+        // JScrollPane scroll = new JScrollPane(expenseArea);
+        this.expensePanel = new JPanel(new GridLayout(15, 1, 0, 5));
+        JScrollPane scroll = new JScrollPane(expensePanel);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         this.add(scroll, BorderLayout.CENTER);
@@ -128,12 +131,6 @@ public class ExpenseView extends JPanel implements Observer {
                     }
                 }
 
-                //three searches: category and date, category or just date
-                if (!category.equals("All") && toDate != null) {
-                    Category cat = Category.valueOf(category.toUpperCase());
-                    View.controller.getbyDateCategory(cat, fLocalDate, tLocalDate);
-                }
-
             } else if (command.equals("add")) {
                 JFrame popup = new AddFrame();
                 popup.setVisible(true);
@@ -153,7 +150,7 @@ public class ExpenseView extends JPanel implements Observer {
         this.catDropdown.setSelectedIndex(0);
         this.toField.setText("YYYY-MM-DD");
         this.fromField.setText("YYYY-MM-DD");
-
+        expensePanel.removeAll();
         showAllExpenses();
     }
 
@@ -166,14 +163,22 @@ public class ExpenseView extends JPanel implements Observer {
         ArrayList<Expense> expenses = View.controller.getAllExpenses();
 
         for (Expense e : expenses) {
-            //create button with expense and edit button with expense id
-            // JButton btn = new JButton(e.toString());
-            // btn.setPreferredSize(new Dimension(200, 28));
-            // btn.addActionListener(new ButtonActionListener());
-            // btn.setActionCommand("edit:" + e.getId());
-            // expensePanel.add(btn);
-            expenseArea.append(e.toString() + "\n");
+            SwingUtilities.invokeLater(new Runnable() {
+                
+@Override
+                public void run() {
+                    //create button with expense and edit button with expense id
+                    JButton btn = new JButton(e.toString());
+                    btn.setPreferredSize(new Dimension(200, 28));
+                    btn.addActionListener(new ButtonActionListener());
+                    btn.setActionCommand("edit:" + e.getId());
+                    expensePanel.add(btn);
+                }
 
+            });
+            // expenseArea.append(e.toString() + "\n");
+            this.setVisible(false);
+            this.setVisible(true);
         }
     }
 
