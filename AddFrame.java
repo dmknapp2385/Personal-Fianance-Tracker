@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -55,7 +56,12 @@ public class AddFrame extends JFrame {
         btn.setActionCommand("edit");
 
         JButton deletebtn = new JButton("Delete");
-        deletebtn.setActionCommand("delete");
+        deletebtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                View.controller.deleteExpense(expenseId);
+                closeFrame();
+            }
+        });
         mainPanel.add(deletebtn);
     }
 
@@ -114,21 +120,17 @@ public class AddFrame extends JFrame {
                     Double amountD = Double.parseDouble(amount.trim());
                     Expense addEx = new Expense(amountD, locDate, description, cat);
                     if (command.equals("add")) {
-                        System.out.println(addEx + "inside if in button listenter add frame");
                         View.controller.addExpense(addEx);
-                    } else if (command.equals("edit")) {
-                        View.controller.editExpense(addEx, expenseId);
                     } else {
-                        View.controller.deleteExpense(expenseId);
+                        View.controller.editExpense(addEx, expenseId);
+                        closeFrame();
                     }
-
                     //clear text fields
                     dField.setText("");
                     dateField.setText("YYYY-MM-DD");
                     amountField.setText("");
 
                 } catch (Exception exception) {
-                    System.out.println("exception in addframe" + exception);
                     errorTxt.setText("Data not properly formatted, use YYYY-MM-DD and proper amount");
                 }
             }
@@ -136,6 +138,11 @@ public class AddFrame extends JFrame {
 
         mainPanel.add(errorTxt);
 
+    }
+
+    //close current addFrame
+    private void closeFrame() {
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 
 }

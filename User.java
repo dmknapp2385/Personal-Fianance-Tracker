@@ -108,7 +108,6 @@ public class User implements Serializable {
         }
 
         this.expenses.remove(expense);
-
         Category c = expense.getCategory();
         switch (c) {
             case FOOD:

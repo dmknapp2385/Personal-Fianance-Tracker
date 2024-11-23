@@ -150,22 +150,27 @@ public class ExpenseView extends JPanel implements Observer {
         this.catDropdown.setSelectedIndex(0);
         this.toField.setText("YYYY-MM-DD");
         this.fromField.setText("YYYY-MM-DD");
-        expensePanel.removeAll();
-        showAllExpenses();
+        showAllExpenses(View.controller.getAllExpenses());
     }
 
     @Override
     public void loginChange() {
-        showAllExpenses();
+        showAllExpenses(View.controller.getAllExpenses());
     }
 
-    private void showAllExpenses() {
-        ArrayList<Expense> expenses = View.controller.getAllExpenses();
+    //show all expenses by category/date range
+    private void showAllExpenses(ArrayList<Expense> expenses) {
+        System.out.println("Inside showallexpenses: " + expenses);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                expensePanel.removeAll();
+            }
+        });
 
         for (Expense e : expenses) {
             SwingUtilities.invokeLater(new Runnable() {
-                
-@Override
+
+                @Override
                 public void run() {
                     //create button with expense and edit button with expense id
                     JButton btn = new JButton(e.toString());
@@ -176,14 +181,6 @@ public class ExpenseView extends JPanel implements Observer {
                 }
 
             });
-            // expenseArea.append(e.toString() + "\n");
-            this.setVisible(false);
-            this.setVisible(true);
         }
-    }
-
-    //show all expenses by category/date range
-    private void showAllExpenses(ArrayList<Expense> expenses) {
-        System.out.println("expesnes from search" + expenses);
     }
 }
