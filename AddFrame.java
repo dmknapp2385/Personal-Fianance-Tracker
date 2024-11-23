@@ -114,7 +114,7 @@ public class AddFrame extends JFrame {
                     Double amountD = Double.parseDouble(amount.trim());
                     Expense addEx = new Expense(amountD, locDate, description, cat);
                     if (command.equals("add")) {
-                        System.out.println(addEx);
+                        System.out.println(addEx + "inside if in button listenter add frame");
                         View.controller.addExpense(addEx);
                     } else if (command.equals("edit")) {
                         View.controller.editExpense(addEx, expenseId);
@@ -128,6 +128,7 @@ public class AddFrame extends JFrame {
                     amountField.setText("");
 
                 } catch (Exception exception) {
+                    System.out.println("exception in addframe" + exception);
                     errorTxt.setText("Data not properly formatted, use YYYY-MM-DD and proper amount");
                 }
             }

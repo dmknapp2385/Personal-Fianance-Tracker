@@ -48,6 +48,8 @@ public class View extends JFrame implements Observer {
         mbar.add(menu);
 
         //add action listeners and commands
+        dashboardItem.setActionCommand("Dashboard");
+        dashboardItem.addActionListener(new MenuBarListener());
         expenseItem.setActionCommand("Expenses");
         expenseItem.addActionListener(new MenuBarListener());
         budgetItem.setActionCommand("Budget");
@@ -81,7 +83,6 @@ public class View extends JFrame implements Observer {
         //create Finance View
         FinanceView financeView = new FinanceView();
         this.add(financeView, "Finance");
-
 
         //adding a window listener for closing the app
         this.addWindowListener(new WindowAdapter() {
