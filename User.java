@@ -77,7 +77,7 @@ public class User implements Serializable {
             default:
                 this.misc.add(expense);
                 break;
-        }
+        } 
 
         alertBudget();
 
@@ -86,7 +86,7 @@ public class User implements Serializable {
     //edit expense
     //throw NoSuchElementException of none found
     public void editExpense(Expense e, long id) throws NoSuchElementException {
-        Expense expense = find(id);
+        Expense expense = find(id); 
         if (expense == null) {
             throw new NoSuchElementException();
         }
@@ -273,7 +273,7 @@ public class User implements Serializable {
         } catch (Exception e) {
             return false;
         }
-        return true;
+        return true; 
     }
 
     //function checks if current budget is above set budget and alerts window to
@@ -307,7 +307,7 @@ public class User implements Serializable {
     }
 
     public String toString() {
-        String output = String.format("%s %s email: %s, username: %s, password: %s", this.first, this.last, this.email, this.username, this.password);
+        String output = String.format("%s %s's email: %s, username: %s, password: %s", this.first, this.last, this.email, this.username, this.password);
         return output;
     }
 }
