@@ -6,10 +6,9 @@ import java.awt.Font;
 import java.awt.Graphics; 		// pie chart exp
 import java.awt.Graphics2D;		// pie chart exp
 import java.awt.RenderingHints;	// pie chart exp
-import java.awt.geom.Arc2D; 	// pie chart exp
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionEvent; 	// pie chart exp
 import java.awt.event.ActionListener;
-
+import java.awt.geom.Arc2D;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,28 +18,29 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
-public class FinanceView extends JPanel implements Observer{    
+public class FinanceView extends JPanel implements Observer {
+
     private JTextField month;
     private JTextField year;
     private JLabel error;
     private JLabel totalAmt;
-    
+
     private JLabel foodExpenses;
     private JLabel foodBudget;
     private JLabel foodPercent;
-    
+
     private JLabel transportationExpenses;
     private JLabel transportationBudget;
     private JLabel transportationPercent;
-    
+
     private JLabel entertainmentExpenses;
     private JLabel entertainmentBudget;
     private JLabel entertainmentPercent;
-    
+
     private JLabel utilitiesExpenses;
     private JLabel utilitiesBudget;
     private JLabel utilitiesPercent;
-       
+
     public FinanceView() {
         //set layout for panel
         this.setLayout(new BorderLayout());
@@ -96,7 +96,7 @@ public class FinanceView extends JPanel implements Observer{
         error.setBorder(new EmptyBorder(15, 0, 15, 15));
         error.setText("Nothing to report.");
         centerP.add(error);
-        
+
         // create total expenses
         JLabel totalTxt = new JLabel("Total Expenses: ");
         totalTxt.setFont(new Font("Calibri", Font.BOLD, 16));
@@ -106,46 +106,46 @@ public class FinanceView extends JPanel implements Observer{
         totalAmt.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(totalTxt);
         centerP.add(totalAmt);
-        
+
         // create food expense information
         JLabel foodTxt = new JLabel("Food");
         foodTxt.setFont(new Font("Calibri", Font.BOLD, 12));
-        
+
         JLabel foodExpensesTxt = new JLabel("Expenses: ");
         this.foodExpenses = new JLabel();
         foodExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(foodExpensesTxt);
         centerP.add(foodExpenses);
-        
+
         JLabel foodBudgetTxt = new JLabel("Budget: ");
         this.foodBudget = new JLabel();
         foodBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(foodBudgetTxt);
         centerP.add(foodBudget);
-        
+
         JLabel foodPercentTxt = new JLabel("% of Budget: ");
         this.foodPercent = new JLabel();
         foodPercent.setText("0%");	// TODO: get value and add it in eventListener
         centerP.add(foodPercentTxt);
         centerP.add(foodPercent);
-        
+
         // create transportation expense information
         JLabel transportationTxt = new JLabel("Transportation");
         transportationTxt.setBorder(new EmptyBorder(15, 0, 0, 0));
         transportationTxt.setFont(new Font("Calibri", Font.BOLD, 12));
-        
+
         JLabel transportationExpensesTxt = new JLabel("Expenses: ");
         this.transportationExpenses = new JLabel();
         transportationExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(transportationExpensesTxt);
         centerP.add(transportationExpenses);
-        
+
         JLabel transportationBudgetTxt = new JLabel("Budget: ");
         this.transportationBudget = new JLabel();
         transportationBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(transportationBudgetTxt);
         centerP.add(transportationBudget);
-        
+
         JLabel transportationPercentTxt = new JLabel("% of Budget: ");
         this.transportationPercent = new JLabel();
         transportationPercent.setText("0%");	// TODO: get value and add it in eventListener
@@ -156,42 +156,42 @@ public class FinanceView extends JPanel implements Observer{
         JLabel entertainmentTxt = new JLabel("Entertainment      ");
         entertainmentTxt.setBorder(new EmptyBorder(15, 0, 0, 0));
         entertainmentTxt.setFont(new Font("Calibri", Font.BOLD, 12));
-        
+
         JLabel entertainmentExpensesTxt = new JLabel("Expenses: ");
         this.entertainmentExpenses = new JLabel();
         entertainmentExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(entertainmentExpensesTxt);
         centerP.add(entertainmentExpenses);
-        
+
         JLabel entertainmentBudgetTxt = new JLabel("Budget: ");
         this.entertainmentBudget = new JLabel();
         entertainmentBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(entertainmentBudgetTxt);
         centerP.add(entertainmentBudget);
-        
+
         JLabel entertainmentPercentTxt = new JLabel("% of Budget: ");
         this.entertainmentPercent = new JLabel();
         entertainmentPercent.setText("0%");	// TODO: get value and add it in eventListener
         centerP.add(entertainmentPercentTxt);
         centerP.add(entertainmentPercent);
-        
+
         // create utilities expense information
         JLabel utilitiesTxt = new JLabel("Utilities");
         utilitiesTxt.setBorder(new EmptyBorder(15, 0, 0, 0));
         utilitiesTxt.setFont(new Font("Calibri", Font.BOLD, 12));
-        
+
         JLabel utilitiesExpensesTxt = new JLabel("Expenses: ");
         this.utilitiesExpenses = new JLabel();
         utilitiesExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(utilitiesExpensesTxt);
         centerP.add(utilitiesExpenses);
-        
+
         JLabel utilitiesBudgetTxt = new JLabel("Budget: ");
         this.utilitiesBudget = new JLabel();
         utilitiesBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(utilitiesBudgetTxt);
         centerP.add(utilitiesBudget);
-        
+
         JLabel utilitiesPercentTxt = new JLabel("% of Budget: ");
         this.utilitiesPercent = new JLabel();
         utilitiesPercent.setText("0%");	// TODO: get value and add it in eventListener
@@ -202,7 +202,7 @@ public class FinanceView extends JPanel implements Observer{
         // Create the pie chart panel with dummy data
         JPanel pieChartPanel = new JPanel();
         pieChartPanel.setBackground(new Color(217, 214, 176)); // Same background for consistency
-        
+
         double[] values = {10, 20, 30, 40};
         Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW};
         PieChartPanel pieChart = new PieChartPanel(values, colors);
@@ -214,8 +214,7 @@ public class FinanceView extends JPanel implements Observer{
 
         // Add the pie chart panel to the bottom
         this.add(pieChartPanel, BorderLayout.SOUTH);
-       
-        
+
         //layout components
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
@@ -226,19 +225,19 @@ public class FinanceView extends JPanel implements Observer{
                                 .addComponent(foodExpensesTxt)
                                 .addComponent(foodBudgetTxt)
                                 .addComponent(foodPercentTxt)
-		                        .addComponent(transportationTxt)
-		                        .addComponent(transportationExpensesTxt)
-		                        .addComponent(transportationBudgetTxt)
-		                        .addComponent(transportationPercentTxt))
-//		                        .addComponent(entertainmentTxt)
-//		                        .addComponent(entertainmentExpensesTxt)
-//		                        .addComponent(entertainmentBudgetTxt)
-//		                        .addComponent(entertainmentPercentTxt)
-//		                        .addComponent(utilitiesTxt)
-//		                        .addComponent(utilitiesExpensesTxt)
-//		                        .addComponent(utilitiesBudgetTxt)
-//		                        .addComponent(utilitiesPercentTxt)
-//		                        .addComponent(pieChart))
+                                .addComponent(transportationTxt)
+                                .addComponent(transportationExpensesTxt)
+                                .addComponent(transportationBudgetTxt)
+                                .addComponent(transportationPercentTxt))
+                        //		                        .addComponent(entertainmentTxt)
+                        //		                        .addComponent(entertainmentExpensesTxt)
+                        //		                        .addComponent(entertainmentBudgetTxt)
+                        //		                        .addComponent(entertainmentPercentTxt)
+                        //		                        .addComponent(utilitiesTxt)
+                        //		                        .addComponent(utilitiesExpensesTxt)
+                        //		                        .addComponent(utilitiesBudgetTxt)
+                        //		                        .addComponent(utilitiesPercentTxt)
+                        //		                        .addComponent(pieChart))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                 .addComponent(month, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(error)
@@ -249,27 +248,25 @@ public class FinanceView extends JPanel implements Observer{
                                 .addComponent(transportationExpenses)
                                 .addComponent(transportationBudget)
                                 .addComponent(transportationPercent))
-//                                .addComponent(entertainmentExpenses)
-//                                .addComponent(entertainmentBudget)
-//                                .addComponent(entertainmentPercent)
-//                                .addComponent(utilitiesExpenses)
-//                                .addComponent(utilitiesBudget)
-//                                .addComponent(utilitiesPercent))
+                        //                                .addComponent(entertainmentExpenses)
+                        //                                .addComponent(entertainmentBudget)
+                        //                                .addComponent(entertainmentPercent)
+                        //                                .addComponent(utilitiesExpenses)
+                        //                                .addComponent(utilitiesBudget)
+                        //                                .addComponent(utilitiesPercent))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                 .addComponent(yearTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                
-		                        .addComponent(entertainmentTxt)
-		                        .addComponent(entertainmentExpensesTxt)
-		                        .addComponent(entertainmentBudgetTxt)
-		                        .addComponent(entertainmentPercentTxt)
-		                        .addComponent(utilitiesTxt)
-		                        .addComponent(utilitiesExpensesTxt)
-		                        .addComponent(utilitiesBudgetTxt)
-		                        .addComponent(utilitiesPercentTxt))
+                                .addComponent(entertainmentTxt)
+                                .addComponent(entertainmentExpensesTxt)
+                                .addComponent(entertainmentBudgetTxt)
+                                .addComponent(entertainmentPercentTxt)
+                                .addComponent(utilitiesTxt)
+                                .addComponent(utilitiesExpensesTxt)
+                                .addComponent(utilitiesBudgetTxt)
+                                .addComponent(utilitiesPercentTxt))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        		.addComponent(year, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        		
-                        		.addComponent(entertainmentExpenses)
+                                .addComponent(year, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(entertainmentExpenses)
                                 .addComponent(entertainmentBudget)
                                 .addComponent(entertainmentPercent)
                                 .addComponent(utilitiesExpenses)
@@ -292,8 +289,8 @@ public class FinanceView extends JPanel implements Observer{
                                 .addComponent(totalTxt)
                                 .addComponent(totalAmt))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        		.addComponent(foodTxt)
-                        		.addComponent(entertainmentTxt))
+                                .addComponent(foodTxt)
+                                .addComponent(entertainmentTxt))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(foodExpensesTxt)
                                 .addComponent(foodExpenses)
@@ -302,16 +299,16 @@ public class FinanceView extends JPanel implements Observer{
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(foodBudgetTxt)
                                 .addComponent(foodBudget)
-		                        .addComponent(entertainmentBudgetTxt)
-		                        .addComponent(entertainmentBudget))
+                                .addComponent(entertainmentBudgetTxt)
+                                .addComponent(entertainmentBudget))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(foodPercentTxt)
                                 .addComponent(foodPercent)
                                 .addComponent(entertainmentPercentTxt)
                                 .addComponent(entertainmentPercent))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        		.addComponent(transportationTxt)
-                        		.addComponent(utilitiesTxt))
+                                .addComponent(transportationTxt)
+                                .addComponent(utilitiesTxt))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(transportationExpensesTxt)
                                 .addComponent(transportationExpenses)
@@ -325,53 +322,53 @@ public class FinanceView extends JPanel implements Observer{
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(transportationPercentTxt)
                                 .addComponent(transportationPercent)
-		                        .addComponent(utilitiesPercentTxt)
-		                        .addComponent(utilitiesPercent))
-//                        .addComponent(entertainmentTxt)
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                                .addComponent(entertainmentExpensesTxt)
-//                                .addComponent(entertainmentExpenses))
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                                .addComponent(entertainmentBudgetTxt)
-//                                .addComponent(entertainmentBudget))
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                                .addComponent(entertainmentPercentTxt)
-//                                .addComponent(entertainmentPercent))
-//                        .addComponent(utilitiesTxt)
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                                .addComponent(utilitiesExpensesTxt)
-//                                .addComponent(utilitiesExpenses))
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                                .addComponent(utilitiesBudgetTxt)
-//                                .addComponent(utilitiesBudget))
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                                .addComponent(utilitiesPercentTxt)
-//                                .addComponent(utilitiesPercent))
-//                        .addComponent(pieChart)
+                                .addComponent(utilitiesPercentTxt)
+                                .addComponent(utilitiesPercent))
+        //                        .addComponent(entertainmentTxt)
+        //                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        //                                .addComponent(entertainmentExpensesTxt)
+        //                                .addComponent(entertainmentExpenses))
+        //                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        //                                .addComponent(entertainmentBudgetTxt)
+        //                                .addComponent(entertainmentBudget))
+        //                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        //                                .addComponent(entertainmentPercentTxt)
+        //                                .addComponent(entertainmentPercent))
+        //                        .addComponent(utilitiesTxt)
+        //                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        //                                .addComponent(utilitiesExpensesTxt)
+        //                                .addComponent(utilitiesExpenses))
+        //                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        //                                .addComponent(utilitiesBudgetTxt)
+        //                                .addComponent(utilitiesBudget))
+        //                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        //                                .addComponent(utilitiesPercentTxt)
+        //                                .addComponent(utilitiesPercent))
+        //                        .addComponent(pieChart)
         );
         submitBtn.addActionListener(new ButtonActionListener());
     }
-    
+
     @Override
     public void budgetChange() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    
- 
     private class ButtonActionListener implements ActionListener {
+
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             if (command.equals("Submit")) {
                 System.out.println(month.getText());
                 System.out.println(year.getText());
             } else {
-            	// TODO: Do we need this if-else structure?
+                // TODO: Do we need this if-else structure?
             }
         }
     }
-    
+
     private class PieChartPanel extends JPanel {
+
         private double[] values;
         private Color[] colors;
 
@@ -424,4 +421,3 @@ public class FinanceView extends JPanel implements Observer{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
-
