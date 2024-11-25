@@ -248,8 +248,6 @@ public class User implements Serializable {
             String line = scanner.nextLine();
             try {
                 String[] details = line.split(",");
-                System.out.println("In user addFile: line of file" + line);
-                System.out.println("In user addFile: line of file" + details);
 
                 //get date
                 String dateStr = details[0];
@@ -273,7 +271,6 @@ public class User implements Serializable {
             }
 
         }
-
         return incorrectInputs;
     }
 

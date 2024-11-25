@@ -121,14 +121,12 @@ public class AddFrame extends JFrame {
                     Expense addEx = new Expense(amountD, locDate, description, cat);
                     if (command.equals("add")) {
                         View.controller.addExpense(addEx);
+
                     } else {
                         View.controller.editExpense(addEx, expenseId);
-                        closeFrame();
                     }
-                    //clear text fields
-                    dField.setText("");
-                    dateField.setText("YYYY-MM-DD");
-                    amountField.setText("");
+
+                    closeFrame();
 
                 } catch (Exception exception) {
                     errorTxt.setText("Data not properly formatted, use YYYY-MM-DD and proper amount");

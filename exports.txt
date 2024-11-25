@@ -1,3 +1,4 @@
-2024-03-05,food,55.45,safeway
+2024-03-05,food,55.45,safeway edit from sort
 2024-11-12,transportation,15.00,to phoenix
 2023-12-01,entertainment,167.50,wicket tickets
+2023-03-04,food,23.00,test add from sort
