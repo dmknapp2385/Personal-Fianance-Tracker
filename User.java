@@ -244,10 +244,12 @@ public class User implements Serializable {
         Scanner scanner = new Scanner(new File(inFile));
 
         //read each line in file
-        while (scanner.hasNext()) {
-            String line = scanner.next();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
             try {
                 String[] details = line.split(",");
+                System.out.println("In user addFile: line of file" + line);
+                System.out.println("In user addFile: line of file" + details);
 
                 //get date
                 String dateStr = details[0];
@@ -294,7 +296,7 @@ public class User implements Serializable {
                 Integer year = date.getYear();
                 Integer month = date.getMonthValue();
                 Integer day = date.getDayOfMonth();
-                String line = String.format("%d-%02d-%02d,%s,%.2f,%s",
+                String line = String.format("%d-%02d-%02d,%s,%.2f,%s\n",
                         year, month, day, e.getCategory().toString().toLowerCase(), e.getAmount(), e.getDescription());
                 writer.write(line);
             }

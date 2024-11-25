@@ -182,11 +182,11 @@ public class Controller {
 
     //upload file of expenses to user
     //throws file not found exception
-    public void addFile(String inFile) throws FileNotFoundException {
+    public String addFile(String inFile) throws FileNotFoundException {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
-        user.addFile(inFile);
+        return user.addFile(inFile);
     }
 
     //exports current users expenses as a csv file
