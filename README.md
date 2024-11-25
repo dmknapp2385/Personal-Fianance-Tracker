@@ -13,8 +13,8 @@ To run The Personal Finance Assistant, follow these steps:
 * [oracle](https://www.oracle.com/java/technologies/downloads/)
 
 *Program Execution Guide*
-* Either download the zip file or clone the repository
-* Go to the project folder through your preferred IDE
-* Open ‘View.java’
-* Click play
+1. Either download the zip file or clone the repository
+2. Go to the project folder through your preferred IDE
+3. Open ‘View.java’
+4. Click play
 	
