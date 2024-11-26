@@ -6,10 +6,9 @@ import java.awt.Font;
 import java.awt.Graphics; 		// pie chart exp
 import java.awt.Graphics2D;		// pie chart exp
 import java.awt.RenderingHints;	// pie chart exp
-import java.awt.geom.Arc2D; 	// pie chart exp
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionEvent; 	// pie chart exp
 import java.awt.event.ActionListener;
-
+import java.awt.geom.Arc2D;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -561,4 +560,3 @@ public class FinanceView extends JPanel implements Observer{
         // Create setup method that contains all of the code, call from here
     }
 }
-

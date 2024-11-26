@@ -155,13 +155,21 @@ public class Controller {
         user.addBudget(cat, amount);
     }
 
+    //get expenses sorted by date and category
+    public ArrayList<Expense> getbyDateCategory(Category c, LocalDate low, LocalDate high) {
+        assert !currUser.isEmpty();
+
+        User user = currUser.get();
+        return user.getByDateCategory(c, low, high);
+    }
+
     //returns an arraylist of expenses sorted by date range low through high
     public ArrayList<Expense> getByDate(LocalDate low, LocalDate high) {
 
         assert !currUser.isEmpty();
 
         User user = currUser.get();
-        return user.getByDate(low, high);
+        return user.getByDateCategory(low, high);
     }
 
     //returns an array list of expenses sorted by category
@@ -169,16 +177,16 @@ public class Controller {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
-        return user.getByCategory(c); 
+        return user.getByDateCategory(c);
     }
 
     //upload file of expenses to user
     //throws file not found exception
-    public void addFile(String inFile) throws FileNotFoundException {
+    public String addFile(String inFile) throws FileNotFoundException {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
-        user.addFile(inFile);
+        return user.addFile(inFile);
     }
 
     //exports current users expenses as a csv file
@@ -237,7 +245,7 @@ public class Controller {
     }
 
     //Method alerts current user to loginchange
-    public void userLogin() {
+    private void userLogin() {
         this.currUser.get().alertLogin();
     }
 }

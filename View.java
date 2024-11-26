@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 
 public class View extends JFrame implements Observer {
 
@@ -48,6 +49,8 @@ public class View extends JFrame implements Observer {
         mbar.add(menu);
 
         //add action listeners and commands
+        dashboardItem.setActionCommand("Dashboard");
+        dashboardItem.addActionListener(new MenuBarListener());
         expenseItem.setActionCommand("Expenses");
         expenseItem.addActionListener(new MenuBarListener());
         budgetItem.setActionCommand("Budget");
@@ -82,7 +85,6 @@ public class View extends JFrame implements Observer {
         FinanceView financeView = new FinanceView();
         this.add(financeView, "Finance");
 
-
         //adding a window listener for closing the app
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
@@ -92,10 +94,6 @@ public class View extends JFrame implements Observer {
         });
     }
 
-    public static void main(String[] args) {
-        View view = new View();
-        view.setVisible(true);
-    }
 
     //method switches the card view
     private void changeCards(String card) {
@@ -128,6 +126,18 @@ public class View extends JFrame implements Observer {
             String command = e.getActionCommand();
             changeCards(command);
         }
+    }
+
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                View view = new View();
+                view.setVisible(true);
+            }
+        });
+       
     }
 
 }

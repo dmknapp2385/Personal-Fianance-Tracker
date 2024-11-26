@@ -32,7 +32,6 @@ public class User implements Serializable {
     private HashMap<Category, Double> budget = new HashMap<>();
     private transient ArrayList<Observer> observers = new ArrayList<>();
 
-
     public User(String first, String last, String email, String username, String password) {
 
         this.first = first;
@@ -78,7 +77,7 @@ public class User implements Serializable {
             default:
                 this.misc.add(expense);
                 break;
-        } 
+        }
 
         alertBudget();
 
@@ -87,7 +86,7 @@ public class User implements Serializable {
     //edit expense
     //throw NoSuchElementException of none found
     public void editExpense(Expense e, long id) throws NoSuchElementException {
-        Expense expense = find(id); 
+        Expense expense = find(id);
         if (expense == null) {
             throw new NoSuchElementException();
         }
@@ -109,7 +108,6 @@ public class User implements Serializable {
         }
 
         this.expenses.remove(expense);
-
         Category c = expense.getCategory();
         switch (c) {
             case FOOD:
@@ -154,17 +152,39 @@ public class User implements Serializable {
 
         alertBudget();
     }
-    
-    
+
     public void removeBudget(Category cat) {
-    	if (budget.containsKey(cat)) {
-    		budget.remove(cat);
-    	}
-    	alertBudget();
+        if (budget.containsKey(cat)) {
+            budget.remove(cat);
+        }
+        alertBudget();
     }
 
-    //get expenses based on date ranges
-    public ArrayList<Expense> getByDate(LocalDate lowerRangeDate, LocalDate upperRangeDate) {
+    //get expenses by date range and category
+    public ArrayList<Expense> getByDateCategory(Category cat, LocalDate lowerRange, LocalDate upperRange) {
+        ArrayList<Expense> filtedByCat = getByDateCategory(cat);
+        return getByDateCategory(lowerRange, upperRange, filtedByCat);
+    }
+
+    //get expenses based on date ranges and filtered by specific category
+    private ArrayList<Expense> getByDateCategory(LocalDate lowerRangeDate, LocalDate upperRangeDate, ArrayList<Expense> catExpenses) {
+
+        ArrayList<Expense> dateRangeExpenses = new ArrayList<Expense>();
+        for (Expense e : catExpenses) {
+            LocalDate currDate = e.getDate();
+            // only add if it is within the range. compareTo gives :
+            //0 (Zero) if both the dates represent the same calendar date.
+            //Positive integer if the specified date is later than the otherDate.
+            //Negative integer if the specified date is earlier than the otherDate.
+            if (currDate.compareTo(lowerRangeDate) >= 0 && currDate.compareTo(upperRangeDate) <= 0) {
+                dateRangeExpenses.add(e);
+            }
+
+        }
+        return dateRangeExpenses;
+    }
+
+    public ArrayList<Expense> getByDateCategory(LocalDate lowerRangeDate, LocalDate upperRangeDate) {
 
         ArrayList<Expense> dateRangeExpenses = new ArrayList<Expense>();
         for (Expense e : expenses) {
@@ -182,7 +202,7 @@ public class User implements Serializable {
     }
 
     //get expenses based on categry
-    public ArrayList<Expense> getByCategory(Category c) {
+    public ArrayList<Expense> getByDateCategory(Category c) {
         switch (c) {
             case FOOD:
                 return new ArrayList<Expense>(this.food);
@@ -224,8 +244,8 @@ public class User implements Serializable {
         Scanner scanner = new Scanner(new File(inFile));
 
         //read each line in file
-        while (scanner.hasNext()) {
-            String line = scanner.next();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
             try {
                 String[] details = line.split(",");
 
@@ -251,7 +271,6 @@ public class User implements Serializable {
             }
 
         }
-
         return incorrectInputs;
     }
 
@@ -274,7 +293,7 @@ public class User implements Serializable {
                 Integer year = date.getYear();
                 Integer month = date.getMonthValue();
                 Integer day = date.getDayOfMonth();
-                String line = String.format("%d-%02d-%02d,%s,%.2f,%s",
+                String line = String.format("%d-%02d-%02d,%s,%.2f,%s\n",
                         year, month, day, e.getCategory().toString().toLowerCase(), e.getAmount(), e.getDescription());
                 writer.write(line);
             }
@@ -282,7 +301,7 @@ public class User implements Serializable {
         } catch (Exception e) {
             return false;
         }
-        return true; 
+        return true;
     }
 
     //function checks if current budget is above set budget and alerts window to
@@ -314,47 +333,45 @@ public class User implements Serializable {
     public int getPercentSpending(Category cat) {
         return 0;
     }
-    
-    
+
     public double getTotalExpensesByCategory(Category category) {
-    	ArrayList<Expense> cat = getByCategory(category);
-    	double totalExpense = 0.0;
-    	for (Expense expense: cat) {
-    		totalExpense += expense.getAmount();
-    	}
-    	return totalExpense;
-    	
+        ArrayList<Expense> cat = getByDateCategory(category);
+        double totalExpense = 0.0;
+        for (Expense expense : cat) {
+            totalExpense += expense.getAmount();
+        }
+        return totalExpense;
+
     }
-    
+
     public Optional<Double> getBudgetByCategory(Category category) {
-    	if (this.budget.containsKey(category)) {
-    		return Optional.of(this.budget.get(category));
-    	}
-    	return Optional.empty();
-    	}
-    
+        if (this.budget.containsKey(category)) {
+            return Optional.of(this.budget.get(category));
+        }
+        return Optional.empty();
+    }
+
     public Optional<Double> getExpensesByCategoryPercent(Category category) {
-    	double getExpense = getTotalExpensesByCategory(category);
-    	Optional<Double> getBudget = getBudgetByCategory(category);
-    	if (getBudget.isEmpty()) {
-    		return Optional.empty();
-    	}
-    	return Optional.of((getExpense/getBudget.get()) * 100);
+        double getExpense = getTotalExpensesByCategory(category);
+        Optional<Double> getBudget = getBudgetByCategory(category);
+        if (getBudget.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of((getExpense / getBudget.get()) * 100);
     }
-    
-    
+
     public double getExpenseShareByCategory(Category category) {
-    	double getExpense = getTotalExpensesByCategory(category);
-    	double getTotal = 0.0;
-    	for (Expense expense: this.expenses) {
-    		getTotal += expense.getAmount();
-    	}
-    	if (getTotal == 0) {
-    		throw new NoSuchElementException("No expenses yet!");
-    	}
-    	return (getExpense/getTotal) * 100;
+        double getExpense = getTotalExpensesByCategory(category);
+        double getTotal = 0.0;
+        for (Expense expense : this.expenses) {
+            getTotal += expense.getAmount();
+        }
+        if (getTotal == 0) {
+            throw new NoSuchElementException("No expenses yet!");
+        }
+        return (getExpense / getTotal) * 100;
     }
-    
+
     public String toString() {
         String output = String.format("%s %s's email: %s, username: %s, password: %s", this.first, this.last, this.email, this.username, this.password);
         return output;

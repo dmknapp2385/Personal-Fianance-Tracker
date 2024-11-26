@@ -1,2 +1,4 @@
 *.class
+exports.txt
+expenses.txt
 users.dat
