@@ -30,7 +30,7 @@ public class User implements Serializable {
     private ArrayList<Expense> utilities = new ArrayList<>();
     private ArrayList<Expense> misc = new ArrayList<>();
     private HashMap<Category, Double> budget = new HashMap<>();
-    private ArrayList<Observer> observers = new ArrayList<>();
+    private transient ArrayList<Observer> observers = new ArrayList<>();
 
 
     public User(String first, String last, String email, String username, String password) {
@@ -355,8 +355,6 @@ public class User implements Serializable {
     	return (getExpense/getTotal) * 100;
     }
     
-
-
     public String toString() {
         String output = String.format("%s %s's email: %s, username: %s, password: %s", this.first, this.last, this.email, this.username, this.password);
         return output;
