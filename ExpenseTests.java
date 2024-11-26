@@ -43,7 +43,7 @@ class ExpenseTests {
 		LocalDate newDate2 = LocalDate.of(2024, 11, 18);
 		expense1.setDate(newDate2);
 		assertEquals(expense1.getDate(), newDate2);
-		
+		 
 	}
 	
 	@Test

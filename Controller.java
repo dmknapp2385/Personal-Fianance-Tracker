@@ -169,7 +169,7 @@ public class Controller {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
-        return user.getByCategory(c);
+        return user.getByCategory(c); 
     }
 
     //upload file of expenses to user
