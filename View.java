@@ -109,6 +109,7 @@ public class View extends JFrame implements Observer {
 
     @Override
     public void budgetChange() {
+    	
     }
 
     @Override

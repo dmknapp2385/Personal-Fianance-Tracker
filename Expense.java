@@ -23,7 +23,7 @@ public class Expense {
         this.description = description.toLowerCase();
         this.category = category;
         this.id = System.currentTimeMillis();
-    }
+    } 
 
     /**
      * description:
