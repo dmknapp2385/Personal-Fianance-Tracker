@@ -551,7 +551,9 @@ public class FinanceView extends JPanel implements Observer{
     @Override
     public void budgetChange() {
     	this.setup();
-        //throw new UnsupportedOperationException("Not supported yet.");
+        // throw new UnsupportedOperationException("Not supported yet.");
+    	// repaint the panel or just updates fields without calling setup
+    	// look in showAllExpenses ExpenseView
     }
 
     @Override
