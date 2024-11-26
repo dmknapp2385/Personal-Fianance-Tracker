@@ -12,7 +12,8 @@ public class BudgetView extends JPanel implements Observer{
 
     @Override
     public void budgetChange() {
-        
+    	// Create a setup() method for the layout
+        // controller.addBudget()
     }
 
     @Override

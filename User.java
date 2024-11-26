@@ -30,7 +30,7 @@ public class User implements Serializable {
     private ArrayList<Expense> utilities = new ArrayList<>();
     private ArrayList<Expense> misc = new ArrayList<>();
     private HashMap<Category, Double> budget = new HashMap<>();
-    private ArrayList<Observer> observers = new ArrayList<>();
+    private transient ArrayList<Observer> observers = new ArrayList<>();
 
     public User(String first, String last, String email, String username, String password) {
 
@@ -77,7 +77,7 @@ public class User implements Serializable {
             default:
                 this.misc.add(expense);
                 break;
-        } 
+        }
 
         alertBudget();
 
@@ -86,7 +86,7 @@ public class User implements Serializable {
     //edit expense
     //throw NoSuchElementException of none found
     public void editExpense(Expense e, long id) throws NoSuchElementException {
-        Expense expense = find(id); 
+        Expense expense = find(id);
         if (expense == null) {
             throw new NoSuchElementException();
         }
@@ -301,7 +301,7 @@ public class User implements Serializable {
         } catch (Exception e) {
             return false;
         }
-        return true; 
+        return true;
     }
 
     //function checks if current budget is above set budget and alerts window to

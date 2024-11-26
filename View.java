@@ -88,7 +88,7 @@ public class View extends JFrame implements Observer {
         //adding a window listener for closing the app
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
-                // View.controller.saveData();
+                View.controller.saveData();
                 System.exit(0);
             }
         });
