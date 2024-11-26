@@ -115,6 +115,11 @@ public class ExpenseView extends JPanel implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            //reset error2 text
+            error2.setText("");
+            error2.setForeground(Color.RED);
+
             //get action command
             String command = e.getActionCommand();
 
@@ -177,9 +182,9 @@ public class ExpenseView extends JPanel implements Observer {
             } else if (command.equals("import")) {
                 String filename = fileName.getText().trim();
                 try {
-                    View.controller.addFile(filename);
+                    String notAdded = View.controller.addFile(filename);
                     //ensure error and text field are blank
-                    error2.setText("");
+                    error2.setText(notAdded);
                     fileName.setText("");
 
                     showAllExpenses(View.controller.getAllExpenses());
