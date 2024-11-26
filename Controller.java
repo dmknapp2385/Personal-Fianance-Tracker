@@ -2,12 +2,20 @@
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class Controller {
+	
+	
+//	public static void main(String[] args) {
+//		String salt = createSalt();
+//		String pass = encryptPassword("hihihih", salt);
+//		System.out.println(pass);
+//	}
 
     //create singleton variable
     private static final Controller INSTANCE = new Controller();
@@ -66,8 +74,11 @@ public class Controller {
             throw new IllegalArgumentException();
         }
 
-        String encryptedPassword = this.encryptPassword(password);
-        User newUser = new User(fName, lName, email, username, encryptedPassword);
+        //String encryptedPassword = this.encryptPassword(password);
+        //creates password with salt
+        String salt = this.createSalt();
+        String encryptedPassword = this.encryptPassword(password, salt);
+        User newUser = new User(fName, lName, email, username, encryptedPassword, salt);
         //add observers to user
         for (Observer o : observers) {
             newUser.addObserver(o);
@@ -222,16 +233,18 @@ public class Controller {
 
     //Checks if login password is equal to stored user password
     public boolean checkPassword(User user, String pw) {
-        String encrypted = this.encryptPassword(pw);
+        String encrypted = this.encryptPassword(pw, user.getSalt());
         return user.getPassword().equals(encrypted);
     }
 
-    //Encrypts the password for security
-    private String encryptPassword(String pw) {
+    
+    //encrypts password with salt
+    private String encryptPassword(String pw, String salt) {
+        String currPassword = pw + salt;
         String encryptedPassword = "";
         try {
-            MessageDigest message = MessageDigest.getInstance("MD5");
-            message.update(pw.getBytes());
+            MessageDigest message = MessageDigest.getInstance("SHA-256");
+            message.update(currPassword.getBytes());
             byte[] bytes = message.digest();
             StringBuilder str = new StringBuilder();
             for (int i = 0; i < bytes.length; i++) {
@@ -242,6 +255,16 @@ public class Controller {
             e.printStackTrace();
         }
         return encryptedPassword;
+    }
+    
+    
+    private String createSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        String saltString = new String(salt);
+        return saltString;
+    	
     }
 
     //Method alerts current user to loginchange
