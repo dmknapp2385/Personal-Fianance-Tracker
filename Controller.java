@@ -230,7 +230,9 @@ public class Controller {
         }
         return null;
     }
-
+    
+ 
+    
     //Checks if login password is equal to stored user password
     public boolean checkPassword(User user, String pw) {
         String encrypted = this.encryptPassword(pw, user.getSalt());
@@ -271,4 +273,21 @@ public class Controller {
     private void userLogin() {
         this.currUser.get().alertLogin();
     }
+    
+    public Optional <Double> getBudgetByCategory(Category category){
+    	User user=currUser.get();
+    	Optional <Double> budget= user.getBudgetByCategory(category);
+    	return budget;
+    }
+
+	
+
+    
+    
+	public Optional<Double> getExpensesByCategoryPercent(Category category) {
+		User user=currUser.get();
+		Optional<Double> catPercent=user.getExpensesByCategoryPercent(category);
+		return catPercent;
+	
+	}
 }
