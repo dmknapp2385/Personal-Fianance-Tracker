@@ -214,7 +214,7 @@ public class Controller {
     }
 
     //gets percentage of current month spending by category
-    public int getpercentSpending(Category cat) {
+    public double getpercentSpending(Category cat) {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
