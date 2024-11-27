@@ -286,7 +286,33 @@ public class Controller {
     	Optional <Double> budget= user.getBudgetByCategory(category);
     	return budget;
     }
-
+    
+    public String getUserDetails() {
+    if (currUser.isEmpty()) {
+    	return null;
+    }
+    
+ 	User user=currUser.get();
+ 	String name= user.getUsername();
+ 	return name;
+ }
+    	
+    
+    public ArrayList<Expense> sortedTenExpenses(){
+    	/*
+    	 * returns first 10 sorted expenses
+    	 */
+    	if (this.currUser.isEmpty()) {
+    		return null;
+    	}
+    	ArrayList <Expense> allSortedExpenses= this.currUser.get().sortedByDateExpenses();
+    	if (allSortedExpenses.isEmpty()) {
+    		return allSortedExpenses;
+    	}
+    	ArrayList <Expense> firstTenSorted= (ArrayList<Expense>) allSortedExpenses.subList(0, 10);
+    	return firstTenSorted;
+  
+    }
 	
 
     
