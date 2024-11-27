@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 class test {
 
     public static void main(String[] args) {
-        User user = new User("elle", "knapp", "dmknapp23852@gmail.com", "dmknapp2385", "apssword");
+        User user = new User("elle", "knapp", "dmknapp23852@gmail.com", "dmknapp2385", "apssword", "salt");
 
         try {
             String errors = user.addFile("expenses.txt");
