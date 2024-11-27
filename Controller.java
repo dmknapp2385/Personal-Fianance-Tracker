@@ -128,6 +128,7 @@ public class Controller {
         User user = currUser.get();
 
         user.addExpense(expense);
+        this.expenseChange();
     }
 
     //deletes expense with id
@@ -136,6 +137,7 @@ public class Controller {
 
         User user = currUser.get();
         user.deleteExpense(id);
+        this.expenseChange();
     }
 
     //edits expense with id
@@ -144,6 +146,11 @@ public class Controller {
 
         User user = currUser.get();
         user.editExpense(expense, id);
+        this.expenseChange();
+    }
+    
+    public void expenseChange() {
+    	this.currUser.get().alertExpense();
     }
 
     //gets expense by id

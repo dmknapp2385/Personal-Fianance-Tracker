@@ -6,4 +6,6 @@ interface Observer {
 
     //alerts panel that implemts it that the a user has logged in
     public void loginChange();
+    
+    public default void expenseChange() {};
 }
