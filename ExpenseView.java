@@ -229,7 +229,7 @@ public class ExpenseView extends JPanel implements Observer {
         System.out.println("Inside showallexpenses: " + expenses);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                expensePanel.removeAll();
+                expensePanel.removeAll(); 
             }
 
         });
