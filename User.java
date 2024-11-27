@@ -23,6 +23,7 @@ public class User implements Serializable {
     private String email;
     private String username;
     private String password;
+    private String salt;
     private ArrayList<Expense> expenses = new ArrayList<>();
     private ArrayList<Expense> food = new ArrayList<>();
     private ArrayList<Expense> transportation = new ArrayList<>();
@@ -32,13 +33,14 @@ public class User implements Serializable {
     private HashMap<Category, Double> budget = new HashMap<>();
     private transient ArrayList<Observer> observers = new ArrayList<>();
 
-    public User(String first, String last, String email, String username, String password) {
+    public User(String first, String last, String email, String username, String password, String salt) {
 
         this.first = first;
         this.last = last;
         this.email = email;
         this.password = password;
         this.username = username;
+        this.salt = salt;
     }
 
     //getters
@@ -48,6 +50,10 @@ public class User implements Serializable {
 
     public String getPassword() {
         return this.password;
+    }
+    
+    public String getSalt() {
+    	return this.salt;
     }
 
     //get all expenses
