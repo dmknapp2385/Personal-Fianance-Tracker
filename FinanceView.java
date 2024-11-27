@@ -9,6 +9,8 @@ import java.awt.RenderingHints;	// pie chart exp
 import java.awt.event.ActionEvent; 	// pie chart exp
 import java.awt.event.ActionListener;
 import java.awt.geom.Arc2D;
+import java.util.ArrayList;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -118,6 +120,18 @@ public class FinanceView extends JPanel implements Observer{
         this.totalAmt.setBorder(new EmptyBorder(15, 0, 15, 15));
         this.totalAmt.setFont(new Font("Calibri", Font.BOLD, 16));
         this.totalAmt.setText("$0.00");	// TODO: get value and add it in eventListener
+        
+        ArrayList<Expense> exps = View.controller.getAllExpenses();
+        if (exps.size() == 0) {
+        	this.totalAmt.setText("N/A");
+        } else {
+	        double total = 0;
+	        for (Expense exp: exps) {
+	        	total += exp.getAmount();
+	        }
+        	this.totalAmt.setText(String.format("$%.2f", total));
+        }
+        
         centerP.add(totalTxt);
         centerP.add(totalAmt);
         
