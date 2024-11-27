@@ -280,9 +280,6 @@ public class Controller {
     	return budget;
     }
 
-	
-
-    
     
 	public Optional<Double> getExpensesByCategoryPercent(Category category) {
 		User user=currUser.get();

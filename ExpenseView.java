@@ -159,7 +159,6 @@ public class ExpenseView extends JPanel implements Observer {
                         error.setText("");
 
                     } catch (Exception exception) {
-                        System.out.println("Inside exception");
                         error.setText("Invalid Date Range");
                     }
 
@@ -186,7 +185,7 @@ public class ExpenseView extends JPanel implements Observer {
                     //ensure error and text field are blank
                     error2.setText(notAdded);
                     fileName.setText("");
-
+                    //TODO: add alert in user so no need to call showAll Expenses
                     showAllExpenses(View.controller.getAllExpenses());
                 } catch (Exception fe) {
                     error2.setText("File Not Found");
@@ -229,7 +228,7 @@ public class ExpenseView extends JPanel implements Observer {
         System.out.println("Inside showallexpenses: " + expenses);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                expensePanel.removeAll(); 
+                expensePanel.removeAll();
             }
 
         });
