@@ -1,9 +1,11 @@
 
 import java.awt.BorderLayout;
+import java.util.Optional;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -33,25 +35,20 @@ public class BudgetView extends JPanel implements Observer{
     }
     private void addBudgetRow(Category category) {
     	
-    			
-    	Optional<Double> budgetOpt = View.controller.getBudgetByCategory(category);
-        double budget = budgetOpt.orElse(0.0);
-        double spent = View.controller.getTotalExpensesByCategory(category);
-        double progress = budget > 0 ? (spent / budget) * 100 : 0;
-
-        JProgressBar progressBar = new JProgressBar(0, 100);
-        progressBar.setValue((int) progress);
-        progressBar.setStringPainted(true);
-        progressBar.setForeground(progress >= 80 ? Color.RED : Color.GREEN);
-
-        tableModel.addRow(new Object[]{
-                category,
-                String.format("%.2f", budget),
-                String.format("%.2f", spent),
-                progressBar
-        });
-    }
-    	
+    	// already calculated the percent in the internal function
+    	// we use that as well as the budgets assigned for this
+        Optional<Double> budget = View.controller.getBudgetByCategory(category);
+        
+        JLabel categoryLabel= new JLabel(category.toString());
+        JLabel budgetLabel= new JLabel(budget.isPresent() ? String.format("$%.2f",  budget.get()) :"No budget set yet" );
+        
+        Optional <Double> catPercent= View.controller.getExpensesByCategoryPercent(category);
+        
+        //String percentage= catPercent.isPresent() ? String.format()
+        
+        
+        
+        
     }
     
     
