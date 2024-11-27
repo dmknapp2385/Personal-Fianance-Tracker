@@ -9,12 +9,15 @@ import java.awt.RenderingHints;	// pie chart exp
 import java.awt.event.ActionEvent; 	// pie chart exp
 import java.awt.event.ActionListener;
 import java.awt.geom.Arc2D;
+import java.util.ArrayList;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
@@ -22,6 +25,7 @@ public class FinanceView extends JPanel implements Observer{
     private JTextField month;
     private JTextField year;
     private JLabel error;
+    //protected JLabel totalAmt = new JLabel();
     private JLabel totalAmt;
     
     private JLabel foodExpenses;
@@ -50,6 +54,8 @@ public class FinanceView extends JPanel implements Observer{
     private JLabel entertainmentCategoryExpenses;
     private JLabel utilitiesCategoryExpenses;
     private JLabel miscellaneousCategoryExpenses;
+    
+    //protected JPanel centerP;
        
     public FinanceView() {
     	View.controller.addObserver(this);
@@ -60,7 +66,7 @@ public class FinanceView extends JPanel implements Observer{
         this.setLayout(new BorderLayout());
         this.setSize(600, 550);
         this.setLayout(new BorderLayout());
-        Color color = new Color(217, 214, 176);
+        Color color = new Color(244, 243, 249);
         this.setBackground(color);
 
         //create header text label
@@ -71,6 +77,7 @@ public class FinanceView extends JPanel implements Observer{
 
         //Create new panel and add to center
         JPanel centerP = new JPanel();
+        centerP = new JPanel();
         centerP.setBackground(color);
         this.add(centerP, BorderLayout.CENTER);
         GroupLayout layout = new GroupLayout(centerP);
@@ -118,6 +125,7 @@ public class FinanceView extends JPanel implements Observer{
         this.totalAmt.setBorder(new EmptyBorder(15, 0, 15, 15));
         this.totalAmt.setFont(new Font("Calibri", Font.BOLD, 16));
         this.totalAmt.setText("$0.00");	// TODO: get value and add it in eventListener
+                
         centerP.add(totalTxt);
         centerP.add(totalAmt);
         
@@ -250,7 +258,6 @@ public class FinanceView extends JPanel implements Observer{
 		                        .addComponent(transportationExpensesTxt)
 		                        .addComponent(transportationBudgetTxt)
 		                        .addComponent(transportationPercentTxt))
-//		                        .addComponent(pieChart))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                 .addComponent(month, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(error)
@@ -346,7 +353,6 @@ public class FinanceView extends JPanel implements Observer{
                                 .addComponent(transportationPercent)
 		                        .addComponent(utilitiesPercentTxt)
 		                        .addComponent(utilitiesPercent))
-//                        .addComponent(pieChart)
         );
         
         
@@ -367,20 +373,7 @@ public class FinanceView extends JPanel implements Observer{
         pieTextLayout.setAutoCreateGaps(true);
         
         bottomP.add(pieTextPanel, BorderLayout.WEST);
-        
-//        // Create the panel for pie chart 
-//        JPanel chartPanel = new JPanel();
-//        chartPanel.setBackground(color);
-//        chartPanel.setPreferredSize(new Dimension(250, 200));
-//        bottomP.add(chartPanel, BorderLayout.EAST);
-        
-        
-//        GroupLayout pieLayout = new GroupLayout(bottomP);
-//        
-//        pieLayout.setAutoCreateContainerGaps(true);
-//        pieLayout.setAutoCreateGaps(true);
-        
-        
+                
         // create food expense information
         JLabel pieTxt = new JLabel("Expenses by Category");
         pieTxt.setFont(new Font("Calibri", Font.BOLD, 12));
@@ -477,11 +470,6 @@ public class FinanceView extends JPanel implements Observer{
                         		)
         );
         
-        
-        
-        
-        
-        
         submitBtn.addActionListener(new ButtonActionListener());
     }
 
@@ -549,14 +537,41 @@ public class FinanceView extends JPanel implements Observer{
     
     @Override
     public void budgetChange() {
-    	this.setup();
-        //throw new UnsupportedOperationException("Not supported yet.");
+    	//this.setup();
+        // throw new UnsupportedOperationException("Not supported yet.");
+    	// repaint the panel or just updates fields without calling setup
+    	// look in showAllExpenses ExpenseView
     }
 
     @Override
     public void loginChange() {
+    	System.out.println("login called");
     	this.setup();
-        //throw new UnsupportedOperationException("Not supported yet.");
-        // Create setup method that contains all of the code, call from here
+    }
+    
+    @Override
+    public void expenseChange() {
+    	System.out.println("expense change called");
+    	this.updatedExpenses();
+    }
+    
+    private void updatedExpenses() {
+    	System.out.println("Inside updatedExpenses");
+
+        ArrayList<Expense> exps = View.controller.getAllExpenses();
+        System.out.println("Expenses retrieved: " + exps);
+
+        if (exps.isEmpty()) {
+            totalAmt.setText("N/A");
+            System.out.println("Set totalAmt to 'N/A'");
+        } else {
+            double total = 0;
+            for (Expense exp : exps) {
+                total += exp.getAmount();
+            }
+            String formattedTotal = String.format("$%.2f", total);
+            totalAmt.setText(formattedTotal);
+            System.out.println("Set totalAmt to: " + formattedTotal);
+        }
     }
 }

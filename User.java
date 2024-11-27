@@ -64,6 +64,8 @@ public class User implements Serializable {
     //Add expense to expense list and category list
     public void addExpense(Expense expense) {
         this.expenses.add(expense);
+        System.out.println("Expense Added! " + expense);
+        System.out.println(expenses);
 
         //add expense to list with category
         Category c = expense.getCategory();
@@ -322,6 +324,12 @@ public class User implements Serializable {
     public void alertLogin() {
         for (Observer o : observers) {
             o.loginChange();
+        }
+    }
+    
+    public void alertExpense() {
+    	for (Observer o : observers) {
+            o.expenseChange();
         }
     }
 
