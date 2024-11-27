@@ -6,7 +6,7 @@ import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.Optional; 
 
 public class Controller {
 	
@@ -128,6 +128,7 @@ public class Controller {
         User user = currUser.get();
 
         user.addExpense(expense);
+        this.expenseChange();
     }
 
     //deletes expense with id
@@ -136,6 +137,7 @@ public class Controller {
 
         User user = currUser.get();
         user.deleteExpense(id);
+        this.expenseChange();
     }
 
     //edits expense with id
@@ -144,6 +146,11 @@ public class Controller {
 
         User user = currUser.get();
         user.editExpense(expense, id);
+        this.expenseChange();
+    }
+    
+    public void expenseChange() {
+    	this.currUser.get().alertExpense();
     }
 
     //gets expense by id
@@ -214,7 +221,7 @@ public class Controller {
     }
 
     //gets percentage of current month spending by category
-    public int getpercentSpending(Category cat) {
+    public double getpercentSpending(Category cat) {
         assert !currUser.isEmpty();
 
         User user = currUser.get();

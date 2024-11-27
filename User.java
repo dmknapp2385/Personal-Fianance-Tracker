@@ -64,6 +64,8 @@ public class User implements Serializable {
     //Add expense to expense list and category list
     public void addExpense(Expense expense) {
         this.expenses.add(expense);
+        System.out.println("Expense Added! " + expense);
+        System.out.println(expenses);
 
         //add expense to list with category
         Category c = expense.getCategory();
@@ -324,6 +326,12 @@ public class User implements Serializable {
             o.loginChange();
         }
     }
+    
+    public void alertExpense() {
+    	for (Observer o : observers) {
+            o.expenseChange();
+        }
+    }
 
     //method adds observer 
     public void addObserver(Observer o) {
@@ -336,9 +344,9 @@ public class User implements Serializable {
     }
 
     //Methods to get % of spending by category and current month
-    public int getPercentSpending(Category cat) {
-        return 0;
-    }
+//    public int getPercentSpending(Category cat) {
+//        return 0;
+//    }
 
     public double getTotalExpensesByCategory(Category category) {
         ArrayList<Expense> cat = getByDateCategory(category);
@@ -366,7 +374,7 @@ public class User implements Serializable {
         return Optional.of((getExpense / getBudget.get()) * 100);
     }
 
-    public double getExpenseShareByCategory(Category category) {
+    public double getPercentSpending(Category category) {
         double getExpense = getTotalExpensesByCategory(category);
         double getTotal = 0.0;
         for (Expense expense : this.expenses) {
