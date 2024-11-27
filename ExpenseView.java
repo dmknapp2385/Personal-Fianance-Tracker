@@ -175,7 +175,7 @@ public class ExpenseView extends JPanel implements Observer {
                     //remove error text if any
                     error.setText("");
                 }
-
+//pop up?
             } else if (command.equals("add")) {
                 JFrame popup = new AddFrame();
                 popup.setVisible(true);
