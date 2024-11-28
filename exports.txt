@@ -1,3 +1,5 @@
-2024-03-05,food,55.45,safeway edited
-2020-03-03,entertainment,50.34,test add
-2000-03-03,entertainment,45.50,test add in sort
+2024-03-05,food,55.45,safeway edited from food
+2024-11-12,transportation,15.00,to phoenix
+2023-12-01,entertainment,167.50,wicket tickets
+2021-05-05,entertainment,5000.00,messup edited
+2022-05-04,food,55.50,mess up amount

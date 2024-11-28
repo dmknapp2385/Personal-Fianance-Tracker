@@ -210,45 +210,58 @@ public class ExpenseView extends JPanel implements Observer {
     }
 
     @Override
-    public void budgetChange() {
-        //set filter components to zero and get all expenses
+    public void expenseChange() {
+        //Reset all fields, dropdowns and errors
         this.catDropdown.setSelectedIndex(0);
         this.toField.setText("");
         this.fromField.setText("");
+        this.error.setText("");
+        this.error2.setText("");
+        this.fileName.setText("");
         showAllExpenses(View.controller.getAllExpenses());
     }
 
     @Override
+    public void budgetChange() {
+    }
+
+    @Override
     public void loginChange() {
+        //Reset all fields, dropdowns and errors
+        this.catDropdown.setSelectedIndex(0);
+        this.toField.setText("");
+        this.fromField.setText("");
+        this.error.setText("");
+        this.error2.setText("");
+        this.fileName.setText("");
         showAllExpenses(View.controller.getAllExpenses());
     }
 
     //show all expenses by category/date range
     private void showAllExpenses(ArrayList<Expense> expenses) {
-        System.out.println("Inside showallexpenses: " + expenses);
+
+        //remove old components
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 expensePanel.removeAll();
             }
-
         });
 
+        //add updated or new components
         for (Expense e : expenses) {
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(() -> {
+                //create button with expense and edit button with expense id
+                JButton btn = new JButton(e.toString());
+                btn.setPreferredSize(new Dimension(200, 28));
+                btn.addActionListener(new ButtonActionListener());
+                btn.setActionCommand("edit:" + e.getId());
+                expensePanel.add(btn);
 
-                @Override
-                public void run() {
-                    //create button with expense and edit button with expense id
-                    JButton btn = new JButton(e.toString());
-                    btn.setPreferredSize(new Dimension(200, 28));
-                    btn.addActionListener(new ButtonActionListener());
-                    btn.setActionCommand("edit:" + e.getId());
-                    expensePanel.add(btn);
-                }
+                expensePanel.revalidate();
+                expensePanel.repaint();
 
             });
         }
-        this.revalidate();
-        this.repaint();
+
     }
 }

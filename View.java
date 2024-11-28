@@ -1,6 +1,7 @@
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -10,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class View extends JFrame implements Observer {
@@ -21,11 +23,12 @@ public class View extends JFrame implements Observer {
 
     public View() {
         View.controller.addObserver(this);
+        View.controller.loadData();
         //Set frame styles
         this.setTitle("Personal Finance Tracker");
         Color color = new Color(217, 214, 176);
         this.setBackground(color);
-        this.setSize(800, 700);
+        this.setSize(900, 750);
 
         //create Menu bar
         mbar = new JMenuBar();
@@ -94,7 +97,6 @@ public class View extends JFrame implements Observer {
         });
     }
 
-
     //method switches the card view
     private void changeCards(String card) {
         if (!card.equals("Logout")) {
@@ -109,7 +111,7 @@ public class View extends JFrame implements Observer {
 
     @Override
     public void budgetChange() {
-    	
+
     }
 
     @Override
@@ -128,16 +130,15 @@ public class View extends JFrame implements Observer {
         }
     }
 
-    
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable(){
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run(){
+            public void run() {
                 View view = new View();
                 view.setVisible(true);
             }
         });
-       
+
     }
 
 }

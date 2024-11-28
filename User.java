@@ -1,16 +1,13 @@
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -51,9 +48,9 @@ public class User implements Serializable {
     public String getPassword() {
         return this.password;
     }
-    
+
     public String getSalt() {
-    	return this.salt;
+        return this.salt;
     }
 
     //get all expenses
@@ -88,6 +85,7 @@ public class User implements Serializable {
         }
 
         alertBudget();
+        alertExpense();
 
     }
 
@@ -106,6 +104,7 @@ public class User implements Serializable {
         expense.setDescription(e.getDescription());
 
         alertBudget();
+        alertExpense();
     }
 
     //delete expense by id
@@ -136,6 +135,7 @@ public class User implements Serializable {
         }
 
         alertBudget();
+        alertExpense();
 
     }
 
@@ -279,6 +279,8 @@ public class User implements Serializable {
             }
 
         }
+        alertBudget();
+        alertExpense();
         return incorrectInputs;
     }
 
@@ -326,9 +328,9 @@ public class User implements Serializable {
             o.loginChange();
         }
     }
-    
+
     public void alertExpense() {
-    	for (Observer o : observers) {
+        for (Observer o : observers) {
             o.expenseChange();
         }
     }
@@ -347,7 +349,6 @@ public class User implements Serializable {
 //    public int getPercentSpending(Category cat) {
 //        return 0;
 //    }
-
     public double getTotalExpensesByCategory(Category category) {
         ArrayList<Expense> cat = getByDateCategory(category);
         double totalExpense = 0.0;
