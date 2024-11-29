@@ -66,7 +66,7 @@ public class FinanceView extends JPanel implements Observer{
         this.setLayout(new BorderLayout());
         this.setSize(600, 550);
         this.setLayout(new BorderLayout());
-        Color color = new Color(244, 243, 249);
+        Color color = new Color(244, 243, 239);
         this.setBackground(color);
 
         //create header text label
