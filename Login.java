@@ -244,18 +244,21 @@ public class Login extends JPanel {
                 String em = emailField.getText();
                 String un = regUsernameField.getText();
 
-                //reset fields
-                fNameField.setText("");
-                lNameField.setText("");
-                emailField.setText("");
-                regUsernameField.setText("");
-                regPasswordField.setText("");
-                pwConfirm.setText("");
                 if (!regPw.equals(confirmPw)) {
                     error.setText("Passwords Must Match!");
+                } else if (fn.equals("") || ln.equals("") || em.equals("")
+                        || un.equals("") || regPw.equals("")) {
+                    error.setText("No Empty fields");
                 } else {
                     try {
                         View.controller.register(fn, ln, em, un, regPw);
+                        //reset fields
+                        fNameField.setText("");
+                        lNameField.setText("");
+                        emailField.setText("");
+                        regUsernameField.setText("");
+                        regPasswordField.setText("");
+                        pwConfirm.setText("");
                     } catch (Exception exception) {
                         error.setText("User Already Exists");
                     }

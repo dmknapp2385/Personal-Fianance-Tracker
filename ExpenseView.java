@@ -241,10 +241,12 @@ public class ExpenseView extends JPanel implements Observer {
     private void showAllExpenses(ArrayList<Expense> expenses) {
 
         //remove old components
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                expensePanel.removeAll();
-            }
+        SwingUtilities.invokeLater(() -> {
+
+            expensePanel.removeAll();
+            expensePanel.revalidate();
+            expensePanel.repaint();
+
         });
 
         //add updated or new components
