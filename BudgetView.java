@@ -322,27 +322,21 @@ public class BudgetView extends JPanel implements Observer{
 		Optional<Double> entertainment = View.controller.getExpensesByCategoryPercent(Category.ENTERTAINMENT);
 		Optional<Double> utilities = View.controller.getExpensesByCategoryPercent(Category.UTILITIES);
 		Optional<Double> misc = View.controller.getExpensesByCategoryPercent(Category.MISCELLANEOUS);
-		if (!food.isEmpty()) {
-			updateProgresshelper(food.get(), foodBar);
-		}
-		if (!transport.isEmpty()) {
-			updateProgresshelper(transport.get(), transportBar);
-		}
-		if (!entertainment.isEmpty()) {
-			updateProgresshelper(entertainment.get(), entertainmentBar);
-		}
-		if (!utilities.isEmpty()) {
-			updateProgresshelper(utilities.get(), utilitiesBar);
-		}
-		if (!misc.isEmpty()) {
-			updateProgresshelper(misc.get(), miscBar);
-		}
+		updateProgresshelper(food, foodBar);
+		updateProgresshelper(transport, transportBar);
+		updateProgresshelper(entertainment, entertainmentBar);
+		updateProgresshelper(utilities, utilitiesBar);
+		updateProgresshelper(misc, miscBar);
 		
 	}
 	
 	
-	private void updateProgresshelper(double val, JProgressBar bar) {
-		int intValue = (int) Math.round(val);
+	private void updateProgresshelper(Optional<Double> val, JProgressBar bar) {
+		if (val.isEmpty()) {
+			bar.setValue(0);
+			return;
+		}
+		int intValue = (int) Math.round(val.get());
 		bar.setValue(intValue);
 		if (intValue >= 80) { 
 			bar.setForeground(Color.RED);
