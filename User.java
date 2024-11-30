@@ -62,7 +62,6 @@ public class User implements Serializable {
     }
 
 
-
     //edit expense
     //throw NoSuchElementException of none found
     public void editExpense(Expense e, long id) throws NoSuchElementException {
