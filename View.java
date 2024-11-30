@@ -20,6 +20,8 @@ public class View extends JFrame implements Observer {
     private CardLayout cards;
 
     public View() {
+    	View.controller.loadData();
+    	
         View.controller.addObserver(this);
         //Set frame styles
         this.setTitle("Personal Finance Tracker");

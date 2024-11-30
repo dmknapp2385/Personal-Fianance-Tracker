@@ -36,7 +36,6 @@ public class User implements Serializable {
     private transient ArrayList<Observer> observers = new ArrayList<>();
 
     public User(String first, String last, String email, String username, String password, String salt) {
-
         this.first = first;
         this.last = last;
         this.email = email;
@@ -89,8 +88,8 @@ public class User implements Serializable {
                 break;
         }
 
-        alertBudget();
-
+        alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
+        alertExpense();
     }
 
     //edit expense
@@ -110,9 +109,10 @@ public class User implements Serializable {
             expense.setDate(e.getDate());
             expense.setDescription(e.getDescription());
         }
-        alertBudget();
+        alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
 
         //update current expense with updates
+        alertExpense();
     }
     
     
@@ -136,7 +136,7 @@ public class User implements Serializable {
                 this.misc.add(expense);
                 break;
         }
-
+        
     }
     
     
@@ -195,7 +195,8 @@ public class User implements Serializable {
                 break;
         }
 
-        alertBudget();
+        alertBudget();  // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
+        alertExpense();
 
     }
 
@@ -374,7 +375,7 @@ public class User implements Serializable {
 
     //function checks if current budget is above set budget and alerts window to
     //change
-    private void alertBudget() {
+    public void alertBudget() {
         for (Observer o : observers) {
             o.budgetChange();
         }
@@ -400,7 +401,11 @@ public class User implements Serializable {
 
     //method removes observer
     public void removeAllObservers() {
-        observers.clear();
+    	if (this.observers == null) {
+    		this.observers = new ArrayList<>();
+    	} else {
+    		observers.clear();
+    	}
     }
 
     //Methods to get % of spending by category and current month
