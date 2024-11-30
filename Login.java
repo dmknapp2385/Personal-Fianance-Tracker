@@ -31,7 +31,7 @@ public class Login extends JPanel {
         this.setLayout(new BorderLayout());
         this.setSize(600, 550);
         this.setLayout(new BorderLayout());
-        Color color = new Color(217, 214, 176);
+        Color color = new Color(244,243,239);
         this.setBackground(color);
 
         //create header text label
