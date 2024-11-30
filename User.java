@@ -61,35 +61,7 @@ public class User implements Serializable {
         return new ArrayList<Expense>(expenses);
     }
 
-    //Add expense to expense list and category list
-    public void addExpense(Expense expense) {
-        this.expenses.add(expense);
-        System.out.println("Expense Added! " + expense);
-        System.out.println(expenses);
 
-        //add expense to list with category
-        Category c = expense.getCategory();
-        switch (c) {
-            case FOOD:
-                this.food.add(expense);
-                break;
-            case TRANSPORTATION:
-                this.transportation.add(expense);
-                break;
-            case ENTERTAINMENT:
-                this.entertainment.add(expense);
-                break;
-            case UTILITIES:
-                this.utilities.add(expense);
-                break;
-            default:
-                this.misc.add(expense);
-                break;
-        }
-
-        alertBudget();
-
-    }
 
     //edit expense
     //throw NoSuchElementException of none found
@@ -111,6 +83,19 @@ public class User implements Serializable {
         alertBudget();
 
         //update current expense with updates
+    }
+    //Add expense to expense list and category list
+    public void addExpense(Expense expense) {
+    	this.add(expense);
+        alertBudget();
+
+    }
+    
+    //delete expense by id
+    public void deleteExpense(long id) throws NoSuchElementException {
+    	this.delete(id);
+        alertBudget();
+
     }
     
     
@@ -166,36 +151,6 @@ public class User implements Serializable {
 
     }
 
-    //delete expense by id
-    public void deleteExpense(long id) throws NoSuchElementException {
-        Expense expense = find(id);
-        if (expense == null) {
-            throw new NoSuchElementException();
-        }
-
-        this.expenses.remove(expense);
-        Category c = expense.getCategory();
-        switch (c) {
-            case FOOD:
-                this.food.remove(expense);
-                break;
-            case TRANSPORTATION:
-                this.transportation.remove(expense);
-                break;
-            case ENTERTAINMENT:
-                this.entertainment.remove(expense);
-                break;
-            case UTILITIES:
-                this.utilities.remove(expense);
-                break;
-            default:
-                this.misc.remove(expense);
-                break;
-        }
-
-        alertBudget();
-
-    }
 
     //gets expense by id
     public Expense getExpense(long id) {
