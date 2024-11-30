@@ -125,7 +125,7 @@ public class Controller {
      * 	quits
      */
     public void saveData() {
-        try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.txt"))) {
+        try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
             for (User user : this.users) {
                 userOutputStream.writeObject(user);
             }
@@ -142,7 +142,7 @@ public class Controller {
      */
     public void loadData() {
         ArrayList<User> loadedUsers = new ArrayList<>();
-        try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.txt"))) {
+        try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.dat"))) {
             User user = (User) (userInputStream.readObject());
             while (user != null) {
                 loadedUsers.add(user);
@@ -152,7 +152,8 @@ public class Controller {
         } catch (EOFException e) {
             // end of file
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+        	System.out.println("No stored users.");
         }
         if (loadedUsers.size() > 0) {
             this.users = new ArrayList<>(loadedUsers);
