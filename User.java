@@ -31,7 +31,6 @@ public class User implements Serializable {
     private transient ArrayList<Observer> observers = new ArrayList<>();
 
     public User(String first, String last, String email, String username, String password, String salt) {
-
         this.first = first;
         this.last = last;
         this.email = email;
@@ -84,9 +83,8 @@ public class User implements Serializable {
                 break;
         }
 
-        alertBudget();
+        alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
         alertExpense();
-
     }
 
     //edit expense
@@ -96,12 +94,72 @@ public class User implements Serializable {
         if (expense == null) {
             throw new NoSuchElementException();
         }
+        if (expense.getCategory() != e.getCategory()) {
+        	delete(id);
+        	add(e);
+        }
+        else {
+            expense.setAmount(e.getAmount());
+            expense.setCategory(e.getCategory());
+            expense.setDate(e.getDate());
+            expense.setDescription(e.getDescription());
+        }
+        alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
 
         //update current expense with updates
-        expense.setAmount(e.getAmount());
-        expense.setCategory(e.getCategory());
-        expense.setDate(e.getDate());
-        expense.setDescription(e.getDescription());
+        alertExpense();
+    }
+    
+    
+    private void add(Expense expense) {
+        this.expenses.add(expense);
+        Category c = expense.getCategory();
+        switch (c) {
+            case FOOD:
+                this.food.add(expense);
+                break;
+            case TRANSPORTATION:
+                this.transportation.add(expense);
+                break;
+            case ENTERTAINMENT:
+                this.entertainment.add(expense);
+                break;
+            case UTILITIES:
+                this.utilities.add(expense);
+                break;
+            default:
+                this.misc.add(expense);
+                break;
+        }
+        
+    }
+    
+    
+    private void delete(long id) throws NoSuchElementException {
+        Expense expense = find(id);
+        if (expense == null) {
+            throw new NoSuchElementException();
+        }
+
+        this.expenses.remove(expense);
+        Category c = expense.getCategory();
+        switch (c) {
+            case FOOD:
+                this.food.remove(expense);
+                break;
+            case TRANSPORTATION:
+                this.transportation.remove(expense);
+                break;
+            case ENTERTAINMENT:
+                this.entertainment.remove(expense);
+                break;
+            case UTILITIES:
+                this.utilities.remove(expense);
+                break;
+            default:
+                this.misc.remove(expense);
+                break;
+        }
 
         alertBudget();
         alertExpense();
@@ -134,7 +192,7 @@ public class User implements Serializable {
                 break;
         }
 
-        alertBudget();
+        alertBudget();  // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
         alertExpense();
 
     }
@@ -316,7 +374,7 @@ public class User implements Serializable {
 
     //function checks if current budget is above set budget and alerts window to
     //change
-    private void alertBudget() {
+    public void alertBudget() {
         for (Observer o : observers) {
             o.budgetChange();
         }
@@ -342,7 +400,11 @@ public class User implements Serializable {
 
     //method removes observer
     public void removeAllObservers() {
-        observers.clear();
+    	if (this.observers == null) {
+    		this.observers = new ArrayList<>();
+    	} else {
+    		observers.clear();
+    	}
     }
 
     //Methods to get % of spending by category and current month

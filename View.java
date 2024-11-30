@@ -22,11 +22,13 @@ public class View extends JFrame implements Observer {
     private CardLayout cards;
 
     public View() {
+    	View.controller.loadData();
+    	
         View.controller.addObserver(this);
         View.controller.loadData();
         //Set frame styles
         this.setTitle("Personal Finance Tracker");
-        Color color = new Color(217, 214, 176);
+        Color color = new Color(244,243,239); 
         this.setBackground(color);
         this.setSize(900, 750);
 
