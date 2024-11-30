@@ -420,6 +420,18 @@ public class User implements Serializable {
         return totalExpense;
 
     }
+    
+    // ADDED
+    public double getTotalExpensesByCategoryByDate(Category category, LocalDate startDate, LocalDate endDate) {
+        ArrayList<Expense> cat = getByDateCategory(category, startDate, endDate);
+        double totalExpense = 0.0;
+        for (Expense expense : cat) {
+            totalExpense += expense.getAmount();
+        }
+        return totalExpense;
+
+    }
+    
 
     public Optional<Double> getBudgetByCategory(Category category) {
         if (this.budget.containsKey(category)) {
@@ -430,6 +442,17 @@ public class User implements Serializable {
 
     public Optional<Double> getExpensesByCategoryPercent(Category category) {
         double getExpense = getTotalExpensesByCategory(category);
+        Optional<Double> getBudget = getBudgetByCategory(category);
+        if (getBudget.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of((getExpense / getBudget.get()) * 100);
+    }
+    
+    
+    // ADDED
+    public Optional<Double> getExpensesByCategoryPercentByDate(Category category, LocalDate startDate, LocalDate endDate) {
+        double getExpense = getTotalExpensesByCategoryByDate(category, startDate, endDate);
         Optional<Double> getBudget = getBudgetByCategory(category);
         if (getBudget.isEmpty()) {
             return Optional.empty();
