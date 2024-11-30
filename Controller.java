@@ -48,12 +48,17 @@ public class Controller {
      */
     public void login(String username, String password) throws NoSuchElementException {
         User user = findUser(username);
+        
 
         if (user == null) {
             throw new NoSuchElementException();
         }
 
+        System.out.println(user.getPassword());
+        System.out.println(encryptPassword(password, user.getSalt()));
+        
         if (checkPassword(user, password)) {
+        	System.out.println("Success!");
             this.currUser = Optional.of(user);
             //remove old observers if any
             currUser.get().removeAllObservers();
@@ -61,8 +66,9 @@ public class Controller {
             for (Observer o : observers) {
                 currUser.get().addObserver(o);
             }
+            System.out.println(this.currUser);
             userLogin();
-
+            
         } else {
             throw new NoSuchElementException();
         }
@@ -119,7 +125,7 @@ public class Controller {
      * 	quits
      */
     public void saveData() {
-        try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
+        try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.txt"))) {
             for (User user : this.users) {
                 userOutputStream.writeObject(user);
             }
@@ -136,7 +142,7 @@ public class Controller {
      */
     public void loadData() {
         ArrayList<User> loadedUsers = new ArrayList<>();
-        try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.dat"))) {
+        try (ObjectInputStream userInputStream = new ObjectInputStream(new FileInputStream("users.txt"))) {
             User user = (User) (userInputStream.readObject());
             while (user != null) {
                 loadedUsers.add(user);
@@ -165,7 +171,7 @@ public class Controller {
         User user = currUser.get();
 
         user.addExpense(expense);
-        this.expenseChange();
+        
     }
 
 
@@ -179,7 +185,7 @@ public class Controller {
 
         User user = currUser.get();
         user.deleteExpense(id);
-        this.expenseChange();
+        
     }
 
 
@@ -194,7 +200,7 @@ public class Controller {
 
         User user = currUser.get();
         user.editExpense(expense, id);
-        this.expenseChange();
+        
     }
     
     
@@ -420,6 +426,8 @@ public class Controller {
      */
     private void userLogin() {
         this.currUser.get().alertLogin();
+        this.currUser.get().alertBudget();
+        this.currUser.get().alertExpense();
     }
     
     
