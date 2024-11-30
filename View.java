@@ -23,7 +23,7 @@ public class View extends JFrame implements Observer {
         View.controller.addObserver(this);
         //Set frame styles
         this.setTitle("Personal Finance Tracker");
-        Color color = new Color(217, 214, 176);
+        Color color = new Color(244,243,239); 
         this.setBackground(color);
         this.setSize(800, 700);
 
