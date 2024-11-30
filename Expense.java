@@ -29,6 +29,19 @@ public class Expense implements Serializable {
 
     /**
      * description:
+     * 	this method constructs an Expense object by copying an existing Expense object
+     * @param expense - Expense, Expense object to be copied
+     */
+    public Expense(Expense expense) {
+        this.amount = expense.amount;
+        this.date = expense.date;
+        this.description = expense.description;
+        this.category = expense.category;
+        this.id = expense.id;
+    } 
+    
+    /**
+     * description:
      * 	setter for amount instance variable, sets amount
      * @param amount - double, used to set expense amount
      */
