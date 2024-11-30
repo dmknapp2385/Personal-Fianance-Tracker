@@ -98,14 +98,72 @@ public class User implements Serializable {
         if (expense == null) {
             throw new NoSuchElementException();
         }
+        if (expense.getCategory() != e.getCategory()) {
+        	delete(id);
+        	add(e);
+        }
+        else {
+            expense.setAmount(e.getAmount());
+            expense.setCategory(e.getCategory());
+            expense.setDate(e.getDate());
+            expense.setDescription(e.getDescription());
+        }
+        alertBudget();
 
         //update current expense with updates
-        expense.setAmount(e.getAmount());
-        expense.setCategory(e.getCategory());
-        expense.setDate(e.getDate());
-        expense.setDescription(e.getDescription());
+    }
+    
+    
+    private void add(Expense expense) {
+        this.expenses.add(expense);
+        Category c = expense.getCategory();
+        switch (c) {
+            case FOOD:
+                this.food.add(expense);
+                break;
+            case TRANSPORTATION:
+                this.transportation.add(expense);
+                break;
+            case ENTERTAINMENT:
+                this.entertainment.add(expense);
+                break;
+            case UTILITIES:
+                this.utilities.add(expense);
+                break;
+            default:
+                this.misc.add(expense);
+                break;
+        }
 
-        alertBudget();
+    }
+    
+    
+    private void delete(long id) throws NoSuchElementException {
+        Expense expense = find(id);
+        if (expense == null) {
+            throw new NoSuchElementException();
+        }
+
+        this.expenses.remove(expense);
+        Category c = expense.getCategory();
+        switch (c) {
+            case FOOD:
+                this.food.remove(expense);
+                break;
+            case TRANSPORTATION:
+                this.transportation.remove(expense);
+                break;
+            case ENTERTAINMENT:
+                this.entertainment.remove(expense);
+                break;
+            case UTILITIES:
+                this.utilities.remove(expense);
+                break;
+            default:
+                this.misc.remove(expense);
+                break;
+        }
+
     }
 
     //delete expense by id
