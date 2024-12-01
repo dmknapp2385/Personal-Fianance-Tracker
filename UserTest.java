@@ -4,54 +4,74 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
-	
-	String fName= "Harry";
-	String lName="Potter";
-	
-	String email= "hp@hoggywarts.com";
-	String username= "the Chosen One";
-	String password= "hedwig";
-	
-	double amount1 = 23.87;
-	LocalDate date1 = LocalDate.of(2024, 10, 25);
-	String description1 = "three broomsticks";
-	Category category1 = Category.FOOD;
-	Expense expense1 = new Expense(amount1, date1, description1, category1);
-	
-	double amount2 = 400.99;
-	LocalDate date2 = LocalDate.of(2024, 11, 15);
-	String description2 = "concert";
-	Category category2 = Category.ENTERTAINMENT;
-	Expense expense2 = new Expense(amount2, date2, description2, category2);
-	
-	double amount3=5000.0;
-	LocalDate date3 = LocalDate.of(2024, 11, 21);
-	String description3= "ron's car fixup";
-	Category category3= Category.TRANSPORTATION;
-	Expense expense3= new Expense(amount3, date3, description3, category3);
-	
-	
-	
-	double amount4=257.9;
-	LocalDate date4 = LocalDate.of(2024, 11, 24);
-	String description4="leaky cauldron bill";
-	Category category4= Category.UTILITIES;
-	Expense expense4= new Expense(amount4, date4, description4, category4);
-	
-	double amount5=90.0;
-	LocalDate date5=LocalDate.of(2024, 11, 25);
-	String description5= "quills and robes";
-	Category category5=Category.MISCELLANEOUS;
-	Expense expense5= new Expense(amount5, date5, description5, category5);
-	
-	
-	
-	
-	User user= new User(fName, lName, email, username, password);
+	User user;
+	Expense expense1 ;
+	Expense expense2 ;
 
+	Expense expense3;
+	
+	Expense expense4;
+
+	Expense expense5;
+	
+	
+	
+	
+	@BeforeEach
+	void setUp() {
+		String fName= "Harry";
+		String lName="Potter";
+		
+		String email= "hp@hoggywarts.com";
+		String username= "the Chosen One";
+		String password= "hedwig";
+		String salt= "salty";
+		
+		double amount1 = 23.87;
+		LocalDate date1 = LocalDate.of(2024, 10, 25);
+		String description1 = "three broomsticks";
+		Category category1 = Category.FOOD;
+		expense1 = new Expense(amount1, date1, description1, category1);
+		
+		double amount2 = 400.99;
+		LocalDate date2 = LocalDate.of(2024, 11, 15);
+		String description2 = "concert";
+		Category category2 = Category.ENTERTAINMENT;
+		expense2 = new Expense(amount2, date2, description2, category2);
+		
+		double amount3=5000.0;
+		LocalDate date3 = LocalDate.of(2024, 11, 21);
+		String description3= "ron's car fixup";
+		Category category3= Category.TRANSPORTATION;
+		expense3= new Expense(amount3, date3, description3, category3);
+		
+		
+		
+		double amount4=257.9;
+		LocalDate date4 = LocalDate.of(2024, 11, 24);
+		String description4="leaky cauldron bill";
+		Category category4= Category.UTILITIES;
+		Expense expense4= new Expense(amount4, date4, description4, category4);
+		
+		double amount5=90.0;
+		LocalDate date5=LocalDate.of(2024, 11, 25);
+		String description5= "quills and robes";
+		Category category5=Category.MISCELLANEOUS;
+		Expense expense5= new Expense(amount5, date5, description5, category5);
+		
+		
+		
+		
+		User user= new User(fName, lName, email, username, password,salt);
+
+		
+	}
+	
+	
 
 	@Test
 	void testConstructor() {

@@ -1,6 +1,7 @@
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Comparator;
 
 public class Expense implements Serializable {
 
@@ -132,4 +133,18 @@ public class Expense implements Serializable {
                 + this.amount + ", "
                 + this.description;
     }
+    
+    public static final Comparator <Expense> sortByDate(){
+    	return new Comparator<Expense>(){
+
+			@Override
+			public int compare(Expense e1, Expense e2) {
+				return e1.getDate().compareTo(e2.getDate());
+			}
+    	};
+    }
+    
+    
+    
+    
 }

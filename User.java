@@ -474,24 +474,16 @@ public class User implements Serializable {
         return (getExpense / getTotal) * 100;
     }
     
-    public static final Comparator <Expense> sortByDate(){
-    	return new Comparator<Expense>(){
-
-			@Override
-			public int compare(Expense e1, Expense e2) {
-				return e1.getDate().compareTo(e2.getDate());
-			}
-    	};
-    }
+   
     public ArrayList <Expense>sortedByDateExpenses(){
     	ArrayList <Expense>sortedExpenses= new ArrayList<Expense>();
     	sortedExpenses= this.getAllExpenses();
-    	Collections.sort(sortedExpenses, sortByDate());
+    	Collections.sort(sortedExpenses,Expense.sortByDate());
     	return sortedExpenses;
     }
     
 
-    public String toString() {
+	public String toString() {
         String output = String.format("%s %s's email: %s, username: %s, password: %s", this.first, this.last, this.email, this.username, this.password);
         return output;
     }
