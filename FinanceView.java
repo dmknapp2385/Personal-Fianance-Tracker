@@ -77,6 +77,20 @@ public class FinanceView extends JPanel implements Observer{
     private JLabel entertainmentCategoryExpenses;
     private JLabel utilitiesCategoryExpenses;
     private JLabel miscellaneousCategoryExpenses;
+    
+    private JLabel foodBar;
+    private JLabel transportationBar;
+    private JLabel entertainmentBar;
+    private JLabel utilitiesBar;
+    private JLabel miscellaneousBar;
+    
+    private Color foodColor = new Color(162, 210, 255); // Blue - food
+    private Color transportationColor = new Color(186, 229, 186);  // Green - transportation
+    private Color entertainmentColor = new Color(255, 200, 221);  // Pink - entertainment
+    private Color utilitiesColor = new Color(205, 180, 219); // Purple - utilities
+    private Color miscellaneousColor = new Color(255, 242, 175);  // Yellow - miscellaneous
+    
+    private PieChartPanel pieChart = new PieChartPanel();
        
     public FinanceView() {
     	View.controller.addObserver(this);
@@ -426,7 +440,6 @@ public class FinanceView extends JPanel implements Observer{
         );
         
         
-        // Done through here
         // Create bottom panel for pie chart and related text
         JPanel bottomP = new JPanel();
         bottomP.setBackground(color);
@@ -449,98 +462,138 @@ public class FinanceView extends JPanel implements Observer{
         pieTxt.setFont(new Font("Calibri", Font.BOLD, 12));
         
         JLabel foodCategoryTxt = new JLabel("Food: ");
-        this.foodCategoryExpenses = new JLabel();
-        this.foodCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(foodCategoryTxt);
-        pieTextPanel.add(foodCategoryExpenses);
         
+        this.foodCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.foodCategoryExpenses);
+        this.displayLabels.add(this.foodCategoryExpenses);
+        
+        this.foodBar = new JLabel("              ");
+        this.foodBar.setBackground(this.foodColor);
+        this.foodBar.setOpaque(true);
+        pieTextPanel.add(this.foodBar);
+        
+        // create transportation expense information
         JLabel transportationCategoryTxt = new JLabel("Transportation: ");
-        this.transportationCategoryExpenses = new JLabel();
-        this.transportationCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(transportationCategoryTxt);
-        pieTextPanel.add(transportationCategoryExpenses);
         
+        this.transportationCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.transportationCategoryExpenses);
+        this.displayLabels.add(this.transportationCategoryExpenses);
+        
+        this.transportationBar = new JLabel("              ");
+        this.transportationBar.setBackground(this.transportationColor);
+        this.transportationBar.setOpaque(true);
+        pieTextPanel.add(this.transportationBar);
+        
+        // create entertainment expense information
         JLabel entertainmentCategoryTxt = new JLabel("Entertainment: ");
-        this.entertainmentCategoryExpenses = new JLabel();
-        this.entertainmentCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(entertainmentCategoryTxt);
-        pieTextPanel.add(entertainmentCategoryExpenses);
         
+        this.entertainmentCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.entertainmentCategoryExpenses);
+        this.displayLabels.add(this.entertainmentCategoryExpenses);
+        
+        this.entertainmentBar = new JLabel("              ");
+        this.entertainmentBar.setBackground(this.entertainmentColor);
+        this.entertainmentBar.setOpaque(true);
+        pieTextPanel.add(this.entertainmentBar);
+        
+        // create utilities expense information
         JLabel utilitiesCategoryTxt = new JLabel("Utilities: ");
-        this.utilitiesCategoryExpenses = new JLabel();
-        this.utilitiesCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(utilitiesCategoryTxt);
-        pieTextPanel.add(utilitiesCategoryExpenses);
         
+        this.utilitiesCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.utilitiesCategoryExpenses);
+        this.displayLabels.add(this.utilitiesCategoryExpenses);
+        
+        this.utilitiesBar = new JLabel("              ");
+        this.utilitiesBar.setBackground(this.utilitiesColor);
+        this.utilitiesBar.setOpaque(true);
+        pieTextPanel.add(this.utilitiesBar);
+        
+        // create miscellaneous expense information
         JLabel miscellaneousCategoryTxt = new JLabel("Miscellaneous: ");
-        this.miscellaneousCategoryExpenses = new JLabel();
-        this.miscellaneousCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(miscellaneousCategoryTxt);
-        pieTextPanel.add(miscellaneousCategoryExpenses);
-                
         
-        // Create the pie chart panel with dummy data
+        this.miscellaneousCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.miscellaneousCategoryExpenses); 
+        this.displayLabels.add(this.miscellaneousCategoryExpenses);
+        
+        this.miscellaneousBar = new JLabel("              ");
+        this.miscellaneousBar.setBackground(this.miscellaneousColor);
+        this.miscellaneousBar.setOpaque(true);
+        pieTextPanel.add(this.miscellaneousBar);
+        
+        
+        // Create the pie chart panel
         JPanel pieChartPanel = new JPanel();
         pieChartPanel.setBackground(color);
         
-        double[] values = {20, 10, 25, 20, 25};
-        Color[] colors = {Color.decode("#cdb4db"), Color.decode("#ffc8dd"), Color.decode("#ffafcc"), Color.decode("#bde0fe"), Color.decode("#a2d2ff")};
-        PieChartPanel pieChart = new PieChartPanel(values, colors);
-
-        pieChart.setPreferredSize(new Dimension(500, 200));
-        pieChart.setBackground(color);
-        pieChartPanel.add(pieChart);
+        this.pieChart.setPreferredSize(new Dimension(500, 200));
+        this.pieChart.setBackground(color);
+        pieChartPanel.add(this.pieChart);
 
         // Add the pie chart panel to the bottom panel
-        bottomP.add(pieChart, BorderLayout.EAST);
+        bottomP.add(pieChartPanel, BorderLayout.EAST);
         
         pieTextLayout.setHorizontalGroup(
         		pieTextLayout.createSequentialGroup()
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        		.addComponent(pieTxt)
+                        		.addComponent(pieTxt, 150, 150, 150)
                         		.addComponent(foodCategoryTxt)
                         		.addComponent(transportationCategoryTxt)
                         		.addComponent(entertainmentCategoryTxt)
                         		.addComponent(utilitiesCategoryTxt)
                         		.addComponent(miscellaneousCategoryTxt)
-                        		)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        		.addComponent(foodCategoryExpenses)
+                        		.addComponent(foodCategoryExpenses, 100, 100, 100)
                         		.addComponent(transportationCategoryExpenses)
                         		.addComponent(entertainmentCategoryExpenses)
                         		.addComponent(utilitiesCategoryExpenses)
                         		.addComponent(miscellaneousCategoryExpenses)
-                        		)
+                        )
+                        .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        		.addComponent(foodBar)
+                        		.addComponent(transportationBar)
+                        		.addComponent(entertainmentBar)
+                        		.addComponent(utilitiesBar)
+                        		.addComponent(miscellaneousBar)
+                        )
         );
         
         pieTextLayout.setVerticalGroup(
         		pieTextLayout.createSequentialGroup()
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(pieTxt)
-                        		)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(foodCategoryTxt)
                         		.addComponent(foodCategoryExpenses)
-                        		)
+                        		.addComponent(foodBar)
+                    	)
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(transportationCategoryTxt)
                         		.addComponent(transportationCategoryExpenses)
-                        		)
+                        		.addComponent(transportationBar)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(entertainmentCategoryTxt)
                         		.addComponent(entertainmentCategoryExpenses)
-                        		)
+                        		.addComponent(entertainmentBar)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(utilitiesCategoryTxt)
                         		.addComponent(utilitiesCategoryExpenses)
-                        		)
+                        		.addComponent(utilitiesBar)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(miscellaneousCategoryTxt)
                         		.addComponent(miscellaneousCategoryExpenses)
-                        		)
+                        		.addComponent(miscellaneousBar)
+                        )
         );
-        
-//        submitBtn.addActionListener(new ButtonActionListener());
     }
 
     
@@ -559,13 +612,15 @@ public class FinanceView extends JPanel implements Observer{
     }
     
     private class PieChartPanel extends JPanel {
-        private double[] values;
-        private Color[] colors;
-
-        public PieChartPanel(double[] values, Color[] colors) {
-            this.values = values;
-            this.colors = colors;
-        }
+        private static final long serialVersionUID = 1L;
+		private double[] values;
+        private Color[] colors = {
+        	foodColor, 
+        	transportationColor,
+        	entertainmentColor,
+        	utilitiesColor,
+        	miscellaneousColor
+        };
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -599,24 +654,17 @@ public class FinanceView extends JPanel implements Observer{
             this.values = values;
             repaint();
         }
-
-        public void setColors(Color[] colors) {
-            this.colors = colors;
-            repaint();
-        }
     }
     
     @Override
     public void budgetChange() {
-    	//this.setup();
-        // throw new UnsupportedOperationException("Not supported yet.");
-    	// repaint the panel or just updates fields without calling setup
-    	// look in showAllExpenses ExpenseView
+    	this.updateExpenses();
     }
 
     @Override
     public void loginChange() {
     	this.setup();
+    	this.updateExpenses();
     }
     
     @Override
@@ -646,6 +694,8 @@ public class FinanceView extends JPanel implements Observer{
             totalAmt.setForeground(Color.BLACK);
             
             this.updateLabels();
+            this.updatePieChart(total);
+            
         }
     }
     
@@ -724,6 +774,27 @@ public class FinanceView extends JPanel implements Observer{
         	this.miscellaneousBudget.setText("N/A");
         	this.miscellaneousPercent.setText("N/A");
         }
+    }
+    
+    public void updatePieChart(double total) {
+    	double foodPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.FOOD, this.lowDate, this.highDate)/total*100;
+    	double transportationPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.TRANSPORTATION, this.lowDate, this.highDate)/total*100;
+    	double entertainmentPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.ENTERTAINMENT, this.lowDate, this.highDate)/total*100;
+    	double utilitiesPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.UTILITIES, this.lowDate, this.highDate)/total*100;
+    	double miscellaneousPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.MISCELLANEOUS, this.lowDate, this.highDate)/total*100;
+    	
+        this.foodCategoryExpenses.setText(String.format("%.1f%%", foodPiePercent));
+        this.transportationCategoryExpenses.setText(String.format("%.1f%%", transportationPiePercent));
+        this.entertainmentCategoryExpenses.setText(String.format("%.1f%%", entertainmentPiePercent));
+        this.utilitiesCategoryExpenses.setText(String.format("%.1f%%", utilitiesPiePercent));
+        this.miscellaneousCategoryExpenses.setText(String.format("%.1f%%", miscellaneousPiePercent));
+        
+        this.pieChart.setValues(new double[]{foodPiePercent,
+        									 transportationPiePercent,
+        									 entertainmentPiePercent,
+        									 utilitiesPiePercent,
+        									 miscellaneousPiePercent}
+        );
     }
     
     // TODO: Move to controller
