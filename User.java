@@ -447,7 +447,7 @@ public class User implements Serializable {
         Optional<Double> getBudget = getBudgetByCategory(category);
         if (getBudget.isEmpty()) {
             return Optional.empty();
-        }
+        } 
         return Optional.of((getExpense / getBudget.get()) * 100);
     }
     
