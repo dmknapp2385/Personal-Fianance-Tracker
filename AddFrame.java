@@ -74,7 +74,7 @@ public class AddFrame extends JFrame {
         mainPanel.setLayout(new FlowLayout());
 
         Dimension textFieldDim = new Dimension(175, 25);
-        JLabel description = new JLabel("Descrition: ");
+        JLabel description = new JLabel("Description: ");
         JLabel date = new JLabel("Date: ");
         JLabel amount = new JLabel("Amount: ");
         JLabel catLabel = new JLabel("Category");

@@ -1,31 +1,47 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics; 		// pie chart exp
-import java.awt.Graphics2D;		// pie chart exp
-import java.awt.RenderingHints;	// pie chart exp
-import java.awt.event.ActionEvent; 	// pie chart exp
+import java.awt.Graphics; 				
+import java.awt.Graphics2D;			
+import java.awt.RenderingHints;			
+import java.awt.event.ActionEvent; 		
 import java.awt.event.ActionListener;
 import java.awt.geom.Arc2D;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
-public class FinanceView extends JPanel implements Observer{    
-    private JTextField month;
-    private JTextField year;
-    private JLabel error;
-    //protected JLabel totalAmt = new JLabel();
+public class FinanceView extends JPanel implements Observer{
+	
+	private static final long serialVersionUID = 1L;
+
+	// instance variables
+	private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	
+	private LocalDate date;
+	private int selectedMonth;
+	private String selectedMonthText;
+	private int selectedYear;
+	private LocalDate lowDate;
+	private LocalDate highDate;
+	
+	private JLabel subtitle;
+	
+	private JComboBox<String> monthDropdown;
+	private JComboBox<Integer> yearDropdown;
+
     private JLabel totalAmt;
     
     private JLabel foodExpenses;
@@ -48,6 +64,7 @@ public class FinanceView extends JPanel implements Observer{
     private JLabel miscellaneousBudget;
     private JLabel miscellaneousPercent;
     
+    private ArrayList<JLabel> displayLabels = new ArrayList<>();
     
     private JLabel foodCategoryExpenses;
     private JLabel transportationCategoryExpenses;
@@ -55,27 +72,137 @@ public class FinanceView extends JPanel implements Observer{
     private JLabel utilitiesCategoryExpenses;
     private JLabel miscellaneousCategoryExpenses;
     
-    //protected JPanel centerP;
-       
+    private JLabel foodBar;
+    private JLabel transportationBar;
+    private JLabel entertainmentBar;
+    private JLabel utilitiesBar;
+    private JLabel miscellaneousBar;
+    
+    private Color foodColor = new Color(162, 210, 255); // Blue - food
+    private Color transportationColor = new Color(186, 229, 186);  // Green - transportation
+    private Color entertainmentColor = new Color(255, 200, 221);  // Pink - entertainment
+    private Color utilitiesColor = new Color(205, 180, 219); // Purple - utilities
+    private Color miscellaneousColor = new Color(255, 242, 175);  // Yellow - miscellaneous
+    
+    private PieChartPanel pieChart = new PieChartPanel();
+    
+    /**
+     * description:
+     * 	instantiates a FinanceView object
+     */
     public FinanceView() {
     	View.controller.addObserver(this);
+    	this.setDates();
+    	this.setup();
     }
-    	
+    
+    /**
+     * description:
+     * 	sets dates that are used throughout the class
+     */
+    public void setDates() {
+    	this.date = LocalDate.now();
+    	this.selectedMonth = this.date.getMonthValue();
+    	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];
+    	this.selectedYear = this.date.getYear();
+    	this.lowDate = setLowDate(this.selectedMonth, this.selectedYear);
+    	this.highDate = setHighDate(this.selectedMonth, this.selectedYear);
+    	if (this.monthDropdown != null) {
+    		this.monthDropdown.setSelectedIndex(this.selectedMonth - 1);
+    	}
+    }
+    
+    /**
+     * description:
+     * 	sets up the entire GUI layout
+     */
 	public void setup() {
-        //set layout for panel
+		
+        // Underlying JFrame
         this.setLayout(new BorderLayout());
         this.setSize(600, 550);
         this.setLayout(new BorderLayout());
         Color color = new Color(244, 243, 239);
         this.setBackground(color);
+        
 
-        //create header text label
+        // Header Panel
+        JPanel header = new JPanel();
+        this.add(header, BorderLayout.NORTH);
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setBorder(new EmptyBorder(15, 5, 8, 15)); 
+        header.setBackground(color);
+        
+        
+        // create header text panel
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
+        titlePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        titlePanel.setBackground(color);
+        header.add(titlePanel);
+        
         JLabel title = new JLabel("Finance Report");
         title.setFont(new Font("Calibri", Font.BOLD, 20));
-        title.setBorder(new EmptyBorder(15, 5, 8, 15));
-        this.add(title, BorderLayout.NORTH);
+        titlePanel.add(title);
+        
+        this.subtitle = new JLabel();
+        this.subtitle.setText(this.selectedMonthText + " " + this.selectedYear);
+        this.subtitle.setFont(new Font("Calibri", Font.PLAIN, 16));
+        titlePanel.add(this.subtitle);
+        
+        header.add(Box.createVerticalStrut(10));
+        
+        // create header selection panel
+        JPanel selectionPanel = new JPanel();
+        selectionPanel.setLayout(new BoxLayout(selectionPanel, BoxLayout.X_AXIS));
+        selectionPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        selectionPanel.setBackground(color);
+        header.add(selectionPanel);
+        
+        //create month and year selectors
+        JLabel monthSelectorTxt = new JLabel("Month: ");
+        selectionPanel.add(monthSelectorTxt);
+        
+        this.monthDropdown = new JComboBox<>(this.monthNames);
+        this.monthDropdown.setSelectedIndex(this.selectedMonth - 1);
+        selectionPanel.add(monthDropdown);
+        monthDropdown.setActionCommand("Select");
+        monthDropdown.addActionListener(new ButtonActionListener());
+        
+        JLabel yearSelectorTxt = new JLabel("         Year: ");
+        selectionPanel.add(yearSelectorTxt);
+        
+        ArrayList<Integer> yearList = new ArrayList<>();
+        for (int year = this.selectedYear; year >= 2000; year--) {
+        	yearList.add(year);
+        }
+        Integer [] yearArray = yearList.toArray(new Integer[yearList.size()]);
+        this.yearDropdown = new JComboBox<>(yearArray);
+        selectionPanel.add(yearDropdown);
+        yearDropdown.setActionCommand("Select");
+        yearDropdown.addActionListener(new ButtonActionListener());
 
-        //Create new panel and add to center
+        header.add(Box.createVerticalStrut(10));
+        
+        // create header total expense panel
+        JPanel totalExpensePanel = new JPanel();
+        totalExpensePanel.setLayout(new BoxLayout(totalExpensePanel, BoxLayout.X_AXIS));
+        totalExpensePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        totalExpensePanel.setBackground(color);
+        header.add(totalExpensePanel);
+        
+        // create total expenses
+        JLabel totalTxt = new JLabel("Total Expenses: ");
+        totalTxt.setFont(new Font("Calibri", Font.BOLD, 16));
+        totalExpensePanel.add(totalTxt);
+        
+        this.totalAmt = new JLabel();
+        this.totalAmt.setBorder(new EmptyBorder(15, 0, 15, 15));
+        this.totalAmt.setFont(new Font("Calibri", Font.BOLD, 16));
+        totalExpensePanel.add(totalAmt);
+        
+
+        // Center Panel
         JPanel centerP = new JPanel();
         centerP = new JPanel();
         centerP.setBackground(color);
@@ -85,71 +212,32 @@ public class FinanceView extends JPanel implements Observer{
         layout.setAutoCreateContainerGaps(true);
         layout.setAutoCreateGaps(true);
 
-        //create dimension for textfields and buttons
-        Dimension fieldDimension = new Dimension(200, 28);
-        Dimension btDimension = new Dimension(125, 25);
-
-        //create text fields and labels for month and year selection
-        //month
-        JLabel monthTxt = new JLabel("Month: ");
-        this.month = new JTextField();
-        month.setPreferredSize(fieldDimension);
-        month.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        centerP.add(monthTxt);
-        centerP.add(month);
-
-        //password
-        JLabel yearTxt = new JLabel("Year: ");
-        this.year = new JPasswordField();
-        year.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        year.setPreferredSize(fieldDimension);
-
-        //login button
-        JButton submitBtn = new JButton("Login");
-        submitBtn.setPreferredSize(btDimension);
-        submitBtn.setBorder(new BevelBorder(BevelBorder.RAISED));
-        submitBtn.setActionCommand("Submit");
-        centerP.add(submitBtn);
-
-        //create error text field
-        this.error = new JLabel("");
-        error.setForeground(Color.RED);
-        error.setBorder(new EmptyBorder(15, 0, 15, 15));
-        error.setText("Nothing to report.");
-        centerP.add(error);
-        
-        // create total expenses
-        JLabel totalTxt = new JLabel("Total Expenses: ");
-        totalTxt.setFont(new Font("Calibri", Font.BOLD, 16));
-        this.totalAmt = new JLabel();
-        this.totalAmt.setBorder(new EmptyBorder(15, 0, 15, 15));
-        this.totalAmt.setFont(new Font("Calibri", Font.BOLD, 16));
-        this.totalAmt.setText("N/A");	// TODO: get value and add it in eventListener
-                
-        centerP.add(totalTxt);
-        centerP.add(totalAmt);
-        
+             
         // create food expense information
         JLabel foodTxt = new JLabel("Food");
         foodTxt.setFont(new Font("Calibri", Font.BOLD, 12));
+        centerP.add(foodTxt);
         
         JLabel foodExpensesTxt = new JLabel("Expenses: ");
-        this.foodExpenses = new JLabel();
-        this.foodExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(foodExpensesTxt);
-        centerP.add(foodExpenses);
+        
+        this.foodExpenses = new JLabel();
+        centerP.add(this.foodExpenses);
+        this.displayLabels.add(this.foodExpenses);
         
         JLabel foodBudgetTxt = new JLabel("Budget: ");
-        this.foodBudget = new JLabel();
-        this.foodBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(foodBudgetTxt);
-        centerP.add(foodBudget);
+        
+        this.foodBudget = new JLabel();
+        centerP.add(this.foodBudget);
+        this.displayLabels.add(this.foodBudget);
         
         JLabel foodPercentTxt = new JLabel("% of Budget: ");
-        this.foodPercent = new JLabel();
-        this.foodPercent.setText("0%");	// TODO: get value and add it in eventListener
         centerP.add(foodPercentTxt);
+        
+        this.foodPercent = new JLabel();
         centerP.add(foodPercent);
+        this.displayLabels.add(this.foodPercent);
         
         // create transportation expense information
         JLabel transportationTxt = new JLabel("Transportation");
@@ -157,22 +245,25 @@ public class FinanceView extends JPanel implements Observer{
         transportationTxt.setFont(new Font("Calibri", Font.BOLD, 12));
         
         JLabel transportationExpensesTxt = new JLabel("Expenses: ");
-        this.transportationExpenses = new JLabel();
-        this.transportationExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(transportationExpensesTxt);
-        centerP.add(transportationExpenses);
+        
+        this.transportationExpenses = new JLabel();
+        centerP.add(this.transportationExpenses);
+        this.displayLabels.add(this.transportationExpenses);
         
         JLabel transportationBudgetTxt = new JLabel("Budget: ");
-        this.transportationBudget = new JLabel();
-        this.transportationBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(transportationBudgetTxt);
-        centerP.add(transportationBudget);
+        
+        this.transportationBudget = new JLabel();
+        centerP.add(this.transportationBudget);
+        this.displayLabels.add(this.transportationBudget);
         
         JLabel transportationPercentTxt = new JLabel("% of Budget: ");
-        this.transportationPercent = new JLabel();
-        this.transportationPercent.setText("0%");	// TODO: get value and add it in eventListener
         centerP.add(transportationPercentTxt);
-        centerP.add(transportationPercent);
+        
+        this.transportationPercent = new JLabel();
+        centerP.add(this.transportationPercent);
+        this.displayLabels.add(this.transportationPercent);
 
         // create entertainment expense information
         JLabel entertainmentTxt = new JLabel("Entertainment      ");
@@ -180,22 +271,25 @@ public class FinanceView extends JPanel implements Observer{
         entertainmentTxt.setFont(new Font("Calibri", Font.BOLD, 12));
         
         JLabel entertainmentExpensesTxt = new JLabel("Expenses: ");
-        this.entertainmentExpenses = new JLabel();
-        this.entertainmentExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(entertainmentExpensesTxt);
-        centerP.add(entertainmentExpenses);
+        
+        this.entertainmentExpenses = new JLabel();
+        centerP.add(this.entertainmentExpenses);
+        this.displayLabels.add(this.entertainmentExpenses);
         
         JLabel entertainmentBudgetTxt = new JLabel("Budget: ");
-        this.entertainmentBudget = new JLabel();
-        this.entertainmentBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(entertainmentBudgetTxt);
-        centerP.add(entertainmentBudget);
+        
+        this.entertainmentBudget = new JLabel();
+        centerP.add(this.entertainmentBudget);
+        this.displayLabels.add(this.entertainmentBudget);
         
         JLabel entertainmentPercentTxt = new JLabel("% of Budget: ");
-        this.entertainmentPercent = new JLabel();
-        this.entertainmentPercent.setText("0%");	// TODO: get value and add it in eventListener
         centerP.add(entertainmentPercentTxt);
-        centerP.add(entertainmentPercent);
+        
+        this.entertainmentPercent = new JLabel();
+        centerP.add(this.entertainmentPercent);
+        this.displayLabels.add(this.entertainmentPercent);
         
         // create utilities expense information
         JLabel utilitiesTxt = new JLabel("Utilities");
@@ -203,54 +297,58 @@ public class FinanceView extends JPanel implements Observer{
         utilitiesTxt.setFont(new Font("Calibri", Font.BOLD, 12));
         
         JLabel utilitiesExpensesTxt = new JLabel("Expenses: ");
-        this.utilitiesExpenses = new JLabel();
-        this.utilitiesExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(utilitiesExpensesTxt);
-        centerP.add(utilitiesExpenses);
+        
+        this.utilitiesExpenses = new JLabel();
+        centerP.add(this.utilitiesExpenses);
+        this.displayLabels.add(this.utilitiesExpenses);
         
         JLabel utilitiesBudgetTxt = new JLabel("Budget: ");
-        this.utilitiesBudget = new JLabel();
-        this.utilitiesBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(utilitiesBudgetTxt);
-        centerP.add(utilitiesBudget);
+        
+        this.utilitiesBudget = new JLabel();
+        centerP.add(this.utilitiesBudget);
+        this.displayLabels.add(this.utilitiesBudget);
         
         JLabel utilitiesPercentTxt = new JLabel("% of Budget: ");
-        this.utilitiesPercent = new JLabel();
-        this.utilitiesPercent.setText("0%");	// TODO: get value and add it in eventListener
         centerP.add(utilitiesPercentTxt);
-        centerP.add(utilitiesPercent);
         
-     // create miscellaneous expense information
+        this.utilitiesPercent = new JLabel();
+        centerP.add(this.utilitiesPercent);
+        this.displayLabels.add(this.utilitiesPercent);
+        
+        // create miscellaneous expense information
         JLabel miscellaneousTxt = new JLabel("Miscellaneous");
         miscellaneousTxt.setBorder(new EmptyBorder(15, 0, 0, 0));
         miscellaneousTxt.setFont(new Font("Calibri", Font.BOLD, 12));
         
         JLabel miscellaneousExpensesTxt = new JLabel("Expenses: ");
-        this.miscellaneousExpenses = new JLabel();
-        this.miscellaneousExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(miscellaneousExpensesTxt);
-        centerP.add(miscellaneousExpenses);
+        
+        this.miscellaneousExpenses = new JLabel();
+        centerP.add(this.miscellaneousExpenses);
+        this.displayLabels.add(this.miscellaneousExpenses);
         
         JLabel miscellaneousBudgetTxt = new JLabel("Budget: ");
-        this.miscellaneousBudget = new JLabel();
-        this.miscellaneousBudget.setText("$0.00");	// TODO: get value and add it in eventListener
         centerP.add(miscellaneousBudgetTxt);
-        centerP.add(miscellaneousBudget);
+        
+        this.miscellaneousBudget = new JLabel();
+        centerP.add(this.miscellaneousBudget);
+        this.displayLabels.add(this.miscellaneousBudget);
         
         JLabel miscellaneousPercentTxt = new JLabel("% of Budget: ");
-        this.miscellaneousPercent = new JLabel();
-        miscellaneousPercent.setText("0%");	// TODO: get value and add it in eventListener
         centerP.add(miscellaneousPercentTxt);
-        centerP.add(miscellaneousPercent);
+        
+        this.miscellaneousPercent = new JLabel();
+        centerP.add(this.miscellaneousPercent);
+        this.displayLabels.add(this.miscellaneousPercent);
 
         
-        //layout components
+        // set layout for center panel
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(monthTxt)
-                                .addComponent(totalTxt)
-                                .addComponent(foodTxt)
+                                .addComponent(foodTxt, 125, 125, 125)
                                 .addComponent(foodExpensesTxt)
                                 .addComponent(foodBudgetTxt)
                                 .addComponent(foodPercentTxt)
@@ -259,18 +357,14 @@ public class FinanceView extends JPanel implements Observer{
 		                        .addComponent(transportationBudgetTxt)
 		                        .addComponent(transportationPercentTxt))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addComponent(month, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(error)
-                                .addComponent(totalAmt)
-                                .addComponent(foodExpenses)
+                                .addComponent(foodExpenses, 125, 125, 125)
                                 .addComponent(foodBudget)
                                 .addComponent(foodPercent)
                                 .addComponent(transportationExpenses)
                                 .addComponent(transportationBudget)
                                 .addComponent(transportationPercent))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addComponent(yearTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		                        .addComponent(entertainmentTxt)
+		                        .addComponent(entertainmentTxt, 125, 125, 125)
 		                        .addComponent(entertainmentExpensesTxt)
 		                        .addComponent(entertainmentBudgetTxt)
 		                        .addComponent(entertainmentPercentTxt)
@@ -278,38 +372,26 @@ public class FinanceView extends JPanel implements Observer{
 		                        .addComponent(utilitiesExpensesTxt)
 		                        .addComponent(utilitiesBudgetTxt)
 		                        .addComponent(utilitiesPercentTxt))
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        		.addComponent(year, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)                   		
-                        		.addComponent(entertainmentExpenses)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)                  		
+                        		.addComponent(entertainmentExpenses, 125, 125, 125)
                                 .addComponent(entertainmentBudget)
                                 .addComponent(entertainmentPercent)
                                 .addComponent(utilitiesExpenses)
                                 .addComponent(utilitiesBudget)
                                 .addComponent(utilitiesPercent))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addComponent(submitBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(miscellaneousTxt)
+                                .addComponent(miscellaneousTxt, 125, 125, 125)
                                 .addComponent(miscellaneousExpensesTxt)
 		                        .addComponent(miscellaneousBudgetTxt)
 		                        .addComponent(miscellaneousPercentTxt))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                .addComponent(miscellaneousExpenses)
+                                .addComponent(miscellaneousExpenses, 125, 125, 125)
                                 .addComponent(miscellaneousBudget)
                                 .addComponent(miscellaneousPercent))
         );
 
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(monthTxt)
-                                .addComponent(month)
-                                .addComponent(yearTxt)
-                                .addComponent(year)
-                                .addComponent(submitBtn))
-                        .addComponent(error)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(totalTxt)
-                                .addComponent(totalAmt))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(foodTxt)
                         		.addComponent(entertainmentTxt)
@@ -356,7 +438,6 @@ public class FinanceView extends JPanel implements Observer{
         );
         
         
-        // Done through here
         // Create bottom panel for pie chart and related text
         JPanel bottomP = new JPanel();
         bottomP.setBackground(color);
@@ -379,123 +460,184 @@ public class FinanceView extends JPanel implements Observer{
         pieTxt.setFont(new Font("Calibri", Font.BOLD, 12));
         
         JLabel foodCategoryTxt = new JLabel("Food: ");
-        this.foodCategoryExpenses = new JLabel();
-        this.foodCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(foodCategoryTxt);
-        pieTextPanel.add(foodCategoryExpenses);
         
+        this.foodCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.foodCategoryExpenses);
+        this.displayLabels.add(this.foodCategoryExpenses);
+        
+        this.foodBar = new JLabel("              ");
+        this.foodBar.setBackground(this.foodColor);
+        this.foodBar.setOpaque(true);
+        pieTextPanel.add(this.foodBar);
+        
+        // create transportation expense information
         JLabel transportationCategoryTxt = new JLabel("Transportation: ");
-        this.transportationCategoryExpenses = new JLabel();
-        this.transportationCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(transportationCategoryTxt);
-        pieTextPanel.add(transportationCategoryExpenses);
         
+        this.transportationCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.transportationCategoryExpenses);
+        this.displayLabels.add(this.transportationCategoryExpenses);
+        
+        this.transportationBar = new JLabel("              ");
+        this.transportationBar.setBackground(this.transportationColor);
+        this.transportationBar.setOpaque(true);
+        pieTextPanel.add(this.transportationBar);
+        
+        // create entertainment expense information
         JLabel entertainmentCategoryTxt = new JLabel("Entertainment: ");
-        this.entertainmentCategoryExpenses = new JLabel();
-        this.entertainmentCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(entertainmentCategoryTxt);
-        pieTextPanel.add(entertainmentCategoryExpenses);
         
+        this.entertainmentCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.entertainmentCategoryExpenses);
+        this.displayLabels.add(this.entertainmentCategoryExpenses);
+        
+        this.entertainmentBar = new JLabel("              ");
+        this.entertainmentBar.setBackground(this.entertainmentColor);
+        this.entertainmentBar.setOpaque(true);
+        pieTextPanel.add(this.entertainmentBar);
+        
+        // create utilities expense information
         JLabel utilitiesCategoryTxt = new JLabel("Utilities: ");
-        this.utilitiesCategoryExpenses = new JLabel();
-        this.utilitiesCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(utilitiesCategoryTxt);
-        pieTextPanel.add(utilitiesCategoryExpenses);
         
+        this.utilitiesCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.utilitiesCategoryExpenses);
+        this.displayLabels.add(this.utilitiesCategoryExpenses);
+        
+        this.utilitiesBar = new JLabel("              ");
+        this.utilitiesBar.setBackground(this.utilitiesColor);
+        this.utilitiesBar.setOpaque(true);
+        pieTextPanel.add(this.utilitiesBar);
+        
+        // create miscellaneous expense information
         JLabel miscellaneousCategoryTxt = new JLabel("Miscellaneous: ");
-        this.miscellaneousCategoryExpenses = new JLabel();
-        this.miscellaneousCategoryExpenses.setText("$0.00");	// TODO: get value and add it in eventListener
         pieTextPanel.add(miscellaneousCategoryTxt);
-        pieTextPanel.add(miscellaneousCategoryExpenses);
-                
         
-        // Create the pie chart panel with dummy data
+        this.miscellaneousCategoryExpenses = new JLabel();
+        pieTextPanel.add(this.miscellaneousCategoryExpenses); 
+        this.displayLabels.add(this.miscellaneousCategoryExpenses);
+        
+        this.miscellaneousBar = new JLabel("              ");
+        this.miscellaneousBar.setBackground(this.miscellaneousColor);
+        this.miscellaneousBar.setOpaque(true);
+        pieTextPanel.add(this.miscellaneousBar);
+        
+        
+        // Create the pie chart panel
         JPanel pieChartPanel = new JPanel();
         pieChartPanel.setBackground(color);
         
-        double[] values = {20, 10, 25, 20, 25};
-        Color[] colors = {Color.decode("#cdb4db"), Color.decode("#ffc8dd"), Color.decode("#ffafcc"), Color.decode("#bde0fe"), Color.decode("#a2d2ff")};
-        PieChartPanel pieChart = new PieChartPanel(values, colors);
-
-        pieChart.setPreferredSize(new Dimension(500, 200));
-        pieChart.setBackground(color);
-        pieChartPanel.add(pieChart);
+        this.pieChart.setPreferredSize(new Dimension(500, 200));
+        this.pieChart.setBackground(color);
+        pieChartPanel.add(this.pieChart);
 
         // Add the pie chart panel to the bottom panel
-        bottomP.add(pieChart, BorderLayout.EAST);
+        bottomP.add(pieChartPanel, BorderLayout.EAST);
         
+        // set layout for pie chart text panel
         pieTextLayout.setHorizontalGroup(
         		pieTextLayout.createSequentialGroup()
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        		.addComponent(pieTxt)
+                        		.addComponent(pieTxt, 150, 150, 150)
                         		.addComponent(foodCategoryTxt)
                         		.addComponent(transportationCategoryTxt)
                         		.addComponent(entertainmentCategoryTxt)
                         		.addComponent(utilitiesCategoryTxt)
                         		.addComponent(miscellaneousCategoryTxt)
-                        		)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        		.addComponent(foodCategoryExpenses)
+                        		.addComponent(foodCategoryExpenses, 100, 100, 100)
                         		.addComponent(transportationCategoryExpenses)
                         		.addComponent(entertainmentCategoryExpenses)
                         		.addComponent(utilitiesCategoryExpenses)
                         		.addComponent(miscellaneousCategoryExpenses)
-                        		)
+                        )
+                        .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        		.addComponent(foodBar)
+                        		.addComponent(transportationBar)
+                        		.addComponent(entertainmentBar)
+                        		.addComponent(utilitiesBar)
+                        		.addComponent(miscellaneousBar)
+                        )
         );
         
         pieTextLayout.setVerticalGroup(
         		pieTextLayout.createSequentialGroup()
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(pieTxt)
-                        		)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(foodCategoryTxt)
                         		.addComponent(foodCategoryExpenses)
-                        		)
+                        		.addComponent(foodBar)
+                    	)
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(transportationCategoryTxt)
                         		.addComponent(transportationCategoryExpenses)
-                        		)
+                        		.addComponent(transportationBar)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(entertainmentCategoryTxt)
                         		.addComponent(entertainmentCategoryExpenses)
-                        		)
+                        		.addComponent(entertainmentBar)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(utilitiesCategoryTxt)
                         		.addComponent(utilitiesCategoryExpenses)
-                        		)
+                        		.addComponent(utilitiesBar)
+                        )
                         .addGroup(pieTextLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         		.addComponent(miscellaneousCategoryTxt)
                         		.addComponent(miscellaneousCategoryExpenses)
-                        		)
+                        		.addComponent(miscellaneousBar)
+                        )
         );
-        
-        submitBtn.addActionListener(new ButtonActionListener());
     }
 
     
- 
+	/**
+     * description:
+     * 	action listener class used with month and year selectors
+     */
     private class ButtonActionListener implements ActionListener {
+    	/**
+         * description:
+         * 	updates month and year to be viewed
+         * @param e - ActionEvent, detected event
+         */
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
-            if (command.equals("Submit")) {
-                System.out.println(month.getText());
-                System.out.println(year.getText());
+            if (command.equals("Select")) {
+            	selectedMonth = monthDropdown.getSelectedIndex() + 1;
+                selectedYear = (int)yearDropdown.getSelectedItem();
+                updateExpenses();
             } else {
-            	// TODO: Do we need this if-else structure?
+            	// Required structure
             }
         }
     }
     
+    /**
+     * description:
+     * 	pie chart panel class that creates the pie chart
+     */
     private class PieChartPanel extends JPanel {
-        private double[] values;
-        private Color[] colors;
+        private static final long serialVersionUID = 1L;
+		private double[] values = new double[5];
+        private Color[] colors = {
+        	foodColor, 
+        	transportationColor,
+        	entertainmentColor,
+        	utilitiesColor,
+        	miscellaneousColor
+        };
 
-        public PieChartPanel(double[] values, Color[] colors) {
-            this.values = values;
-            this.colors = colors;
-        }
-
+        /**
+         * description:
+         * 	creates and paints the pie chart
+         * @param g - Graphics object used for creating the pie chart
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -523,47 +665,33 @@ public class FinanceView extends JPanel implements Observer{
             }
         }
 
-        // Methods to update data dynamically
+        /**
+         * description:
+         * 	updates values used to draw pie chart
+         * @param values - double[], values that pie chart displays, percentage of overall spending for each category
+         */
         public void setValues(double[] values) {
             this.values = values;
             repaint();
         }
-
-        public void setColors(Color[] colors) {
-            this.colors = colors;
-            repaint();
-        }
     }
     
-    @Override
-    public void budgetChange() {
-    	//this.setup();
-        // throw new UnsupportedOperationException("Not supported yet.");
-    	// repaint the panel or just updates fields without calling setup
-    	// look in showAllExpenses ExpenseView
-    }
+    /**
+     * description:
+     * 	updates the displayed expenses based on the selected month and year
+     */
+    private void updateExpenses() {
+        this.lowDate = setLowDate(this.selectedMonth, this.selectedYear);
+    	this.highDate = setHighDate(this.selectedMonth, this.selectedYear);
+    	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];
+    	this.subtitle.setText(this.selectedMonthText + " " + this.selectedYear);
 
-    @Override
-    public void loginChange() {
-    	System.out.println("login called");
-    	this.setup();
-    }
-    
-    @Override
-    public void expenseChange() {
-    	System.out.println("expense change called");
-    	this.updatedExpenses();
-    }
-    
-    private void updatedExpenses() {
-    	System.out.println("Inside updatedExpenses");
-
-        ArrayList<Expense> exps = View.controller.getAllExpenses();
-        System.out.println("Expenses retrieved: " + exps);
+        ArrayList<Expense> exps = View.controller.getByDate(this.lowDate, this.highDate);
 
         if (exps.isEmpty()) {
-            totalAmt.setText("N/A");
-            System.out.println("Set totalAmt to 'N/A'");
+            totalAmt.setText("No records for this month.");
+            totalAmt.setForeground(Color.RED);
+            this.noRecords();
         } else {
             double total = 0;
             for (Expense exp : exps) {
@@ -571,7 +699,165 @@ public class FinanceView extends JPanel implements Observer{
             }
             String formattedTotal = String.format("$%.2f", total);
             totalAmt.setText(formattedTotal);
-            System.out.println("Set totalAmt to: " + formattedTotal);
+            totalAmt.setForeground(Color.BLACK);
+            
+            this.updateLabels();
+            this.updatePieChart(total);
+            
         }
+    }
+    
+    /**
+     * description:
+     * 	clears all of the display labels
+     */
+    private void noRecords() {
+    	for (JLabel label: this.displayLabels) {
+    		label.setText("");
+    	}
+    }
+    
+    /**
+     * description:
+     * 	updates the displayed expenses in each category based on the selected month and year
+     */
+    private void updateLabels() {
+    	this.noRecords();
+    	
+    	// food
+    	Double foodExpVal = View.controller.getTotalExpensesByCategoryByDate(Category.FOOD, this.lowDate, this.highDate);
+        this.foodExpenses.setText(String.format("$%.2f", foodExpVal));
+    	Optional<Double> foodBudgetVal = View.controller.getBudgetByCategory(Category.FOOD);
+        if(!foodBudgetVal.isEmpty()) {
+        	this.foodBudget.setText(String.format("$%.2f", foodBudgetVal.get()));
+        	Optional<Double> foodPercentVal = View.controller.getExpensesByCategoryPercentByDate(Category.FOOD, this.lowDate, this.highDate);
+        	this.foodPercent.setText(String.format("%.1f%%", foodPercentVal.get()));
+        } else {
+        	this.foodBudget.setText("N/A");
+        	this.foodPercent.setText("N/A");
+        }
+    	
+        
+        // transportation 
+    	Double transportationExpVal = View.controller.getTotalExpensesByCategoryByDate(Category.TRANSPORTATION, this.lowDate, this.highDate);
+        this.transportationExpenses.setText(String.format("$%.2f", transportationExpVal));
+    	Optional<Double> transportationBudgetVal = View.controller.getBudgetByCategory(Category.TRANSPORTATION);
+        if(!transportationBudgetVal.isEmpty()) {
+        	this.transportationBudget.setText(String.format("$%.2f", transportationBudgetVal.get()));
+        	Optional<Double> transportationPercentVal = View.controller.getExpensesByCategoryPercentByDate(Category.TRANSPORTATION, this.lowDate, this.highDate);
+        	this.transportationPercent.setText(String.format("%.1f%%", transportationPercentVal.get()));
+        } else {
+        	this.transportationBudget.setText("N/A");
+        	this.transportationPercent.setText("N/A");
+        }
+        
+        // entertainment  
+    	Double entertainmentExpVal = View.controller.getTotalExpensesByCategoryByDate(Category.ENTERTAINMENT, this.lowDate, this.highDate);
+        this.entertainmentExpenses.setText(String.format("$%.2f", entertainmentExpVal));
+    	Optional<Double> entertainmentBudgetVal = View.controller.getBudgetByCategory(Category.ENTERTAINMENT);
+        if(!entertainmentBudgetVal.isEmpty()) {
+        	this.entertainmentBudget.setText(String.format("$%.2f", entertainmentBudgetVal.get()));
+        	Optional<Double> entertainmentPercentVal = View.controller.getExpensesByCategoryPercentByDate(Category.ENTERTAINMENT, this.lowDate, this.highDate);
+        	this.entertainmentPercent.setText(String.format("%.1f%%", entertainmentPercentVal.get()));
+        } else {
+        	this.entertainmentBudget.setText("N/A");
+        	this.entertainmentPercent.setText("N/A");
+        }
+        
+        // utilities 
+    	Double utilitiesExpVal = View.controller.getTotalExpensesByCategoryByDate(Category.UTILITIES, this.lowDate, this.highDate);
+        this.utilitiesExpenses.setText(String.format("$%.2f", utilitiesExpVal));
+    	Optional<Double> utilitiesBudgetVal = View.controller.getBudgetByCategory(Category.UTILITIES);
+        if(!utilitiesBudgetVal.isEmpty()) {
+        	this.utilitiesBudget.setText(String.format("$%.2f", utilitiesBudgetVal.get()));
+        	Optional<Double> utilitiesPercentVal = View.controller.getExpensesByCategoryPercentByDate(Category.UTILITIES, this.lowDate, this.highDate);
+        	this.utilitiesPercent.setText(String.format("%.1f%%", utilitiesPercentVal.get()));
+        } else {
+        	this.utilitiesBudget.setText("N/A");
+        	this.utilitiesPercent.setText("N/A");
+        }
+        
+        // miscellaneous 
+    	Double miscellaneousExpVal = View.controller.getTotalExpensesByCategoryByDate(Category.MISCELLANEOUS, this.lowDate, this.highDate);
+        this.miscellaneousExpenses.setText(String.format("$%.2f", miscellaneousExpVal));
+    	Optional<Double> miscellaneousBudgetVal = View.controller.getBudgetByCategory(Category.MISCELLANEOUS);
+        if(!miscellaneousBudgetVal.isEmpty()) {
+        	this.miscellaneousBudget.setText(String.format("$%.2f", miscellaneousBudgetVal.get()));
+        	Optional<Double> miscellaneousPercentVal = View.controller.getExpensesByCategoryPercentByDate(Category.MISCELLANEOUS, this.lowDate, this.highDate);
+        	this.miscellaneousPercent.setText(String.format("%.1f%%", miscellaneousPercentVal.get()));
+        } else {
+        	this.miscellaneousBudget.setText("N/A");
+        	this.miscellaneousPercent.setText("N/A");
+        }
+    }
+    
+    /**
+     * description:
+     * 	updates the pie chart 
+     * @param total - double, the total expenses for the selected month
+     */
+    public void updatePieChart(double total) {
+    	double foodPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.FOOD, this.lowDate, this.highDate)/total*100;
+    	double transportationPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.TRANSPORTATION, this.lowDate, this.highDate)/total*100;
+    	double entertainmentPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.ENTERTAINMENT, this.lowDate, this.highDate)/total*100;
+    	double utilitiesPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.UTILITIES, this.lowDate, this.highDate)/total*100;
+    	double miscellaneousPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.MISCELLANEOUS, this.lowDate, this.highDate)/total*100;
+    	
+        this.foodCategoryExpenses.setText(String.format("%.1f%%", foodPiePercent));
+        this.transportationCategoryExpenses.setText(String.format("%.1f%%", transportationPiePercent));
+        this.entertainmentCategoryExpenses.setText(String.format("%.1f%%", entertainmentPiePercent));
+        this.utilitiesCategoryExpenses.setText(String.format("%.1f%%", utilitiesPiePercent));
+        this.miscellaneousCategoryExpenses.setText(String.format("%.1f%%", miscellaneousPiePercent));
+        
+        this.pieChart.setValues(new double[]{foodPiePercent,
+        									 transportationPiePercent,
+        									 entertainmentPiePercent,
+        									 utilitiesPiePercent,
+        									 miscellaneousPiePercent}
+        );
+    }
+    
+    /**
+     * description:
+     * 	updates the lowDate to the first day of the selected month
+     */
+    private LocalDate setLowDate(int month, int year) {
+    	return LocalDate.of(year, month, 1);
+    }
+    
+    /**
+     * description:
+     * 	updates the highDate to the last day of the selected month
+     */
+    private LocalDate setHighDate(int month, int year) {
+    	return YearMonth.of(year, month).atEndOfMonth();
+    }
+    
+    /**
+     * description:
+     * 	updates display of expenses when a budget change has occurred
+     */
+    @Override
+    public void budgetChange() {
+    	this.updateExpenses();
+    }
+
+    /**
+     * description:
+     * 	updates display of expenses and resets date information when a login has occurred
+     */
+    @Override
+    public void loginChange() {
+    	this.setDates();
+    	this.updateExpenses();
+    }
+    
+    /**
+     * description:
+     * 	updates display of expenses when an expense change has occurred
+     */
+    @Override
+    public void expenseChange() {
+    	this.updateExpenses();
     }
 }
