@@ -110,19 +110,17 @@ public class User implements Serializable {
         return null;
     }
 
-    // TODO: Should this throw a NoSuchElementException instead of returning null?
-    // TODO: Compare with getExpense above--do we need both?
     /**
      * description: gets a copy of an expense by id
      *
      * @param id - long, id of expense to be returned
-     * @return Expense, returns a copy of an expense by id, returns null if
+     * @return Expense, returns the expense by id, returns null if
      * expense does not match
      */
     private Expense find(long id) {
         for (Expense e : expenses) {
             if (e.getId() == id) {
-                return new Expense(e);
+                return e;
             }
         }
         return null;
@@ -375,7 +373,7 @@ public class User implements Serializable {
                 this.misc.add(copyExpense);
                 break;
         }
-        alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
+        alertBudget();
         alertExpense();
     }
 
@@ -476,11 +474,15 @@ public class User implements Serializable {
      * @throws NoSuchElementException if expense is not found
      */
     public void deleteExpense(long id) throws NoSuchElementException {
+        System.out.println("inside delete Expense" + id);
         Expense expense = find(id);
         if (expense == null) {
             throw new NoSuchElementException();
         }
+        System.out.println("expense" + expense);
+
         this.expenses.remove(expense);
+        System.out.println(expenses + "expenses");
         Category c = expense.getCategory();
         switch (c) {
             case FOOD:
@@ -499,7 +501,7 @@ public class User implements Serializable {
                 this.misc.remove(expense);
                 break;
         }
-        alertBudget();  // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
+        alertBudget();
         alertExpense();
     }
 

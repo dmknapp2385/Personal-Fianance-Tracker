@@ -124,8 +124,7 @@ public class AddFrame extends JFrame {
 
                     } else {
                         View.controller.editExpense(addEx, expenseId);
-                    }
-
+                    } 
                     closeFrame();
 
                 } catch (Exception exception) {
