@@ -53,12 +53,8 @@ public class Controller {
         if (user == null) {
             throw new NoSuchElementException();
         }
-
-        System.out.println(user.getPassword());
-        System.out.println(encryptPassword(password, user.getSalt()));
         
         if (checkPassword(user, password)) {
-        	System.out.println("Success!");
             this.currUser = Optional.of(user);
             //remove old observers if any
             currUser.get().removeAllObservers();
@@ -66,7 +62,6 @@ public class Controller {
             for (Observer o : observers) {
                 currUser.get().addObserver(o);
             }
-            System.out.println(this.currUser);
             userLogin();
             
         } else {

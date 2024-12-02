@@ -229,7 +229,6 @@ public class ExpenseView extends JPanel implements Observer {
 
     //show all expenses by category/date range
     private void showAllExpenses(ArrayList<Expense> expenses) {
-        System.out.println("Inside showallexpenses: " + expenses);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 expensePanel.removeAll(); 
