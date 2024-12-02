@@ -23,8 +23,8 @@ public class Dashboard extends JPanel implements Observer{
 
     public Dashboard(){
         View.controller.addObserver(this);
-        
-       
+        setup();
+  
     }
 
     private void setup(){
@@ -33,7 +33,7 @@ public class Dashboard extends JPanel implements Observer{
         	
         	JPanel welcomePanel= new JPanel();
         	welcomePanel.setLayout(new FlowLayout(FlowLayout.CENTER)); //center alignment
-        	welcomeLabel = new JLabel();
+        	welcomeLabel = new JLabel("");
         	String name=View.controller.getUserDetails();
         	if(name!=null) {
         		welcomeLabel.setText("Welcome, "+name+" to your Dashboard!");
@@ -56,9 +56,9 @@ public class Dashboard extends JPanel implements Observer{
         	add(welcomePanel, BorderLayout.NORTH);
         	add(new JScrollPane(expensePanel), BorderLayout.CENTER);
         	
-        	ArrayList <Expense> sortedTenExpenses= View.controller.getAllExpenses();
+        	/*ArrayList <Expense> sortedTenExpenses= View.controller.getAllExpenses();
         	
-        		Collections.sort(sortedTenExpenses,Expense.sortByDate());
+        		Collections.sort(sortedTenExpenses);
             	int len=10;
             	if (sortedTenExpenses.size()<10) {
             		len=sortedTenExpenses.size();
@@ -68,16 +68,39 @@ public class Dashboard extends JPanel implements Observer{
         	
         	
         	showTenExpenses(sortedTenExpenses);
-        	
+        	*/
     }
     		
     	
     	
   
-    private void showTenExpenses(ArrayList <Expense> sortedExpenses) {
+    private void showTenExpenses() {
+    	
     	SwingUtilities.invokeLater(()->{
+    		ArrayList <Expense> sortedTenExpenses= View.controller.getAllExpenses();
+        	
+    		Collections.sort(sortedTenExpenses);
+        	int len=10;
+        	if (sortedTenExpenses.size()<10) {
+        		len=sortedTenExpenses.size();
+        	}
+        	
+        	ArrayList <Expense> sub= new ArrayList<Expense>();
+        	
+        	for ( int i=sortedTenExpenses.size()-1; i>=0;i--) {
+        		if (i==(sortedTenExpenses.size()-10)) {
+        			break;
+        			
+        		}
+        		sub.add(sortedTenExpenses.get(i));
+        	}
+        	
+    		
+    		
     		expensePanel.removeAll();
-    		if (sortedExpenses==null || sortedExpenses.isEmpty()) {
+    		
+    		
+    		if (sub==null || sub.isEmpty()) {
     			JLabel noExpensesLabel= new JLabel("No expenses yet to display");
         		noExpensesLabel.setHorizontalAlignment(SwingConstants.CENTER);
         		noExpensesLabel.setFont(new Font("Arial", Font.ITALIC, 14));
@@ -86,10 +109,10 @@ public class Dashboard extends JPanel implements Observer{
         	}
     		else {
     			String [] columns= {"Date","Description","Category", "Amount"};
-    			Object[][] data= new Object [sortedExpenses.size()][4];
+    			Object[][] data= new Object [sub.size()][4];
             	
-            	for ( int i=0; i<sortedExpenses.size();i++) {
-            		Expense  e= sortedExpenses.get(i);
+            	for ( int i=0; i<sub.size();i++) {
+            		Expense  e= sub.get(i);
             		
             		data[i][0]= e.getDate();
             		data[i][1]=e.getDescription();
@@ -126,7 +149,23 @@ public class Dashboard extends JPanel implements Observer{
     
     @Override
     public void loginChange() {
-    	setup();
+    	
+    	showTenExpenses();
+    	
+    	
+    	
+    	
+    }
+    
+    @Override
+    public void expenseChange() {
+    	
+    	showTenExpenses();
+    	
+    	
+    	
+    	
+    	
     	
     	
     }

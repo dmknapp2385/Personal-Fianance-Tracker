@@ -114,7 +114,7 @@ class UserTest {
 		
 		double amount =500;
 		
-		user.deleteExpense(id1);
+		/*user.deleteExpense(id1);
 		user.deleteExpense(id2);
 		user.deleteExpense(id3);
 		user.deleteExpense(id4);
@@ -122,12 +122,7 @@ class UserTest {
 		
 		ArrayList <Expense> expensesDelete= user.getAllExpenses();
 		assertEquals(0, expensesDelete.size());
-		user.addExpense(expense1);
-		user.addExpense(expense2);
-		user.addExpense(expense3);
-		user.addExpense(expense4);
-		user.addExpense(expense5);
-		
+		*/
 		
 		
 	

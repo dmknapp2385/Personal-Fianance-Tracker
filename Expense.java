@@ -3,7 +3,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Comparator;
 
-public class Expense implements Serializable {
+public class Expense implements Serializable, Comparable<Expense>
+{
 
     private static final long serialVersionUID = 1L;
 	private long id;
@@ -134,15 +135,12 @@ public class Expense implements Serializable {
                 + this.description;
     }
     
-    public static final Comparator <Expense> sortByDate(){
-    	return new Comparator<Expense>(){
+   
 
-			@Override
-			public int compare(Expense e1, Expense e2) {
-				return e1.getDate().compareTo(e2.getDate());
-			}
-    	};
-    }
+	public int compareTo(Expense o) {
+		
+		return this.getDate().compareTo(o.getDate());
+	}
     
     
     
