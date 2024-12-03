@@ -53,12 +53,8 @@ public class Controller {
         if (user == null) {
             throw new NoSuchElementException();
         }
-
-        System.out.println(user.getPassword());
-        System.out.println(encryptPassword(password, user.getSalt()));
         
         if (checkPassword(user, password)) {
-        	System.out.println("Success!");
             this.currUser = Optional.of(user);
             //remove old observers if any
             currUser.get().removeAllObservers();
@@ -66,7 +62,6 @@ public class Controller {
             for (Observer o : observers) {
                 currUser.get().addObserver(o);
             }
-            System.out.println(this.currUser);
             userLogin();
             
         } else {
@@ -276,13 +271,42 @@ public class Controller {
      * @return an array list sorted by date
      */
     public ArrayList<Expense> getByDate(LocalDate low, LocalDate high) {
-
         assert !currUser.isEmpty();
-
+        
         User user = currUser.get();
         return user.getByDateCategory(low, high);
     }
 
+    /**
+     * description:
+     * 	allows the user to get their total expenses in a category by date
+     * @param category - Category, the category of expenses
+     * @param startDate - LocalDate, used as low date for expenses
+     * @param endDate - LocalDate, used as high date for expenses
+     * @return a double representing the total expenses in the category between the selected dates
+     */
+    public double getTotalExpensesByCategoryByDate(Category category, LocalDate startDate, LocalDate endDate) {
+    	assert !currUser.isEmpty();
+    	
+    	User user = currUser.get();
+    	return user.getTotalExpensesByCategoryByDate(category, startDate, endDate);
+    }
+    
+    /**
+     * description:
+     * 	allows the user to get the percent of their budget they have used in a category by date
+     * @param category - Category, the category of expenses
+     * @param startDate - LocalDate, used as low date for expenses
+     * @param endDate - LocalDate, used as high date for expenses
+     * @return a Optional<double> representing the percent of the budget spent in the category between the selected dates
+     * 			returns Optional.empty() if the budget is not set
+     */
+    public Optional<Double> getExpensesByCategoryPercentByDate(Category category, LocalDate startDate, LocalDate endDate) {
+    	assert !currUser.isEmpty();
+    	
+    	User user = currUser.get();
+        return user.getExpensesByCategoryPercentByDate(category, startDate, endDate);
+    }
     
     /**
      * description:
