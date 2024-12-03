@@ -31,7 +31,7 @@ public class Login extends JPanel {
         this.setLayout(new BorderLayout());
         this.setSize(600, 550);
         this.setLayout(new BorderLayout());
-        Color color = new Color(244,243,239);
+        Color color = new Color(244, 243, 239);
         this.setBackground(color);
 
         //create header text label
@@ -244,17 +244,20 @@ public class Login extends JPanel {
                 String em = emailField.getText();
                 String un = regUsernameField.getText();
 
-                //reset fields
-                fNameField.setText("");
-                lNameField.setText("");
-                emailField.setText("");
-                regUsernameField.setText("");
-                regPasswordField.setText("");
-                pwConfirm.setText("");
                 if (!regPw.equals(confirmPw)) {
                     error.setText("Passwords Must Match!");
+                } else if (fn.equals("") || ln.equals("") || em.equals("")
+                        || un.equals("") || regPw.equals("")) {
+                    error.setText("No Empty fields");
                 } else {
                     try {
+                        //reset fields
+                        fNameField.setText("");
+                        lNameField.setText("");
+                        emailField.setText("");
+                        regUsernameField.setText("");
+                        regPasswordField.setText("");
+                        pwConfirm.setText("");
                         View.controller.register(fn, ln, em, un, regPw);
                     } catch (Exception exception) {
                         error.setText("User Already Exists");

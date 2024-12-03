@@ -1,20 +1,21 @@
 
-import java.io.FileNotFoundException;
+import java.time.LocalDate;
 
 class test {
 
     public static void main(String[] args) {
-        User user = new User("elle", "knapp", "dmknapp23852@gmail.com", "dmknapp2385", "apssword", "salt");
 
-        try {
-            String errors = user.addFile("expenses.txt");
-            System.out.println(errors);
-        } catch (FileNotFoundException e) {
-            System.out.println(e);
-        }
+        Expense expense = new Expense(15.99, LocalDate.of(2024, 9, 18), "fun", Category.ENTERTAINMENT);
+        Expense expense2 = new Expense(100.00, LocalDate.of(2024, 11, 25), "water", Category.UTILITIES);
+        Controller controller = Controller.instanceOf();
+        
+        controller.register("elle", "knapp", "dmknapp23852@gmail.com", "dmknapp2385", "apssword");
 
-        System.out.println(user.getAllExpenses());
+        controller.addExpense(expense);
+        System.out.println(expense.getId());
+        Expense result = controller.getExpense(expense.getId());
+        System.out.println(expense.getDescription());
+        System.out.println(result.getDescription());
 
-        user.exportExpenses();
     }
 }
