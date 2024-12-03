@@ -715,6 +715,7 @@ public class FinanceView extends JPanel implements Observer{
     	for (JLabel label: this.displayLabels) {
     		label.setText("");
     	}
+    	this.pieChart.setValues(new double[]{0, 0, 0, 0, 0});
     }
     
     /**
