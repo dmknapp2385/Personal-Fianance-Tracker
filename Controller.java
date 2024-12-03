@@ -446,4 +446,14 @@ public class Controller {
         return catPercent;
 
     }
+
+    public String getUserDetails() {
+        if (currUser.isEmpty()) {
+            return null;
+        }
+
+        User user = currUser.get();
+        String name = user.getUsername();
+        return name;
+    }
 }

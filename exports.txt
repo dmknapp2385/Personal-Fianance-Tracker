@@ -1,3 +1,7 @@
-2024-03-05,entertainment,55.45,safeway
+2024-03-05,food,55.45,safeway
+2024-11-12,transportation,15.00,to phoenix
+2023-12-01,entertainment,167.50,wicket tickets
+2022-03-03,entertainment,35.00,new
+2024-03-05,food,55.45,safeway
 2024-11-12,transportation,15.00,to phoenix
 2023-12-01,entertainment,167.50,wicket tickets
