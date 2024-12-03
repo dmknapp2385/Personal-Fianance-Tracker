@@ -416,7 +416,7 @@ public class Controller {
     /**
      * description: alerts of login change
      */
-    private void userLogin() {
+    private void userLogin() { 
         this.currUser.get().alertLogin();
         this.currUser.get().alertBudget();
         this.currUser.get().alertExpense();

@@ -352,7 +352,7 @@ public class User implements Serializable {
      * @throws NoSuchElementException if expense is not found
      */
     public void editExpense(Expense e, long id) throws NoSuchElementException {
-        Expense expense = find(id);
+        Expense expense = find(id);  
         if (expense == null) {
             throw new NoSuchElementException();
         }

@@ -23,7 +23,7 @@ public class BudgetView extends JPanel implements Observer {
     private JLabel transportBudget;
     private JLabel entertainmentBudget;
     private JLabel utilitiesBudget;
-    private JLabel miscBudget;
+    private JLabel miscBudget; 
     private JProgressBar foodBar = new JProgressBar(0, 100);
     private JProgressBar transportBar = new JProgressBar(0, 100);
     private JProgressBar entertainmentBar = new JProgressBar(0, 100);
