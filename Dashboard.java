@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 public class Dashboard extends JPanel implements Observer {
-
     private JScrollPane expenseScrollPane;
     private JPanel expensePanel;
     private JLabel welcomeLabel;
@@ -28,11 +27,9 @@ public class Dashboard extends JPanel implements Observer {
     public Dashboard() {
         View.controller.addObserver(this);
         setup();
-
     }
 
     private void setup() {
-
         this.setLayout(new BorderLayout());
 
         JPanel welcomePanel = new JPanel();
@@ -41,12 +38,11 @@ public class Dashboard extends JPanel implements Observer {
         String name = View.controller.getUserDetails();
         if (name != null) {
             welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, " + name + "!</b> ౨ৎ౨ৎ౨ৎ</span></html>");
-
         } else {
             welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, !</b> ౨ৎ౨ৎ౨ৎ</span></html>");
         }
 
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         welcomePanel.add(welcomeLabel);
 
         expensePanel = new JPanel();
@@ -115,7 +111,7 @@ public class Dashboard extends JPanel implements Observer {
                     data[i][0] = e.getDate();
                     data[i][1] = e.getDescription();
                     data[i][2] = e.getCategory();
-                    data[i][3] = e.getAmount();
+                    data[i][3] = String.format("$%.2f", e.getAmount());
 
                     Optional<Double> val = View.controller.getExpensesByCategoryPercent(e.getCategory());
                     if (!val.isEmpty()) {
@@ -127,12 +123,18 @@ public class Dashboard extends JPanel implements Observer {
                     }
 
                 }
+                Color color = new Color(244,243,239);
+                
                 JTable expensesTable = new JTable(data, columns);
+                expensesTable.setBackground(color);
+                expensesTable.getTableHeader().setBackground(color);
+                expensesTable.setShowGrid(false);
 
-                expensesTable.getColumnModel().getColumn(4).setCellRenderer(new BudgetStatusRenderer());
                 JScrollPane scrollPane = new JScrollPane(expensesTable);
+                scrollPane.getViewport().setBackground(color);
+                expensesTable.getColumnModel().getColumn(4).setCellRenderer(new BudgetStatusRenderer());
+                
                 expensePanel.add(scrollPane, BorderLayout.CENTER);
-
             }
             expensePanel.revalidate();
             expensePanel.repaint();
@@ -144,16 +146,15 @@ public class Dashboard extends JPanel implements Observer {
     public void budgetChange() {
         //only change alert box here with budget change
         //update expense labels
-        // need method in the user to get last 10 expesense
+        // need method in the user to get last 10 expenses
         showTenExpenses();
 
     }
 
     @Override
     public void loginChange() {
-        String name = View.controller.getUserDetails();
-        welcomeLabel.setText("Welcome, " + name + " to your Dashboard!");
-
+        String name = View.controller.getFirstName();
+        welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, " + name + "</b> ౨ৎ౨ৎ౨ৎ</span></html>");
         showTenExpenses();
 
     }
@@ -174,8 +175,10 @@ public class Dashboard extends JPanel implements Observer {
                 int intValue = (Integer) value;
                 if (intValue >= 80) {
                     c.setForeground(Color.RED); // Change color to red for values >= 80
+                    ((JLabel) c).setText(intValue + "%");
                 } else {
                     c.setForeground(Color.BLACK); // Default color for other values
+                    ((JLabel) c).setText(intValue + "%");
                 }
             }
             return c;
