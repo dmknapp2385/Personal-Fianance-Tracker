@@ -86,8 +86,8 @@ public class ExpenseView extends JPanel implements Observer {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         this.add(scroll, BorderLayout.CENTER);
 
-//        Color color = new Color(244,243,239);
-//        this.setBackground(color);
+        this.expensePanel.setBackground(new Color(244,243,239));
+        
         //add bottom import and export buttons
         JPanel importPanel = new JPanel();
         this.add(importPanel, BorderLayout.SOUTH);
