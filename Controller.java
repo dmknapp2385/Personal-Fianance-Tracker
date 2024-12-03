@@ -48,12 +48,17 @@ public class Controller {
      */
     public void login(String username, String password) throws NoSuchElementException {
         User user = findUser(username);
+        
 
         if (user == null) {
             throw new NoSuchElementException();
         }
 
+        System.out.println(user.getPassword());
+        System.out.println(encryptPassword(password, user.getSalt()));
+        
         if (checkPassword(user, password)) {
+        	System.out.println("Success!");
             this.currUser = Optional.of(user);
             //remove old observers if any
             currUser.get().removeAllObservers();
@@ -61,8 +66,9 @@ public class Controller {
             for (Observer o : observers) {
                 currUser.get().addObserver(o);
             }
+            System.out.println(this.currUser);
             userLogin();
-
+            
         } else {
             throw new NoSuchElementException();
         }
@@ -146,7 +152,8 @@ public class Controller {
         } catch (EOFException e) {
             // end of file
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+        	System.out.println("No stored users.");
         }
         if (loadedUsers.size() > 0) {
             this.users = new ArrayList<>(loadedUsers);
@@ -165,7 +172,7 @@ public class Controller {
         User user = currUser.get();
 
         user.addExpense(expense);
-        this.expenseChange();
+        
     }
 
 
@@ -179,7 +186,7 @@ public class Controller {
 
         User user = currUser.get();
         user.deleteExpense(id);
-        this.expenseChange();
+        
     }
 
 
@@ -194,7 +201,7 @@ public class Controller {
 
         User user = currUser.get();
         user.editExpense(expense, id);
-        this.expenseChange();
+        
     }
     
     
@@ -420,6 +427,8 @@ public class Controller {
      */
     private void userLogin() {
         this.currUser.get().alertLogin();
+        this.currUser.get().alertBudget();
+        this.currUser.get().alertExpense();
     }
     
     

@@ -124,7 +124,7 @@ public class FinanceView extends JPanel implements Observer{
         this.totalAmt = new JLabel();
         this.totalAmt.setBorder(new EmptyBorder(15, 0, 15, 15));
         this.totalAmt.setFont(new Font("Calibri", Font.BOLD, 16));
-        this.totalAmt.setText("$0.00");	// TODO: get value and add it in eventListener
+        this.totalAmt.setText("N/A");	// TODO: get value and add it in eventListener
                 
         centerP.add(totalTxt);
         centerP.add(totalAmt);
