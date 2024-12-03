@@ -114,8 +114,8 @@ public class User implements Serializable {
      * description: gets a copy of an expense by id
      *
      * @param id - long, id of expense to be returned
-     * @return Expense, returns the expense by id, returns null if
-     * expense does not match
+     * @return Expense, returns the expense by id, returns null if expense does
+     * not match
      */
     private Expense find(long id) {
         for (Expense e : expenses) {
@@ -343,40 +343,6 @@ public class User implements Serializable {
     }
 
     // additional methods
-    // TODO: Compare with add below--do we need both?
-    /**
-     * description: Add a copy of an expense to the expense list and appropriate
-     * category list
-     *
-     * @param expense - Expense, expense to be copied and added
-     */
-    public void addExpense(Expense expense) {
-        Expense copyExpense = new Expense(expense);
-        this.expenses.add(copyExpense);
-
-        //add expense to list with category
-        Category c = copyExpense.getCategory();
-        switch (c) {
-            case FOOD:
-                this.food.add(copyExpense);
-                break;
-            case TRANSPORTATION:
-                this.transportation.add(copyExpense);
-                break;
-            case ENTERTAINMENT:
-                this.entertainment.add(copyExpense);
-                break;
-            case UTILITIES:
-                this.utilities.add(copyExpense);
-                break;
-            default:
-                this.misc.add(copyExpense);
-                break;
-        }
-        alertBudget();
-        alertExpense();
-    }
-
     // TODO: Check functionality on this--do we want to maintain id unless the category changes?
     /**
      * description: edits an existing expense
@@ -399,6 +365,31 @@ public class User implements Serializable {
             expense.setDate(e.getDate());
             expense.setDescription(e.getDescription());
         }
+        alertBudget();
+        alertExpense();
+    }
+
+    /**
+     * description: Add a copy of an expense to the expense list and appropriate
+     * category list
+     *
+     * @param expense - Expense, expense to be copied and added
+     */
+    public void addExpense(Expense expense) {
+        this.add(expense);
+        alertBudget();
+        alertExpense();
+
+    }
+
+    /**
+     * description: deletes an expense
+     *
+     * @param id - long, id of an existing expense to be deleted
+     * @throws NoSuchElementException if expense is not found
+     */
+    public void deleteExpense(long id) throws NoSuchElementException {
+        this.delete(id);
         alertBudget();
         alertExpense();
     }
@@ -464,45 +455,6 @@ public class User implements Serializable {
                 this.misc.remove(expense);
                 break;
         }
-    }
-
-    // TODO: Compare with delete above--do we need both?
-    /**
-     * description: deletes an expense
-     *
-     * @param id - long, id of an existing expense to be deleted
-     * @throws NoSuchElementException if expense is not found
-     */
-    public void deleteExpense(long id) throws NoSuchElementException {
-        System.out.println("inside delete Expense" + id);
-        Expense expense = find(id);
-        if (expense == null) {
-            throw new NoSuchElementException();
-        }
-        System.out.println("expense" + expense);
-
-        this.expenses.remove(expense);
-        System.out.println(expenses + "expenses");
-        Category c = expense.getCategory();
-        switch (c) {
-            case FOOD:
-                this.food.remove(expense);
-                break;
-            case TRANSPORTATION:
-                this.transportation.remove(expense);
-                break;
-            case ENTERTAINMENT:
-                this.entertainment.remove(expense);
-                break;
-            case UTILITIES:
-                this.utilities.remove(expense);
-                break;
-            default:
-                this.misc.remove(expense);
-                break;
-        }
-        alertBudget();
-        alertExpense();
     }
 
     /**
