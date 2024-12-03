@@ -65,13 +65,14 @@ public class AddFrame extends JFrame {
         mainPanel.add(deletebtn);
     }
 
-    //method initiaizes frame with empty fields and button text
+    //method initializes frame with empty fields and button text
     private void setup() {
         Color color = new Color(217, 214, 176);
         this.setBackground(color);
         this.setSize(500, 500);
         this.add(mainPanel, BorderLayout.CENTER);
         mainPanel.setLayout(new FlowLayout());
+        mainPanel.setBackground(new Color(244,243,239));
 
         Dimension textFieldDim = new Dimension(175, 25);
         JLabel description = new JLabel("Description: ");

@@ -61,6 +61,15 @@ public class User implements Serializable {
     }
 
     /**
+     * description: gets first
+     *
+     * @return String, returns the first name
+     */
+    public String getFirstName() {
+        return this.first;
+    }
+    
+    /**
      * description: gets encrypted password
      *
      * @return String, returns the encrypted password
