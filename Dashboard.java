@@ -45,9 +45,9 @@ public class Dashboard extends JPanel implements Observer {
         welcomeLabel = new JLabel("");
         String name = View.controller.getUserDetails();
         if (name != null) {
-            welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, " + name + "!</b> ౨ৎ౨ৎ౨ৎ</span></html>");
+            welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, " + name + "</b> ౨ৎ౨ৎ౨ৎ</span></html>");
         } else {
-            welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, !</b> ౨ৎ౨ৎ౨ৎ</span></html>");
+            welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard</b> ౨ৎ౨ৎ౨ৎ</span></html>");
         }
 
         welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
