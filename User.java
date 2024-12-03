@@ -347,6 +347,7 @@ public class User implements Serializable {
         alertExpense();
     }
 
+
     // TODO: Check functionality on this--do we want to maintain id unless the category changes?
     /**
      * description:
@@ -372,6 +373,19 @@ public class User implements Serializable {
         }
         alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
         alertExpense();
+    }
+    //Add expense to expense list and category list
+    public void addExpense(Expense expense) {
+    	this.add(expense);
+        alertBudget();
+
+    }
+    
+    //delete expense by id
+    public void deleteExpense(long id) throws NoSuchElementException {
+    	this.delete(id);
+        alertBudget();
+
     }
     
     // TODO: Compare with addExpense above--do we need both?
@@ -436,6 +450,17 @@ public class User implements Serializable {
         }
     }
 
+
+    //gets expense by id
+    public Expense getExpense(long id) {
+
+        for (Expense e : expenses) {
+            if (e.getId() == id) {
+                return e;
+            }
+        }
+        return null;
+
     // TODO: Compare with delete above--do we need both?
     /**
      * description:
@@ -469,6 +494,7 @@ public class User implements Serializable {
         }
         alertBudget();  // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
         alertExpense();
+
     }
 
     /**
