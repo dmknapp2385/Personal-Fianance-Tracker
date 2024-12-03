@@ -16,16 +16,17 @@ import javax.swing.JTextField;
 
 public class AddFrame extends JFrame {
 
-    private JTextField dField = new JTextField("");
+    private static final long serialVersionUID = 1L;
+	private JTextField dField = new JTextField("");
     private JTextField dateField = new JTextField("");
     private JTextField amountField = new JTextField("");
-    private JComboBox categories;
+	private JComboBox<String> categories;
     private JPanel mainPanel = new JPanel();
     private Long expenseId;
     private JLabel errorTxt = new JLabel("");
     private JButton btn;
 
-    //constructor one, empty textfields
+    //constructor one, empty text fields
     public AddFrame() {
         //Set frame styles
         this.setTitle("Personal Finance Tracker : Add Expense");
@@ -36,7 +37,7 @@ public class AddFrame extends JFrame {
 
     }
 
-    //construct two, fill textfields with expense that was clicked.
+    //construct two, fill text fields with expense that was clicked.
     public AddFrame(Expense e) {
         //set current expense id
         this.expenseId = e.getId();

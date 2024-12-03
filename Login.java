@@ -16,7 +16,8 @@ import javax.swing.border.EmptyBorder;
 
 public class Login extends JPanel {
 
-    private JTextField username;
+    private static final long serialVersionUID = 1L;
+	private JTextField username;
     private JPasswordField password;
     private JPasswordField regPasswordField;
     private JPasswordField pwConfirm;

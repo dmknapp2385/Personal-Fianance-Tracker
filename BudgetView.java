@@ -16,12 +16,13 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.EmptyBorder;
 
-@SuppressWarnings("serial")
+
+
 public class BudgetView extends JPanel implements Observer {
 
-    private JLabel foodBudget;
+    private static final long serialVersionUID = 1L;
+	private JLabel foodBudget;
     private JLabel transportBudget;
     private JLabel entertainmentBudget;
     private JLabel utilitiesBudget;

@@ -20,7 +20,8 @@ import javax.swing.border.EmptyBorder;
 
 public class ExpenseView extends JPanel implements Observer {
 
-    private JTextField fromField;
+    private static final long serialVersionUID = 1L;
+	private JTextField fromField;
     private JTextField toField;
     private JPanel expensePanel;
     private JComboBox<String> catDropdown;

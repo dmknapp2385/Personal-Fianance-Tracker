@@ -11,9 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-@SuppressWarnings("serial")
+
 public class AddBudgetFrame extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
 	private JTextField amountField = new JTextField("");
     private JPanel mainPanel = new JPanel();
     private JLabel errorTxt = new JLabel("");
