@@ -153,6 +153,38 @@ public class User implements Serializable {
         return getByDateCategory(lowerRangeDate, upperRangeDate, filtedByCat);
     }
 
+
+
+//    //Add expense to expense list and category list
+//    public void addExpense(Expense expense) {
+//        this.expenses.add(expense);
+//        System.out.println("Expense Added! " + expense);
+//        System.out.println(expenses);
+//
+//        //add expense to list with category
+//        Category c = expense.getCategory();
+//        switch (c) {
+//            case FOOD:
+//                this.food.add(expense);
+//                break;
+//            case TRANSPORTATION:
+//                this.transportation.add(expense);
+//                break;
+//            case ENTERTAINMENT:
+//                this.entertainment.add(expense);
+//                break;
+//            case UTILITIES:
+//                this.utilities.add(expense);
+//                break;
+//            default:
+//                this.misc.add(expense);
+//                break;
+//        }
+//
+//        alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
+//        alertExpense();
+//    }
+
     /**
      * description: get an array list of copies of expenses between two given
      * dates from a supplied list
@@ -465,6 +497,39 @@ public class User implements Serializable {
                 break;
         }
     }
+//
+//
+//    //delete expense by id
+//    public void deleteExpense(long id) throws NoSuchElementException {
+//        Expense expense = find(id);
+//        if (expense == null) {
+//            throw new NoSuchElementException();
+//        }
+//
+//        this.expenses.remove(expense);
+//        Category c = expense.getCategory();
+//        switch (c) {
+//            case FOOD:
+//                this.food.remove(expense);
+//                break;
+//            case TRANSPORTATION:
+//                this.transportation.remove(expense);
+//                break;
+//            case ENTERTAINMENT:
+//                this.entertainment.remove(expense);
+//                break;
+//            case UTILITIES:
+//                this.utilities.remove(expense);
+//                break;
+//            default:
+//                this.misc.remove(expense);
+//                break;
+//        }
+//
+//        alertBudget();  // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
+//        alertExpense();
+//
+//    }
 
     /**
      * description: adds or updates a budget for a category

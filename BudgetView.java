@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Optional;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -24,14 +26,24 @@ public class BudgetView extends JPanel implements Observer {
     private JLabel entertainmentBudget;
     private JLabel utilitiesBudget;
     private JLabel miscBudget;
+    private JLabel budgetProgressText;
     private JProgressBar foodBar = new JProgressBar(0, 100);
     private JProgressBar transportBar = new JProgressBar(0, 100);
     private JProgressBar entertainmentBar = new JProgressBar(0, 100);
     private JProgressBar utilitiesBar = new JProgressBar(0, 100);
     private JProgressBar miscBar = new JProgressBar(0, 100);
+    
+	private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private LocalDate date;
+	private int selectedMonth;
+	private String selectedMonthText;
+	private int selectedYear;
+	private LocalDate lowDate;
+	private LocalDate highDate;
 
     public BudgetView() {
         View.controller.addObserver(this);
+        
         this.setUp();
 
     }
@@ -46,7 +58,6 @@ public class BudgetView extends JPanel implements Observer {
         //create header text label
         JLabel title = new JLabel("Budget Management");
         title.setFont(new Font("Calibri", Font.BOLD, 20));
-        title.setBorder(new EmptyBorder(15, 5, 8, 15));
         this.add(title, BorderLayout.NORTH);
 
         JPanel centerP = new JPanel();
@@ -60,11 +71,11 @@ public class BudgetView extends JPanel implements Observer {
         //create dimension for text fields and buttons
         Dimension buttonDimension = new Dimension(125, 25);
 
-        JLabel currBudgetText = new JLabel("Current Budgets: ");
+        JLabel currBudgetText = new JLabel("Current Budgets");
         currBudgetText.setFont(new Font("Calibri", Font.BOLD, 16));
         centerP.add(currBudgetText);
 
-        JLabel budgetProgressText = new JLabel("Budget Progress: ");
+        this.budgetProgressText = new JLabel();
         budgetProgressText.setFont(new Font("Calibri", Font.BOLD, 16));
         centerP.add(budgetProgressText);
 
@@ -227,6 +238,7 @@ public class BudgetView extends JPanel implements Observer {
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(title)
                         )
+                        .addGap(20)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(currBudgetText)
                         )
@@ -255,7 +267,7 @@ public class BudgetView extends JPanel implements Observer {
                                 .addComponent(miscBudget)
                                 .addComponent(miscButton)
                         )
-                        .addGap(20)
+                        .addGap(70)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(budgetProgressText)
                         )
@@ -309,14 +321,42 @@ public class BudgetView extends JPanel implements Observer {
         });
 
     }
+    
+    
+    public void setDates() {
+    	this.date = LocalDate.now();
+    	this.selectedMonth = this.date.getMonthValue();
+    	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];
+    	this.selectedYear = this.date.getYear();
+    	this.lowDate = setLowDate(this.selectedMonth, this.selectedYear);
+    	this.highDate = setHighDate(this.selectedMonth, this.selectedYear);
+    	this.budgetProgressText.setText(selectedMonthText + " Budget Progress");
+    	
+    }
+    
+    /**
+     * description:
+     * 	updates the lowDate to the first day of the selected month
+     */
+    private LocalDate setLowDate(int month, int year) {
+    	return LocalDate.of(year, month, 1);
+    }
+    
+    /**
+     * description:
+     * 	updates the highDate to the last day of the selected month
+     */
+    private LocalDate setHighDate(int month, int year) {
+    	return YearMonth.of(year, month).atEndOfMonth();
+    }
 
     public void updateProgressBars() {
         SwingUtilities.invokeLater(() -> {
-            Optional<Double> food = View.controller.getExpensesByCategoryPercent(Category.FOOD);
-            Optional<Double> transport = View.controller.getExpensesByCategoryPercent(Category.TRANSPORTATION);
-            Optional<Double> entertainment = View.controller.getExpensesByCategoryPercent(Category.ENTERTAINMENT);
-            Optional<Double> utilities = View.controller.getExpensesByCategoryPercent(Category.UTILITIES);
-            Optional<Double> misc = View.controller.getExpensesByCategoryPercent(Category.MISCELLANEOUS);
+            Optional<Double> food = View.controller.getExpensesByCategoryPercentByDate(Category.FOOD, this.lowDate, this.highDate);
+            Optional<Double> transport = View.controller.getExpensesByCategoryPercentByDate(Category.TRANSPORTATION, this.lowDate, this.highDate);
+            Optional<Double> entertainment = View.controller.getExpensesByCategoryPercentByDate(Category.ENTERTAINMENT, this.lowDate, this.highDate);
+            Optional<Double> utilities = View.controller.getExpensesByCategoryPercentByDate(Category.UTILITIES, this.lowDate, this.highDate);
+            Optional<Double> misc = View.controller.getExpensesByCategoryPercentByDate(Category.MISCELLANEOUS, this.lowDate, this.highDate);
             updateProgresshelper(food, foodBar);
             updateProgresshelper(transport, transportBar);
             updateProgresshelper(entertainment, entertainmentBar);
@@ -379,6 +419,7 @@ public class BudgetView extends JPanel implements Observer {
 
     @Override
     public void loginChange() {
+    	this.setDates();
         this.updateBudget();
         this.updateProgressBars();
 
@@ -386,12 +427,14 @@ public class BudgetView extends JPanel implements Observer {
 
     @Override
     public void budgetChange() {
+    	this.setDates();
         this.updateBudget();
         this.updateProgressBars();
     }
 
     @Override
     public void expenseChange() {
+    	this.setDates();
         this.updateProgressBars();
     }
 
