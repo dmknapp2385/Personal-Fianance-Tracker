@@ -27,8 +27,12 @@ public class AddBudgetFrame extends JFrame{
         this.btn.setText("Add");
         this.btn.setActionCommand("add");
     }
+
     
-    public void setUp() {
+    private void setUp() {
+    	 //Color color = new Color(217, 214, 176);
+         //this.setBackground(color);
+
          this.setSize(500, 500);
          this.add(mainPanel, BorderLayout.CENTER);
          mainPanel.setLayout(new FlowLayout());
