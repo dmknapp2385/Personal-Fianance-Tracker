@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 
 
@@ -79,6 +80,8 @@ public class BudgetView extends JPanel implements Observer {
         this.budgetProgressText = new JLabel();
         budgetProgressText.setFont(new Font("Calibri", Font.BOLD, 16));
         centerP.add(budgetProgressText);
+        UIManager.put("ProgressBar.selectionForeground", Color.BLACK); // Text on light areas
+        UIManager.put("ProgressBar.selectionBackground", Color.BLACK); // Text on dark areas
 
         //food
         JLabel foodBudgetTxt = new JLabel("Food: ");
@@ -99,7 +102,7 @@ public class BudgetView extends JPanel implements Observer {
         centerP.add(foodBarTxt);
 
         this.foodBar.setValue(0);
-        this.foodBar.setStringPainted(true);
+        this.foodBar.setStringPainted(true); 
         foodBar.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
         centerP.add(this.foodBar);
 
