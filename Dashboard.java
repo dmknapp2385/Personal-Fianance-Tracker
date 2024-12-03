@@ -27,7 +27,7 @@ public class Dashboard extends JPanel implements Observer{
   
     }
 
-    private void setup(){
+    private void setup(){ 
     	
     		this.setLayout(new BorderLayout());
         	

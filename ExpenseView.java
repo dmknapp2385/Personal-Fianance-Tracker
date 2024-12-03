@@ -85,10 +85,9 @@ public class ExpenseView extends JPanel implements Observer {
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         this.add(scroll, BorderLayout.CENTER);
-        
+
 //        Color color = new Color(244,243,239);
 //        this.setBackground(color);
-
         //add bottom import and export buttons
         JPanel importPanel = new JPanel();
         this.add(importPanel, BorderLayout.SOUTH);
@@ -162,7 +161,6 @@ public class ExpenseView extends JPanel implements Observer {
                         error.setText("");
 
                     } catch (Exception exception) {
-                        System.out.println("Inside exception");
                         error.setText("Invalid Date Range");
                     }
 
@@ -189,7 +187,7 @@ public class ExpenseView extends JPanel implements Observer {
                     //ensure error and text field are blank
                     error2.setText(notAdded);
                     fileName.setText("");
-
+                    //TODO: add alert in user so no need to call showAll Expenses
                     showAllExpenses(View.controller.getAllExpenses());
                 } catch (Exception fe) {
                     error2.setText("File Not Found");
@@ -214,44 +212,60 @@ public class ExpenseView extends JPanel implements Observer {
     }
 
     @Override
-    public void budgetChange() {
-        //set filter components to zero and get all expenses
+    public void expenseChange() {
+        //Reset all fields, dropdowns and errors
         this.catDropdown.setSelectedIndex(0);
         this.toField.setText("");
         this.fromField.setText("");
+        this.error.setText("");
+        this.error2.setText("");
+        this.fileName.setText("");
         showAllExpenses(View.controller.getAllExpenses());
     }
 
     @Override
+    public void budgetChange() {
+    }
+
+    @Override
     public void loginChange() {
+        //Reset all fields, dropdowns and errors
+        this.catDropdown.setSelectedIndex(0);
+        this.toField.setText("");
+        this.fromField.setText("");
+        this.error.setText("");
+        this.error2.setText("");
+        this.fileName.setText("");
         showAllExpenses(View.controller.getAllExpenses());
     }
 
     //show all expenses by category/date range
     private void showAllExpenses(ArrayList<Expense> expenses) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                expensePanel.removeAll(); 
-            }
+
+        //remove old components
+        SwingUtilities.invokeLater(() -> {
+
+            expensePanel.removeAll();
+            expensePanel.revalidate();
+            expensePanel.repaint();
 
         });
 
+        //add updated or new components
         for (Expense e : expenses) {
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(() -> {
+                //create button with expense and edit button with expense id
+                JButton btn = new JButton(e.toString());
+                btn.setPreferredSize(new Dimension(200, 28));
+                btn.addActionListener(new ButtonActionListener());
+                btn.setActionCommand("edit:" + e.getId());
+                expensePanel.add(btn);
 
-                @Override
-                public void run() {
-                    //create button with expense and edit button with expense id
-                    JButton btn = new JButton(e.toString());
-                    btn.setPreferredSize(new Dimension(200, 28));
-                    btn.addActionListener(new ButtonActionListener());
-                    btn.setActionCommand("edit:" + e.getId());
-                    expensePanel.add(btn);
-                }
+                expensePanel.revalidate();
+                expensePanel.repaint();
 
             });
         }
-        this.revalidate();
-        this.repaint();
+
     }
 }
