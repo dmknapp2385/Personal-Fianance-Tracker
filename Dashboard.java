@@ -1,5 +1,4 @@
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,16 +12,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
 public class Dashboard extends JPanel implements Observer {
-    private JScrollPane expenseScrollPane;
+    private static final long serialVersionUID = 1L;
     private JPanel expensePanel;
     private JLabel welcomeLabel;
-    private JLabel BudgetLabel;
 
     public Dashboard() {
         View.controller.addObserver(this);
@@ -53,22 +50,6 @@ public class Dashboard extends JPanel implements Observer {
 
         add(welcomePanel, BorderLayout.NORTH);
         add(new JScrollPane(expensePanel), BorderLayout.CENTER);
-
-        BudgetLabel = new JLabel("");
-
-        /*ArrayList <Expense> sortedTenExpenses= View.controller.getAllExpenses();
-        	
-        		Collections.sort(sortedTenExpenses);
-            	int len=10;
-            	if (sortedTenExpenses.size()<10) {
-            		len=sortedTenExpenses.size();
-            	}
-            	sortedTenExpenses= (ArrayList<Expense>) sortedTenExpenses.subList(0,len);
-            	
-        	
-        	
-        	showTenExpenses(sortedTenExpenses);
-         */
     }
 
     private void showTenExpenses() {
@@ -167,7 +148,6 @@ public class Dashboard extends JPanel implements Observer {
     }
 
     private class BudgetStatusRenderer extends DefaultTableCellRenderer {
-
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -184,5 +164,4 @@ public class Dashboard extends JPanel implements Observer {
             return c;
         }
     }
-
 }
