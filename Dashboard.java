@@ -12,6 +12,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -20,6 +22,15 @@ public class Dashboard extends JPanel implements Observer {
     private static final long serialVersionUID = 1L;
     private JPanel expensePanel;
     private JLabel welcomeLabel;
+    JLabel expensesLabel;
+    
+    private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private LocalDate date;
+	private int selectedMonth;
+	private String selectedMonthText;
+	private int selectedYear;
+	private LocalDate lowDate;
+	private LocalDate highDate;
 
     public Dashboard() {
         View.controller.addObserver(this);
@@ -44,7 +55,7 @@ public class Dashboard extends JPanel implements Observer {
 
         expensePanel = new JPanel();
         expensePanel.setLayout(new BorderLayout());
-        JLabel expensesLabel = new JLabel("Your Last 10 expenses: ");
+        expensesLabel = new JLabel("Your last 10 expenses: ");
         expensesLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         expensePanel.add(expensesLabel, BorderLayout.NORTH);
 
@@ -75,6 +86,10 @@ public class Dashboard extends JPanel implements Observer {
             }
 
             expensePanel.removeAll();
+            
+            expensesLabel = new JLabel("Your last 10 expenses: ");
+            expensesLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+            expensePanel.add(expensesLabel, BorderLayout.NORTH);
 
             if (sub == null || sub.isEmpty()) {
                 JLabel noExpensesLabel = new JLabel("No expenses yet to display");
@@ -83,7 +98,7 @@ public class Dashboard extends JPanel implements Observer {
                 expensePanel.add(noExpensesLabel, BorderLayout.CENTER);
 
             } else {
-                String[] columns = {"Date", "Description", "Category", "Amount", "Budget Status"};
+                String[] columns = {"Date", "Description", "Category", "Amount", "% of Monthly Budget"};
                 Object[][] data = new Object[sub.size()][5];
 
                 for (int i = 0; i < sub.size(); i++) {
@@ -94,13 +109,12 @@ public class Dashboard extends JPanel implements Observer {
                     data[i][2] = e.getCategory();
                     data[i][3] = String.format("$%.2f", e.getAmount());
 
-                    Optional<Double> val = View.controller.getExpensesByCategoryPercent(e.getCategory());
-                    if (!val.isEmpty()) {
-                        int intVal = (int) Math.round(val.get());
+                    Optional<Double>bud = View.controller.getBudgetByCategory(e.getCategory());
+                    if (!bud.isEmpty()) {
+                        int intVal = (int) Math.round(e.getAmount()/bud.get() * 100);
                         data[i][4] = intVal;
-
                     } else {
-                        data[i][4] = 0;
+                        data[i][4] = -1;
                     }
 
                 }
@@ -122,12 +136,40 @@ public class Dashboard extends JPanel implements Observer {
 
         });
     }
+    
+    public void setDates() {
+    	this.date = LocalDate.now();
+    	this.selectedMonth = this.date.getMonthValue();
+    	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];
+    	this.selectedYear = this.date.getYear();
+    	this.lowDate = setLowDate(this.selectedMonth, this.selectedYear);
+    	this.highDate = setHighDate(this.selectedMonth, this.selectedYear);
+    	//this.budgetProgressText.setText(selectedMonthText + " Budget Progress");
+    	
+    }
+    
+    /**
+     * description:
+     * 	updates the lowDate to the first day of the selected month
+     */
+    private LocalDate setLowDate(int month, int year) {
+    	return LocalDate.of(year, month, 1);
+    }
+    
+    /**
+     * description:
+     * 	updates the highDate to the last day of the selected month
+     */
+    private LocalDate setHighDate(int month, int year) {
+    	return YearMonth.of(year, month).atEndOfMonth();
+    }
 
     @Override
     public void budgetChange() {
         //only change alert box here with budget change
         //update expense labels
         // need method in the user to get last 10 expenses
+    	setDates();
         showTenExpenses();
 
     }
@@ -136,13 +178,14 @@ public class Dashboard extends JPanel implements Observer {
     public void loginChange() {
         String name = View.controller.getFirstName();
         welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, " + name + "</b> ౨ৎ౨ৎ౨ৎ</span></html>");
+        setDates();
         showTenExpenses();
 
     }
 
     @Override
     public void expenseChange() {
-
+    	setDates();
         showTenExpenses();
 
     }
@@ -156,7 +199,10 @@ public class Dashboard extends JPanel implements Observer {
                 if (intValue >= 80) {
                     c.setForeground(Color.RED); // Change color to red for values >= 80
                     ((JLabel) c).setText(intValue + "%");
-                } else {
+                } else if (intValue == -1) {
+                	c.setForeground(Color.BLACK);
+                	((JLabel) c).setText("N/A");
+            	} else {
                     c.setForeground(Color.BLACK); // Default color for other values
                     ((JLabel) c).setText(intValue + "%");
                 }
