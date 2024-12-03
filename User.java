@@ -399,7 +399,7 @@ public class User implements Serializable {
             expense.setDate(e.getDate());
             expense.setDescription(e.getDescription());
         }
-        alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
+        alertBudget();
         alertExpense();
     }
 
