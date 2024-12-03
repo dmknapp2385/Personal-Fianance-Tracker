@@ -30,7 +30,7 @@ public class AddBudgetFrame extends JFrame{
     }
     
     
-    public void setUp() {
+    private void setUp() {
     	 //Color color = new Color(217, 214, 176);
          //this.setBackground(color);
          this.setSize(500, 500);
