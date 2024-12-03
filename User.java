@@ -74,7 +74,7 @@ public class User implements Serializable {
      * @return String, returns salt used in encrypting password
      */
     public String getSalt() {
-    	return this.salt;
+    	return this.salt; 
     }
 
     /**
@@ -85,7 +85,7 @@ public class User implements Serializable {
     public ArrayList<Expense> getAllExpenses() {
     	ArrayList<Expense> copy = new ArrayList<>();
     	for (Expense expense: this.expenses)
-    		copy.add(new Expense(expense));
+    		copy.add(new Expense(expense)); 
         return copy;
     }
     
@@ -103,7 +103,7 @@ public class User implements Serializable {
                 return new Expense(e);
             }
         }
-        return null;
+        return null; 
     }
     
     // TODO: Should this throw a NoSuchElementException instead of returning null?
@@ -133,8 +133,10 @@ public class User implements Serializable {
      * @return ArrayList<Expense>, returns an array list of copies of expenses between two given dates from a given category
      */
     public ArrayList<Expense> getByDateCategory(Category cat, LocalDate lowerRangeDate, LocalDate upperRangeDate) {
+    	
         ArrayList<Expense> filtedByCat = getByDateCategory(cat);
-        return getByDateCategory(lowerRangeDate, upperRangeDate, filtedByCat);
+        
+       return getByDateCategory(lowerRangeDate, upperRangeDate, filtedByCat);
     }
 
     /**
@@ -306,7 +308,7 @@ public class User implements Serializable {
         for (Expense expense : this.expenses) {
             getTotal += expense.getAmount();
         }
-        if (getTotal == 0) {
+        if (getTotal == 0) { 
             throw new NoSuchElementException("No expenses yet!");
         }
         return (getExpense / getTotal) * 100;
@@ -356,7 +358,7 @@ public class User implements Serializable {
      * @throws NoSuchElementException if expense is not found
      */
     public void editExpense(Expense e, long id) throws NoSuchElementException {
-        Expense expense = find(id);
+        Expense expense = find(id); 
         if (expense == null) {
             throw new NoSuchElementException();
         }
@@ -364,7 +366,7 @@ public class User implements Serializable {
         	delete(id);
         	add(new Expense(e));
         }
-        else {
+        else { 
             expense.setAmount(e.getAmount());
             expense.setCategory(e.getCategory());
             expense.setDate(e.getDate());

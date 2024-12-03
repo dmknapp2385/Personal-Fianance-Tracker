@@ -77,6 +77,8 @@ public class Dashboard extends JPanel implements Observer{
     private void showTenExpenses() {
     	
     	SwingUtilities.invokeLater(()->{
+    		
+    		
     		ArrayList <Expense> sortedTenExpenses= View.controller.getAllExpenses();
         	
     		Collections.sort(sortedTenExpenses);
@@ -149,6 +151,8 @@ public class Dashboard extends JPanel implements Observer{
     
     @Override
     public void loginChange() {
+    	String name= View.controller.getUserDetails();
+    	welcomeLabel.setText("Welcome, "+name+" to your Dashboard!");
     	
     	showTenExpenses();
     	
