@@ -29,7 +29,7 @@ public class AddFrame extends JFrame {
     //constructor one, empty text fields
     public AddFrame() {
         //Set frame styles
-        this.setTitle("Personal Finance Tracker : Add Expense");
+        this.setTitle("｡˚✧ Personal Finance Tracker: Add Expense ✧˚｡");
         setup();
         this.btn.setText("Add");
         this.btn.setActionCommand("add");

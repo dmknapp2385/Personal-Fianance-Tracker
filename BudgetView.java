@@ -299,31 +299,58 @@ public class BudgetView extends JPanel implements Observer {
 
     }
 
+//    public void updateBudget() {
+//        //remove old components
+//        SwingUtilities.invokeLater(() -> {
+//            Optional<Double> food = View.controller.getBudgetByCategory(Category.FOOD);
+//            Optional<Double> transport = View.controller.getBudgetByCategory(Category.TRANSPORTATION);
+//            Optional<Double> entertainment = View.controller.getBudgetByCategory(Category.ENTERTAINMENT);
+//            Optional<Double> utilities = View.controller.getBudgetByCategory(Category.UTILITIES);
+//            Optional<Double> misc = View.controller.getBudgetByCategory(Category.MISCELLANEOUS);
+//            if (!food.isEmpty()) {
+//                this.foodBudget.setText(String.format("$%.2f", food.get()));
+//            }
+//            if (!transport.isEmpty()) {
+//                this.transportBudget.setText(String.format("$%.2f", transport.get()));
+//            }
+//            if (!entertainment.isEmpty()) {
+//                this.entertainmentBudget.setText(String.format("$%.2f", entertainment.get()));
+//            }
+//            if (!utilities.isEmpty()) {
+//                this.utilitiesBudget.setText(String.format("$%.2f", utilities.get()));
+//            }
+//            if (!misc.isEmpty()) {
+//                this.miscBudget.setText(String.format("$%.2f", misc.get()));
+//            }
+//        });
+//
+//    }
+    
     public void updateBudget() {
-        //remove old components
         SwingUtilities.invokeLater(() -> {
             Optional<Double> food = View.controller.getBudgetByCategory(Category.FOOD);
             Optional<Double> transport = View.controller.getBudgetByCategory(Category.TRANSPORTATION);
             Optional<Double> entertainment = View.controller.getBudgetByCategory(Category.ENTERTAINMENT);
             Optional<Double> utilities = View.controller.getBudgetByCategory(Category.UTILITIES);
             Optional<Double> misc = View.controller.getBudgetByCategory(Category.MISCELLANEOUS);
-            if (!food.isEmpty()) {
-                this.foodBudget.setText(String.format("$%.2f", food.get()));
-            }
-            if (!transport.isEmpty()) {
-                this.transportBudget.setText(String.format("$%.2f", transport.get()));
-            }
-            if (!entertainment.isEmpty()) {
-                this.entertainmentBudget.setText(String.format("$%.2f", entertainment.get()));
-            }
-            if (!utilities.isEmpty()) {
-                this.utilitiesBudget.setText(String.format("$%.2f", utilities.get()));
-            }
-            if (!misc.isEmpty()) {
-                this.miscBudget.setText(String.format("$%.2f", misc.get()));
-            }
+            updateBudgetHelper(food, foodBudget);
+            updateBudgetHelper(transport, transportBudget);
+            updateBudgetHelper(entertainment, entertainmentBudget);
+            updateBudgetHelper(utilities, utilitiesBudget);
+            updateBudgetHelper(misc, miscBudget);
         });
-
+    }
+    
+    private void updateBudgetHelper(Optional<Double> val, JLabel label) {
+    	if (val.isEmpty()) {
+    		label.setText("No budget set!");
+    	}
+    	else if (val.get() == 0) {
+    		label.setText("No budget set!");
+    	}
+    	else {
+    		label.setText(String.format("$%.2f", val.get()));
+    	}
     }
     
     
@@ -374,6 +401,7 @@ public class BudgetView extends JPanel implements Observer {
         SwingUtilities.invokeLater(() -> {
             if (val.isEmpty()) {
                 bar.setValue(0);
+                bar.setString("0% Used");
                 return;
             }
             int intValue = (int) Math.round(val.get());
@@ -388,6 +416,8 @@ public class BudgetView extends JPanel implements Observer {
         });
 
     }
+    
+
 
     private class ButtonActionListener implements ActionListener {
 

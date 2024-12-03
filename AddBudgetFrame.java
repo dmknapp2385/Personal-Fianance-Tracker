@@ -23,7 +23,7 @@ public class AddBudgetFrame extends JFrame{
 
     public AddBudgetFrame(Category cat) {
     	this.cat = cat;
-        this.setTitle("Personal Finance Tracker : Add Budget");
+        this.setTitle("｡˚✧ Personal Finance Tracker: Add Budget ✧˚｡");
         setUp();
         this.btn.setText("Add");
         this.btn.setActionCommand("add");
