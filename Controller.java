@@ -48,11 +48,12 @@ public class Controller {
      */
     public void login(String username, String password) throws NoSuchElementException {
         User user = findUser(username);
+        
 
         if (user == null) {
             throw new NoSuchElementException();
         }
-
+        
         if (checkPassword(user, password)) {
             this.currUser = Optional.of(user);
             //remove old observers if any
@@ -62,7 +63,7 @@ public class Controller {
                 currUser.get().addObserver(o);
             }
             userLogin();
-
+            
         } else {
             throw new NoSuchElementException();
         }
@@ -146,7 +147,8 @@ public class Controller {
         } catch (EOFException e) {
             // end of file
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+        	System.out.println("No stored users.");
         }
         if (loadedUsers.size() > 0) {
             this.users = new ArrayList<>(loadedUsers);
@@ -165,7 +167,7 @@ public class Controller {
         User user = currUser.get();
 
         user.addExpense(expense);
-        this.expenseChange();
+        
     }
 
 
@@ -179,7 +181,7 @@ public class Controller {
 
         User user = currUser.get();
         user.deleteExpense(id);
-        this.expenseChange();
+        
     }
 
 
@@ -194,7 +196,7 @@ public class Controller {
 
         User user = currUser.get();
         user.editExpense(expense, id);
-        this.expenseChange();
+        
     }
     
     
@@ -269,13 +271,42 @@ public class Controller {
      * @return an array list sorted by date
      */
     public ArrayList<Expense> getByDate(LocalDate low, LocalDate high) {
-
         assert !currUser.isEmpty();
-
+        
         User user = currUser.get();
         return user.getByDateCategory(low, high);
     }
 
+    /**
+     * description:
+     * 	allows the user to get their total expenses in a category by date
+     * @param category - Category, the category of expenses
+     * @param startDate - LocalDate, used as low date for expenses
+     * @param endDate - LocalDate, used as high date for expenses
+     * @return a double representing the total expenses in the category between the selected dates
+     */
+    public double getTotalExpensesByCategoryByDate(Category category, LocalDate startDate, LocalDate endDate) {
+    	assert !currUser.isEmpty();
+    	
+    	User user = currUser.get();
+    	return user.getTotalExpensesByCategoryByDate(category, startDate, endDate);
+    }
+    
+    /**
+     * description:
+     * 	allows the user to get the percent of their budget they have used in a category by date
+     * @param category - Category, the category of expenses
+     * @param startDate - LocalDate, used as low date for expenses
+     * @param endDate - LocalDate, used as high date for expenses
+     * @return a Optional<double> representing the percent of the budget spent in the category between the selected dates
+     * 			returns Optional.empty() if the budget is not set
+     */
+    public Optional<Double> getExpensesByCategoryPercentByDate(Category category, LocalDate startDate, LocalDate endDate) {
+    	assert !currUser.isEmpty();
+    	
+    	User user = currUser.get();
+        return user.getExpensesByCategoryPercentByDate(category, startDate, endDate);
+    }
     
     /**
      * description:
@@ -420,6 +451,8 @@ public class Controller {
      */
     private void userLogin() {
         this.currUser.get().alertLogin();
+        this.currUser.get().alertBudget();
+        this.currUser.get().alertExpense();
     }
     
     
