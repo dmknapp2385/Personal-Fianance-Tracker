@@ -173,7 +173,7 @@ public class FinanceView extends JPanel implements Observer{
         selectionPanel.add(yearSelectorTxt);
         
         ArrayList<Integer> yearList = new ArrayList<>();
-        for (int year = this.selectedYear; year >= 2000; year--) {
+        for (int year = this.selectedYear; year >= 1980; year--) {
         	yearList.add(year);
         }
         Integer [] yearArray = yearList.toArray(new Integer[yearList.size()]);
