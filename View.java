@@ -35,7 +35,7 @@ public class View extends JFrame implements Observer {
         this.setTitle("｡˚⋆♡˚ Personal Finance Tracker ˚♡⋆˚｡");
         Color color = new Color(244,243,239); 
         this.setBackground(color);
-        this.setSize(900, 750);
+        this.setSize(900, 750); 
 
         //create Menu bar
         mbar = new JMenuBar();
