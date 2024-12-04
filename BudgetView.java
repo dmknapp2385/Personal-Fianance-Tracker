@@ -33,7 +33,8 @@ public class BudgetView extends JPanel implements Observer {
     private JProgressBar utilitiesBar = new JProgressBar(0, 100);
     private JProgressBar miscBar = new JProgressBar(0, 100);
     
-	private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private final String[] monthNames = {"January", "February", "March", "April",
+	"May", "June", "July", "August", "September", "October", "November", "December"};
 	private LocalDate date;
 	private int selectedMonth;
 	private String selectedMonthText;
@@ -41,11 +42,22 @@ public class BudgetView extends JPanel implements Observer {
 	private LocalDate lowDate;
 	private LocalDate highDate;
 
+	
+	/**
+	 * description:
+	 * 	initializes the budget view and sets it to observe changes
+	 */
     public BudgetView() {
         View.controller.addObserver(this);
         this.setUp();
     }
 
+    
+    /**
+     * description:
+     * 	sets up the budget view, sets up the users budgets and budget progress
+     * 	depending on the current month. 
+     */
     private void setUp() {
         this.setLayout(new BorderLayout());
         this.setSize(600, 550);
@@ -294,7 +306,13 @@ public class BudgetView extends JPanel implements Observer {
         );
 
     }
+    
  
+    /**
+     * description:
+     * 	updates the display for the budgets through the user of a helper method
+     * 	to avoid duplicate code anti pattern
+     */
     private void updateBudget() {
         SwingUtilities.invokeLater(() -> {
             Optional<Double> food = View.controller.getBudgetByCategory(Category.FOOD);
@@ -310,6 +328,14 @@ public class BudgetView extends JPanel implements Observer {
         });
     }
     
+    /**
+     * description:
+     * 	helper method for updateBudget, updates the display of the budgets.
+     * 	if the user has no budget set or removed any budgets, it updates the
+     * 	display to say 'No budget set', otherwise, it'll show the current budget
+     * @param val - Optional<Double>, used to determine current budget (if any)
+     * @param label - JLabel, used to update the appropriate JLabel
+     */
     private void updateBudgetHelper(Optional<Double> val, JLabel label) {
     	if (val.isEmpty()) {
     		label.setText("No budget set!");
@@ -323,6 +349,12 @@ public class BudgetView extends JPanel implements Observer {
     }
     
     
+    /**
+     * description:
+     * 	used to update the budget progress is being correctly displayed for the
+     * 	current month. constantly updates as the months change throughout the 
+     * 	year
+     */
     private void setDates() {
     	this.date = LocalDate.now();
     	this.selectedMonth = this.date.getMonthValue();
@@ -334,6 +366,7 @@ public class BudgetView extends JPanel implements Observer {
     	
     }
     
+    
     /**
      * description:
      * 	updates the lowDate to the first day of the selected month
@@ -341,6 +374,7 @@ public class BudgetView extends JPanel implements Observer {
     private LocalDate setLowDate(int month, int year) {
     	return LocalDate.of(year, month, 1);
     }
+    
     
     /**
      * description:
@@ -350,6 +384,12 @@ public class BudgetView extends JPanel implements Observer {
     	return YearMonth.of(year, month).atEndOfMonth();
     }
 
+    
+    /**
+     * description:
+     * 	updates the display of progress bars through the user of a helper
+     * 	method to avoid duplicate code anti pattern
+     */
     private void updateProgressBars() {
         SwingUtilities.invokeLater(() -> {
             Optional<Double> food = View.controller.getExpensesByCategoryPercentByDate(Category.FOOD, this.lowDate, this.highDate);
@@ -366,6 +406,19 @@ public class BudgetView extends JPanel implements Observer {
 
     }
 
+    
+    /**
+     * description:
+     * 	helper method for updateProgressBars, updates the display of the progress
+     * 	bars. if no budget is set, then 'N/A' will appear to indicate that the
+     * 	user doesn't have a set budget for that category. otherwise, the budget
+     * 	progress for that category will appear. also alerts users by displaying
+     * 	a warning message and turning the bars red if they surpass 80% of their
+     * 	alloted budget
+     * @param val - Optional<Double>, used to determine current budget progress
+     * 		  (if applicable)
+     * @param bar - JProgressBar, used to update the appropriate progress bar
+     */
     private void updateProgressHelper(Optional<Double> val, JProgressBar bar) {
         SwingUtilities.invokeLater(() -> {
             if (val.isEmpty()) {
@@ -389,6 +442,13 @@ public class BudgetView extends JPanel implements Observer {
 
 
     private class ButtonActionListener implements ActionListener {
+    	/**
+    	 * description:
+    	 * 	handles action events for when a user modifies the budget.
+    	 *  it creates an instance of the addBudgetFrame class to create 
+    	 *  a pop up, allowing the user to edit/add/delete their budget
+    	 * @param e - ActionEvent, detected event
+    	 */
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             Category cat = null;
@@ -419,6 +479,10 @@ public class BudgetView extends JPanel implements Observer {
 
     }
 
+    /**
+     * description:
+     * 	updates display of expenses and resets date information when a login has occurred
+     */
     @Override
     public void loginChange() {
     	this.setDates();
@@ -427,6 +491,10 @@ public class BudgetView extends JPanel implements Observer {
 
     }
 
+    /**
+     * description:
+     * 	updates display of expenses when a budget change has occurred
+     */
     @Override
     public void budgetChange() {
     	this.setDates();
@@ -434,6 +502,10 @@ public class BudgetView extends JPanel implements Observer {
         this.updateProgressBars();
     }
 
+    /**
+     * description:
+     * 	updates display of expenses when an expense change has occurred
+     */
     @Override
     public void expenseChange() {
     	this.setDates();

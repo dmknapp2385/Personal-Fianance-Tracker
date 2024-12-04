@@ -12,8 +12,8 @@ public class Expense implements Serializable, Comparable<Expense> {
     private Category category;
 
     /**
-     * description: this method constructs an Expense object
-     *
+     * description:
+     * 	this method constructs an Expense object
      * @param amount - double, used to calculate expense amount
      * @param date - LocalDate, used for date
      * @param description - String, used for expense description
@@ -28,9 +28,9 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: this method constructs an Expense object by copying an
-     * existing Expense object
-     *
+     * description:
+     * 	this method constructs an Expense object by copying an
+     * 	existing Expense object
      * @param expense - Expense, Expense object to be copied
      */
     public Expense(Expense expense) {
@@ -42,8 +42,8 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: setter for amount instance variable, sets amount
-     *
+     * description:
+     * 	setter for amount instance variable, sets amount
      * @param amount - double, used to set expense amount
      */
     public void setAmount(double amount) {
@@ -51,8 +51,8 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: setter for date instance variable, sets date
-     *
+     * description:
+     * 	setter for date instance variable, sets date
      * @param date - LocalDate, used to set date
      */
     public void setDate(LocalDate date) {
@@ -60,8 +60,9 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: setter for description instance variable, sets description
-     * for the expense
+     * description:
+     * 	setter for description instance variable, sets description
+     * 	for the expense
      *
      * @param description - String, used to create expense description
      */
@@ -70,8 +71,8 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: setter for category instance variable, sets category
-     *
+     * description:
+     * 	setter for category instance variable, sets category
      * @param category - Category enum, used to create category for expense
      */
     public void setCategory(Category category) {
@@ -79,8 +80,8 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: getter for the ID
-     *
+     * description: 
+     * 	getter for the ID
      * @return ID, long
      */
     public long getId() {
@@ -88,8 +89,8 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: getter for amount
-     *
+     * description:
+     * 	getter for amount
      * @return amount, double
      */
     public double getAmount() {
@@ -97,8 +98,8 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: getter for immutable date object
-     *
+     * description:
+     * 	getter for immutable date object
      * @return date, LocalDate
      */
     public LocalDate getDate() {
@@ -106,8 +107,8 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: getter for description
-     *
+     * description:
+     * 	getter for description
      * @return description, String
      */
     public String getDescription() {
@@ -115,14 +116,18 @@ public class Expense implements Serializable, Comparable<Expense> {
     }
 
     /**
-     * description: getter for category
-     *
+     * description:	
+     * 	getter for category
      * @return category, Category enum
      */
     public Category getCategory() {
         return this.category;
     }
 
+    /**
+     * description:
+     * 	overrides default toString method for class
+     */
     @Override
     public String toString() {
         return this.date + ", "
@@ -131,8 +136,11 @@ public class Expense implements Serializable, Comparable<Expense> {
                 + this.description;
     }
 
+    /**
+     * description:
+     * 	compares current Expense object with another based on dates
+     */
     public int compareTo(Expense o) {
-
         return this.getDate().compareTo(o.getDate());
     }
 
