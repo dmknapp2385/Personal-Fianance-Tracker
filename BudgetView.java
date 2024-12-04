@@ -76,8 +76,8 @@ public class BudgetView extends JPanel implements Observer {
         this.budgetProgressText = new JLabel();
         budgetProgressText.setFont(new Font("Calibri", Font.BOLD, 16));
         centerP.add(budgetProgressText);
-        UIManager.put("ProgressBar.selectionForeground", Color.BLACK); // Text on light areas
-        UIManager.put("ProgressBar.selectionBackground", Color.BLACK); // Text on dark areas
+        UIManager.put("ProgressBar.selectionForeground", Color.BLACK); 
+        UIManager.put("ProgressBar.selectionBackground", Color.BLACK); 
 
         //food
         JLabel foodBudgetTxt = new JLabel("Food: ");
@@ -370,7 +370,7 @@ public class BudgetView extends JPanel implements Observer {
         SwingUtilities.invokeLater(() -> {
             if (val.isEmpty()) {
                 bar.setValue(0);
-                bar.setString("0% Used");
+                bar.setString("N/A");
                 return;
             }
             int intValue = (int) Math.round(val.get());
