@@ -26,6 +26,14 @@ public class Login extends JPanel {
     private JTextField regUsernameField;
     private JTextField emailField;
     private JLabel error;
+    
+    /**
+     * description: constructor that sets up the base for
+     * the login page. uses components such as JLabels, 
+     * JPanels and Buttons to provide a basic structure
+     * to the user's login page. Accounts for both an existing user's login
+     * (persisting data) and a new user's registration. 
+     */
 
     public Login() {
         //set layout for panel
@@ -208,8 +216,21 @@ public class Login extends JPanel {
         );
         usernameBtn.addActionListener(new ButtonActionListener());
     }
+    /**
+     * description: private inner listener class implemented for a 
+     * button's functionality, when clicked. More specifically,
+     * the login button and register button. 
+     * 
+     */
 
     private class ButtonActionListener implements ActionListener {
+    	
+    	/**
+    	 * description: invoked when action occurs; in this case,
+    	 * when a button is clicked. 
+    	 * @param: e= ActionEvent that indicates a component-defined
+    	 * action has occured. 
+    	 */
 
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();

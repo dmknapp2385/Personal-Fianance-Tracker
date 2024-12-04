@@ -19,23 +19,27 @@ import java.util.Collections;
 import java.util.Optional;
 
 public class Dashboard extends JPanel implements Observer {
+	
     private static final long serialVersionUID = 1L;
     private JPanel expensePanel;
     private JLabel welcomeLabel;
     JLabel expensesLabel;
-    
-    private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-	private LocalDate date;
-	private int selectedMonth;
-	private String selectedMonthText;
-	private int selectedYear;
-	private LocalDate lowDate;
-	private LocalDate highDate;
+	
+	/**
+	 * description: Constructor that sets up the 
+	 * dashboard's default view
+	 */
 
     public Dashboard() {
         View.controller.addObserver(this);
         setup();
     }
+    
+    /**
+     * description: function that sets up the base view for the user once logged in. 
+     * sets up panels and labels accordingly, to show any expenses if present
+     * for current user logged in. 
+     */
 
     private void setup() {
         this.setLayout(new BorderLayout());
@@ -62,6 +66,16 @@ public class Dashboard extends JPanel implements Observer {
         add(welcomePanel, BorderLayout.NORTH);
         add(new JScrollPane(expensePanel), BorderLayout.CENTER);
     }
+    
+    /** 
+     * description:provides a comprehensive look for the user's expenses.
+     * private function runnable that displays the expenses so far incurred;
+     * displays the most recent 10 expense inputs by the user. uses a JTable to show
+     * the following info about an expense: date, description,
+     * category, amount, and the percent of the monthly budget it accounts for. shows 
+     * an alert if expense causes 80% over budget.
+     * updates accordingly. 
+     */
 
     private void showTenExpenses() {
 
@@ -136,62 +150,60 @@ public class Dashboard extends JPanel implements Observer {
 
         });
     }
-    
-    public void setDates() {
-    	this.date = LocalDate.now();
-    	this.selectedMonth = this.date.getMonthValue();
-    	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];
-    	this.selectedYear = this.date.getYear();
-    	this.lowDate = setLowDate(this.selectedMonth, this.selectedYear);
-    	this.highDate = setHighDate(this.selectedMonth, this.selectedYear);
-    	//this.budgetProgressText.setText(selectedMonthText + " Budget Progress");
-    	
-    }
-    
-    /**
-     * description:
-     * 	updates the lowDate to the first day of the selected month
-     */
-    private LocalDate setLowDate(int month, int year) {
-    	return LocalDate.of(year, month, 1);
-    }
-    
-    /**
-     * description:
-     * 	updates the highDate to the last day of the selected month
-     */
-    private LocalDate setHighDate(int month, int year) {
-    	return YearMonth.of(year, month).atEndOfMonth();
-    }
-
+   /**
+    * description: observer function called when change in budget detected
+    */
     @Override
     public void budgetChange() {
         //only change alert box here with budget change
         //update expense labels
         // need method in the user to get last 10 expenses
-    	setDates();
+    	
         showTenExpenses();
 
     }
+    /**
+     * description: observer function called when change in user's login details
+     * is detected.
+     */
 
     @Override
     public void loginChange() {
         String name = View.controller.getFirstName();
         welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, " + name + "</b> ౨ৎ౨ৎ౨ৎ</span></html>");
-        setDates();
+     
         showTenExpenses();
 
     }
+    /**
+     * description: observer function called when change in an expense is detected.
+     */
 
     @Override
     public void expenseChange() {
-    	setDates();
+    	
         showTenExpenses();
 
     }
+    /**
+     * description: private inner class used for the budget column's 
+     * display. if over 80%, changes color of cell in the table to reflect that.
+     */
 
     private class BudgetStatusRenderer extends DefaultTableCellRenderer {
         @Override
+        /**
+         * description: function that returns the rendered cell as per the 
+         * specifications. 
+         * @param:table - the JTable
+         * @param:value - the value to assign to the cell at [row, column]
+         * @param:isSelected - true if cell is selected
+         * @param:hasFocus - true if cell has focus
+         * @param:row - the row of the cell to render
+         * @param:column - the column of the cell to render
+         * 
+         * @return:the default table cell renderer
+         */
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (value instanceof Integer) {
