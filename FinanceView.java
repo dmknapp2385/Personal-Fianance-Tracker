@@ -99,7 +99,7 @@ public class FinanceView extends JPanel implements Observer {
      * description:
      * 	sets dates that are used throughout the class
      */
-    public void setDates() {
+    private void setDates() {
     	this.date = LocalDate.now();
     	this.selectedMonth = this.date.getMonthValue();
     	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];

@@ -21,6 +21,12 @@ public class AddBudgetFrame extends JFrame{
     private JButton btn;
     private Category cat;
 
+    
+    /**
+     * description:
+     * 	creates a frame, allowing user to add budgets
+     * @param cat - Category, used to determine where to add budget
+     */
     public AddBudgetFrame(Category cat) {
     	this.cat = cat;
         this.setTitle("｡˚✧ Personal Finance Tracker: Add Budget ✧˚｡");
@@ -30,10 +36,14 @@ public class AddBudgetFrame extends JFrame{
     }
 
     
+    /**
+     * description:
+     * 	sets up the budget frame and determines what the user enters for
+     * 	the budget. if the user enters 0, the budget is deleted, if the 
+     * 	user enters a number, the budget is added/edited. also does error
+     * 	checking to ensure data is properly formatted
+     */
     private void setUp() {
-    	 //Color color = new Color(217, 214, 176);
-         //this.setBackground(color);
-
          this.setSize(500, 500);
          this.add(mainPanel, BorderLayout.CENTER);
          mainPanel.setLayout(new FlowLayout());
@@ -77,6 +87,10 @@ public class AddBudgetFrame extends JFrame{
     }
     
     
+    /**
+     * description:
+     * 	allows the user to be able to close the frame
+     */
     private void closeFrame() {
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }

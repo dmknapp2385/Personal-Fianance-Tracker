@@ -19,15 +19,16 @@ public class Controller {
     ArrayList<Observer> observers = new ArrayList<>();
 
     /**
-     * description: this method initializes currUser to empty optional
+     * description:
+     * 	this method initializes currUser to empty optional
      */
     private Controller() {
         this.currUser = Optional.empty();
     }
 
     /**
-     * description: public accessor method for singleton
-     *
+     * description:
+     * 	public accessor method for singleton
      * @return Controller - singleton instance of Controller class
      */
     public static Controller instanceOf() {
@@ -35,11 +36,11 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to attempt to login, if no account is
-     * created, it won't allow you to login, but if the account exists, it
-     * checks whether or not the password is correct and sets currUser to the
-     * user if the password is correct
-     *
+     * description:
+     * 	allows the user to attempt to login, if no account is
+     * 	created, it won't allow you to login, but if the account exists, it
+     * 	checks whether or not the password is correct and sets currUser to the
+     * 	user if the password is correct
      * @param username - String, used to login
      * @param password - String, used to login
      * @throws NoSuchElementException if user isn't found
@@ -67,18 +68,19 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to logout, sets currUser to optional empty
+     * description:	
+     * 	allows the user to logout, sets currUser to optional empty
      */
     public void logout() {
         this.currUser = Optional.empty();
     }
 
     /**
-     * description: allows the user to register an account, it checks whether or
-     * not an account already exists, it will not allow a new account to be
-     * created. if no account already exists, then it salts and encrypts the
-     * password before creating the user for security
-     *
+     * description:
+     * 	allows the user to register an account, it checks whether or
+     * 	not an account already exists, it will not allow a new account to be
+     * 	created. if no account already exists, then it salts and encrypts the
+     * 	password before creating the user for security
      * @param fName - String, used to create account
      * @param lName - String, used to create account
      * @param email - String, used to create account
@@ -108,8 +110,9 @@ public class Controller {
     }
 
     /**
-     * description: allows for data persistence, saves all of the data when
-     * program quits
+     * description: 
+     * 	allows for data persistence, saves all of the data when
+     * 	program quits
      */
     public void saveData() {
         try (ObjectOutputStream userOutputStream = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
@@ -123,7 +126,8 @@ public class Controller {
     }
 
     /**
-     * description: loads existing data on start up of program, if there is any
+     * description:
+     * 	loads existing data on start up of program, if there is any
      */
     public void loadData() {
         ArrayList<User> loadedUsers = new ArrayList<>();
@@ -146,8 +150,8 @@ public class Controller {
     }
 
     /**
-     * description: allows user to add an expense
-     *
+     * description:
+     * 	allows user to add an expense
      * @param expense - Expense, used to add expense
      */
     public void addExpense(Expense expense) {
@@ -160,8 +164,8 @@ public class Controller {
     }
 
     /**
-     * description: allows user to delete an expense
-     *
+     * description:
+     * 	allows user to delete an expense
      * @param id - long, used for identification
      */
     public void deleteExpense(long id) {
@@ -173,8 +177,8 @@ public class Controller {
     }
 
     /**
-     * description: allows user to edit their expense
-     *
+     * description:
+     * 	allows user to edit their expense
      * @param expense - Expense, used to edit expense
      * @param id - long, used to find expense
      */
@@ -187,8 +191,8 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to get an expense
-     *
+     * description:
+     * 	allows the user to get an expense
      * @param id - long, used for identification
      * @return an expense
      */
@@ -198,8 +202,8 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to get all of their expenses
-     *
+     * description:
+     * 	allows the user to get all of their expenses
      * @return an array list (user returns a copy, so encapsulation is
      * protected), of all expenses
      */
@@ -210,8 +214,8 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to add a budget in their preferred category
-     *
+     * description:
+     * 	allows the user to add a budget in their preferred category
      * @param cat - Category enum, used to determine where to add budget
      * @param amount - double, used to add budget amount
      */
@@ -229,15 +233,15 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to get their expenses sorted by date and
-     * category
-     *
+     * description: 
+     * 	allows the user to get their expenses sorted by date and
+     * 	category
      * @param c - Category enum, used to find expenses by category
      * @param low - LocalDate, used as the earlier date for expenses
      * @param high - LocalDate, used as the later date for expenses
      * @return an array list sorted by date and category
      */
-    public ArrayList<Expense> getbyDateCategory(Category c, LocalDate low, LocalDate high) {
+    public ArrayList<Expense> getByDateCategory(Category c, LocalDate low, LocalDate high) {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
@@ -245,8 +249,8 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to get their expenses sorted by date
-     *
+     * description:
+     * 	allows the user to get their expenses sorted by date
      * @param low - LocalDate, used as low date for expenses
      * @param high - LocalDate, used as high date for expenses
      * @return an array list sorted by date
@@ -259,9 +263,9 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to get their total expenses in a category by
-     * date
-     *
+     * description: 
+     * 	allows the user to get their total expenses in a category by
+     * 	date
      * @param category - Category, the category of expenses
      * @param startDate - LocalDate, used as low date for expenses
      * @param endDate - LocalDate, used as high date for expenses
@@ -276,9 +280,9 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to get the percent of their budget they have
-     * used in a category by date
-     *
+     * description: 
+     * 	allows the user to get the percent of their budget they have
+     * 	used in a category by dates
      * @param category - Category, the category of expenses
      * @param startDate - LocalDate, used as low date for expenses
      * @param endDate - LocalDate, used as high date for expenses
@@ -294,8 +298,8 @@ public class Controller {
     }
 
     /**
-     * description: allows the user to get their expenses sorted by category
-     *
+     * description:
+     * 	allows the user to get their expenses sorted by category
      * @param c - Category enum, used for sorting
      * @return an array list sorted by category
      */
@@ -307,8 +311,8 @@ public class Controller {
     }
 
     /**
-     * description: uploads file of expenses to user
-     *
+     * description:
+     * 	uploads file of expenses to user
      * @param inFile - String, used to add file
      * @return String, confirmation whether file was added
      * @throws FileNotFoundException
@@ -321,8 +325,8 @@ public class Controller {
     }
 
     /**
-     * description: exports current users expenses as a csv file
-     *
+     * description:
+     * 	exports current users expenses as a csv file
      * @return boolean, whether or not expenses were exported
      */
     public boolean exportExpenses() {
@@ -333,8 +337,8 @@ public class Controller {
     }
 
     /**
-     * description: add observers to controller store
-     *
+     * description:
+     * 	add observers to controller store
      * @param o - Observer, used to add observer
      */
     public void addObserver(Observer o) {
@@ -342,8 +346,8 @@ public class Controller {
     }
 
     /**
-     * description: gets percentage of current month spending by category
-     *
+     * description:
+     * 	gets percentage of current month spending by category
      * @param cat - Category, used to find spending based on category
      * @return double, used to find percent spending
      */
@@ -355,8 +359,8 @@ public class Controller {
     }
 
     /**
-     * description: returns user with input username
-     *
+     * description:
+     * 	returns user with input username
      * @param username - String, used to find user
      * @return User, the found user
      */
@@ -370,8 +374,8 @@ public class Controller {
     }
 
     /**
-     * description: checks if login password is correct
-     *
+     * description:
+     * 	checks if login password is correct
      * @param user - User, used to find user
      * @param pw - String, used to compare to inputted password
      * @return boolean, whether or not the password is correct
@@ -382,8 +386,8 @@ public class Controller {
     }
 
     /**
-     * description: salts the users password and encrypts it
-     *
+     * description:
+     * 	salts the users password and encrypts it
      * @param pw - String, used to encrypt users password
      * @param salt - used to add salt for security reasons
      * @return String, encrypted passwords
@@ -407,8 +411,8 @@ public class Controller {
     }
 
     /**
-     * description: creates salt for the password, for security
-     *
+     * description:
+     * 	creates salt for the password, for security
      * @return String, salt
      */
     private String createSalt() {
@@ -421,7 +425,8 @@ public class Controller {
     }
 
     /**
-     * description: alerts of login change
+     * description:
+     * 	alerts of login change
      */
     private void userLogin() {
         this.currUser.get().alertLogin();
@@ -430,8 +435,8 @@ public class Controller {
     }
 
     /**
-     * description: allows user to get budget by category
-     *
+     * description:
+     * 	allows user to get budget by category
      * @param category - Category, used to find budget for inputed category
      * @return Optional<Double>, budget for specified category
      */
@@ -441,22 +446,10 @@ public class Controller {
         return budget;
     }
 
-    /**
-     * description: allows user to get expenses by category
-     *
-     * @param category - Category, used to find expense for inputed category
-     * @return Optional<Double>, expense or specified category
-     */
-    public Optional<Double> getExpensesByCategoryPercent(Category category) {
-        User user = currUser.get();
-        Optional<Double> catPercent = user.getExpensesByCategoryPercent(category);
-        return catPercent;
-
-    }
 
     /**
-     * description: gets username
-     *
+     * description: 
+     * 	gets username
      * @return String, username
      */
     public String getUserDetails() {
@@ -470,8 +463,8 @@ public class Controller {
     }
     
     /**
-     * description: gets first name
-     *
+     * description: 
+     * 	gets first name
      * @return String, first name
      */
     public String getFirstName() {

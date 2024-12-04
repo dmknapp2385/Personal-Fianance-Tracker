@@ -27,6 +27,10 @@ public class AddFrame extends JFrame {
     private JButton btn;
 
     //constructor one, empty text fields
+    /**
+     * description:
+     * 	creates a frame, allowing users to edit expenses
+     */
     public AddFrame() {
         //Set frame styles
         this.setTitle("｡˚✧ Personal Finance Tracker: Add Expense ✧˚｡");
@@ -37,7 +41,13 @@ public class AddFrame extends JFrame {
 
     }
 
-    //construct two, fill text fields with expense that was clicked.
+
+    /**
+     * description:
+     * 	another constructor that allows the text to be filled with expenses
+     * 	that were clicked
+     * @param e - Expense, used to add/edit/delete an expense
+     */
     public AddFrame(Expense e) {
         //set current expense id
         this.expenseId = e.getId();
@@ -66,7 +76,14 @@ public class AddFrame extends JFrame {
         mainPanel.add(deletebtn);
     }
 
+    
     //method initializes frame with empty fields and button text
+    /**
+     * description:
+     * 	sets up the expense frame and determines what the user enters for
+     * 	it. also does error checking to ensure the user is inputting valid
+     * 	formats
+     */
     private void setup() {
         Color color = new Color(217, 214, 176);
         this.setBackground(color);
@@ -139,7 +156,11 @@ public class AddFrame extends JFrame {
 
     }
 
-    //close current addFrame
+
+    /**
+     * description:
+     * 	allows the user to be able to close the frame
+     */
     private void closeFrame() {
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }

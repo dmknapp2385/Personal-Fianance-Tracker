@@ -32,8 +32,8 @@ public class User implements Serializable {
     private transient ArrayList<Observer> observers = new ArrayList<>();
 
     /**
-     * description: instantiates a user object
-     *
+     * description:
+     * 	instantiates a user object
      * @param first - String, first name of user
      * @param last - String, last name of user
      * @param email - String, email address of user
@@ -52,8 +52,8 @@ public class User implements Serializable {
 
     //getters
     /**
-     * description: gets username
-     *
+     * description:
+     * 	gets username
      * @return String, returns the username
      */
     public String getUsername() {
@@ -61,8 +61,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: gets first
-     *
+     * description:
+     * 	gets first
      * @return String, returns the first name
      */
     public String getFirstName() {
@@ -70,8 +70,8 @@ public class User implements Serializable {
     }
     
     /**
-     * description: gets encrypted password
-     *
+     * description:
+     * 	gets encrypted password
      * @return String, returns the encrypted password
      */
     public String getPassword() {
@@ -79,8 +79,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: gets salt used in encrypting password
-     *
+     * description:
+     * 	gets salt used in encrypting password
      * @return String, returns salt used in encrypting password
      */
     public String getSalt() {
@@ -88,8 +88,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: gets an array list of copies of all expenses
-     *
+     * description:
+     * 	gets an array list of copies of all expenses
      * @return ArrayList<Expense>, returns an array list of copies of all
      * expenses
      */
@@ -104,8 +104,8 @@ public class User implements Serializable {
     // TODO: Should this throw a NoSuchElementException instead of returning null?
     // TODO: Compare with find below--do we need both?
     /**
-     * description: gets a copy of an expense by id
-     *
+     * description:
+     * 	gets a copy of an expense by id
      * @param id - long, id of expense to be returned
      * @return Expense, returns a copy of an expense by id, returns null if
      * expense does not match
@@ -120,8 +120,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: gets a copy of an expense by id
-     *
+     * description:
+     * 	gets a copy of an expense by id
      * @param id - long, id of expense to be returned
      * @return Expense, returns the expense by id, returns null if expense does
      * not match
@@ -135,11 +135,11 @@ public class User implements Serializable {
         return null;
     }
 
-    // advanced getters
+    
     /**
-     * description: get an array list of copies of expenses between two given
-     * dates from a given category
-     *
+     * description:
+     * 	get an array list of copies of expenses between two given
+     * 	dates from a given category
      * @param cat - Category, category of expenses to be returned
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
@@ -155,40 +155,11 @@ public class User implements Serializable {
 
 
 
-//    //Add expense to expense list and category list
-//    public void addExpense(Expense expense) {
-//        this.expenses.add(expense);
-//        System.out.println("Expense Added! " + expense);
-//        System.out.println(expenses);
-//
-//        //add expense to list with category
-//        Category c = expense.getCategory();
-//        switch (c) {
-//            case FOOD:
-//                this.food.add(expense);
-//                break;
-//            case TRANSPORTATION:
-//                this.transportation.add(expense);
-//                break;
-//            case ENTERTAINMENT:
-//                this.entertainment.add(expense);
-//                break;
-//            case UTILITIES:
-//                this.utilities.add(expense);
-//                break;
-//            default:
-//                this.misc.add(expense);
-//                break;
-//        }
-//
-//        alertBudget(); // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
-//        alertExpense();
-//    }
 
     /**
-     * description: get an array list of copies of expenses between two given
-     * dates from a supplied list
-     *
+     * description:
+     * 	get an array list of copies of expenses between two given
+     * 	dates from a supplied list
      * @param cat - Category, category of expenses to be returned
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
@@ -215,9 +186,9 @@ public class User implements Serializable {
     }
 
     /**
-     * description: get an array list of copies of expenses between two given
-     * dates
-     *
+     * description:
+     * 	get an array list of copies of expenses between two given
+     * 	dates
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
      * @param upperRangeDate - LocalDate, last chronological date which is upper
@@ -241,9 +212,9 @@ public class User implements Serializable {
     }
 
     /**
-     * description: get an array list of copies of expenses from a given
-     * category
-     *
+     * description:
+     * 	get an array list of copies of expenses from a given
+     * 	category
      * @param cat - Category, category of expenses to be returned
      * @return ArrayList<Expense>, returns an array list of copies of expenses
      * from a given category
@@ -275,8 +246,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: get the sum of all expenses in a category
-     *
+     * description:
+     * 	get the sum of all expenses in a category
      * @param category - Category, category of expenses to be returned
      * @return double, returns the sum of all expenses in a category
      */
@@ -290,8 +261,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: get the sum of all expenses in a category between two dates
-     *
+     * description:
+     * 	get the sum of all expenses in a category between two dates
      * @param category - Category, category of expenses to be returned
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
@@ -310,8 +281,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: get the budget of a given category
-     *
+     * description:
+     * 	get the budget of a given category
      * @param category - Category, category of budget to be returned
      * @return Optional<Double>, returns the budget of a given category,
      * Optional.empty() if budget is not set
@@ -324,9 +295,9 @@ public class User implements Serializable {
     }
 
     /**
-     * description: get the percent of a budget that has been reached by
-     * expenses in that category
-     *
+     * description:
+     * 	get the percent of a budget that has been reached by
+     * 	expenses in that category
      * @param category - Category, category of budget to be returned
      * @return Optional<Double>, returns the percent (between 0 and 100) of a
      * budget that has been reached by expenses in that category,
@@ -342,9 +313,9 @@ public class User implements Serializable {
     }
 
     /**
-     * description: get the percent of a budget that has been reached by
-     * expenses in that category between two dates
-     *
+     * description:
+     * 	get the percent of a budget that has been reached by
+     * 	expenses in that category between two dates
      * @param category - Category, category of budget to be returned
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
@@ -364,9 +335,9 @@ public class User implements Serializable {
     }
 
     /**
-     * description: get the percent of overall spending that has been spent in a
-     * given category
-     *
+     * description:
+     * 	get the percent of overall spending that has been spent in a
+     * 	given category
      * @param category - Category, category of spending to be returned
      * @return double, returns the percent (between 0 and 100) of overall
      * spending that has been spent in a given category
@@ -386,8 +357,8 @@ public class User implements Serializable {
     // additional methods
     // TODO: Check functionality on this--do we want to maintain id unless the category changes?
     /**
-     * description: edits an existing expense
-     *
+     * description:
+     * 	edits an existing expense
      * @param e - Expense, used to update an existing expense
      * @param id - long, id of an existing expense to be edited
      * @throws NoSuchElementException if expense is not found
@@ -411,9 +382,9 @@ public class User implements Serializable {
     }
 
     /**
-     * description: Add a copy of an expense to the expense list and appropriate
-     * category list
-     *
+     * description:
+     * 	Add a copy of an expense to the expense list and appropriate
+     * 	category list
      * @param expense - Expense, expense to be copied and added
      */
     public void addExpense(Expense expense) {
@@ -424,8 +395,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: deletes an expense
-     *
+     * description:
+     * 	deletes an expense
      * @param id - long, id of an existing expense to be deleted
      * @throws NoSuchElementException if expense is not found
      */
@@ -437,9 +408,9 @@ public class User implements Serializable {
 
     // TODO: Compare with addExpense above--do we need both?
     /**
-     * description: Add a copy of an expense to the expense list and appropriate
-     * category list
-     *
+     * description:
+     * 	add a copy of an expense to the expense list and appropriate
+     * 	category list
      * @param expense - Expense, expense to be copied and added
      */
     private void add(Expense expense) {
@@ -467,8 +438,8 @@ public class User implements Serializable {
 
     // TODO: Compare with deleteExpense below--do we need both?
     /**
-     * description: deletes an expense
-     *
+     * description:
+     * 	deletes an expense
      * @param id - long, id of an existing expense to be deleted
      * @throws NoSuchElementException if expense is not found
      */
@@ -497,43 +468,11 @@ public class User implements Serializable {
                 break;
         }
     }
-//
-//
-//    //delete expense by id
-//    public void deleteExpense(long id) throws NoSuchElementException {
-//        Expense expense = find(id);
-//        if (expense == null) {
-//            throw new NoSuchElementException();
-//        }
-//
-//        this.expenses.remove(expense);
-//        Category c = expense.getCategory();
-//        switch (c) {
-//            case FOOD:
-//                this.food.remove(expense);
-//                break;
-//            case TRANSPORTATION:
-//                this.transportation.remove(expense);
-//                break;
-//            case ENTERTAINMENT:
-//                this.entertainment.remove(expense);
-//                break;
-//            case UTILITIES:
-//                this.utilities.remove(expense);
-//                break;
-//            default:
-//                this.misc.remove(expense);
-//                break;
-//        }
-//
-//        alertBudget();  // TODO: Should this be here? Used instead of expenseChange() in ExpenseView?
-//        alertExpense();
-//
-//    }
+
 
     /**
-     * description: adds or updates a budget for a category
-     *
+     * description:
+     * 	adds or updates a budget for a category
      * @param cat - Category, name of category that will have a new budget
      * @param amount - double, amount of budget
      */
@@ -548,8 +487,8 @@ public class User implements Serializable {
 
     // TODO: This does not appear to be used anywhere
     /**
-     * description: removes a budget for a category
-     *
+     * description:
+     * 	removes a budget for a category
      * @param cat - Category, name of category that will have budget removed
      */
     public void removeBudget(Category cat) {
@@ -560,8 +499,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: takes file as input at adds all expenses
-     *
+     * description:
+     * 	takes file as input at adds all expenses
      * @param inFile - String, name of file to import information from
      * @return String, a string containing an incorrectly formatted inputs found
      * in the file
@@ -607,8 +546,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: creates a csv file containing a list of expenses
-     *
+     * description:
+     * 	creates a csv file containing a list of expenses
      * @return boolean, true if successful, false if not
      */
     public boolean exportExpenses() {
@@ -641,7 +580,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: alerts observers of a budget change
+     * description:
+     * 	alerts observers of a budget change
      */
     public void alertBudget() {
         for (Observer o : observers) {
@@ -650,7 +590,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: alerts observers of a login
+     * description:
+     * 	alerts observers of a login
      */
     public void alertLogin() {
         for (Observer o : observers) {
@@ -659,7 +600,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: alerts observers of an expense change
+     * description:	
+     * 	alerts observers of an expense change
      */
     public void alertExpense() {
         for (Observer o : observers) {
@@ -668,7 +610,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: adds an observer to the list of observers
+     * description:
+     * 	adds an observer to the list of observers
      *
      * @param o - Observer, the Observer to be added
      */
@@ -677,8 +620,9 @@ public class User implements Serializable {
     }
 
     /**
-     * description: removes all observers from the Observer list; if list is
-     * null instantiates a new empty list
+     * description:
+     * 	removes all observers from the Observer list; if list is
+     * 	null instantiates a new empty list
      */
     public void removeAllObservers() {
         if (this.observers == null) {
@@ -689,8 +633,8 @@ public class User implements Serializable {
     }
 
     /**
-     * description: gets a descriptive String for a user
-     *
+     * description:
+     * 	gets a descriptive String for a user
      * @return String - returns a descriptive String for a user
      */
     public String toString() {
