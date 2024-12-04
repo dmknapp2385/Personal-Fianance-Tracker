@@ -592,7 +592,6 @@ public class FinanceView extends JPanel implements Observer {
                         )
         );
     }
-
     
 	/**
      * description:
@@ -605,14 +604,9 @@ public class FinanceView extends JPanel implements Observer {
          * @param e - ActionEvent, detected event
          */
         public void actionPerformed(ActionEvent e) {
-            String command = e.getActionCommand();
-            if (command.equals("Select")) {
-            	selectedMonth = monthDropdown.getSelectedIndex() + 1;
-                selectedYear = (int)yearDropdown.getSelectedItem();
-                updateExpenses();
-            } else {
-            	// Required structure
-            }
+        	selectedMonth = monthDropdown.getSelectedIndex() + 1;
+            selectedYear = (int)yearDropdown.getSelectedItem();
+            updateExpenses();
         }
     }
     
@@ -824,6 +818,7 @@ public class FinanceView extends JPanel implements Observer {
     	return LocalDate.of(year, month, 1);
     }
     
+    
     /**
      * description:
      * 	updates the highDate to the last day of the selected month
@@ -834,20 +829,20 @@ public class FinanceView extends JPanel implements Observer {
     
     /**
      * description:
-     * 	updates display of expenses when a budget change has occurred
-     */
-    @Override
-    public void budgetChange() {
-    	this.updateExpenses();
-    }
-
-    /**
-     * description:
      * 	updates display of expenses and resets date information when a login has occurred
      */
     @Override
     public void loginChange() {
     	this.setDates();
+    	this.updateExpenses();
+    }
+    
+    /**
+     * description:
+     * 	updates display of expenses when a budget change has occurred
+     */
+    @Override
+    public void budgetChange() {
     	this.updateExpenses();
     }
     
