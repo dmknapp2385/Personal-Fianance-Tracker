@@ -47,13 +47,17 @@ _Program Execution Guide_
 
 ## Preview
 
-Below are several screenshots of the Rocks and Ropes application:
-![HomePage](client/src/assets/read-img/home.png)
-![Upstairs](client/src/assets/read-img/upstairs.png)
-![Weights](client/src/assets/read-img/weights.png)
-![Calendar](client/src/assets/read-img/calendar.png)
-![Login](client/src/assets/read-img/login.png)
-![SignUp](client/src/assets/read-img/signup.png)
+Below are several screenshots of the Personal Finance Assistant application:
+The main login page:
+![Login Page](./Images/expensepg.png)
+The user's personal dashboard showing last 10 monthly purchases
+![Dashboard](./Images/dashboardView.png)
+The expense page where user can add, edit or delete an expense. Import and export features are found here.
+![Expense Page](./Images/expensepg.png)
+Users current montly budget and progress bars indicating amout of budget used
+![Budget Page](./Images/budgetView.png)
+The Finance page, where user's find a montly breakdown of spending habits
+![Finance Page](./Images/financeView.png)
 
 ## Credits
 
