@@ -35,7 +35,7 @@ public class Login extends JPanel {
         this.setBackground(color);
 
         //create header text label
-        JLabel title = new JLabel("Login or Register if  you are a new user");
+        JLabel title = new JLabel("Login or Register if you are a new user");
         title.setFont(new Font("Calibri", Font.BOLD, 20));
         title.setBorder(new EmptyBorder(15, 5, 8, 15));
         this.add(title, BorderLayout.NORTH);

@@ -1,5 +1,4 @@
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,25 +13,31 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
 public class Dashboard extends JPanel implements Observer {
-
-    private JScrollPane expenseScrollPane;
+    private static final long serialVersionUID = 1L;
     private JPanel expensePanel;
     private JLabel welcomeLabel;
-    private JLabel BudgetLabel;
+    JLabel expensesLabel;
+    
+    private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private LocalDate date;
+	private int selectedMonth;
+	private String selectedMonthText;
+	private int selectedYear;
+	private LocalDate lowDate;
+	private LocalDate highDate;
 
     public Dashboard() {
         View.controller.addObserver(this);
         setup();
-
     }
 
     private void setup() {
-
         this.setLayout(new BorderLayout());
 
         JPanel welcomePanel = new JPanel();
@@ -40,39 +45,22 @@ public class Dashboard extends JPanel implements Observer {
         welcomeLabel = new JLabel("");
         String name = View.controller.getUserDetails();
         if (name != null) {
-            welcomeLabel.setText("Welcome, " + name + " to your Dashboard!");
-
+            welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, " + name + "</b> ౨ৎ౨ৎ౨ৎ</span></html>");
         } else {
-            welcomeLabel.setText("Welcome to your Dashboard!");
+            welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard</b> ౨ৎ౨ৎ౨ৎ</span></html>");
         }
 
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         welcomePanel.add(welcomeLabel);
 
         expensePanel = new JPanel();
         expensePanel.setLayout(new BorderLayout());
-        JLabel expensesLabel = new JLabel("Your Last 10 expenses: ");
+        expensesLabel = new JLabel("Your last 10 expenses: ");
         expensesLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         expensePanel.add(expensesLabel, BorderLayout.NORTH);
 
         add(welcomePanel, BorderLayout.NORTH);
         add(new JScrollPane(expensePanel), BorderLayout.CENTER);
-
-        BudgetLabel = new JLabel("");
-
-        /*ArrayList <Expense> sortedTenExpenses= View.controller.getAllExpenses();
-        	
-        		Collections.sort(sortedTenExpenses);
-            	int len=10;
-            	if (sortedTenExpenses.size()<10) {
-            		len=sortedTenExpenses.size();
-            	}
-            	sortedTenExpenses= (ArrayList<Expense>) sortedTenExpenses.subList(0,len);
-            	
-        	
-        	
-        	showTenExpenses(sortedTenExpenses);
-         */
     }
 
     private void showTenExpenses() {
@@ -98,6 +86,10 @@ public class Dashboard extends JPanel implements Observer {
             }
 
             expensePanel.removeAll();
+            
+            expensesLabel = new JLabel("Your last 10 expenses: ");
+            expensesLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+            expensePanel.add(expensesLabel, BorderLayout.NORTH);
 
             if (sub == null || sub.isEmpty()) {
                 JLabel noExpensesLabel = new JLabel("No expenses yet to display");
@@ -106,7 +98,7 @@ public class Dashboard extends JPanel implements Observer {
                 expensePanel.add(noExpensesLabel, BorderLayout.CENTER);
 
             } else {
-                String[] columns = {"Date", "Description", "Category", "Amount", "Budget Status"};
+                String[] columns = {"Date", "Description", "Category", "Amount", "% of Monthly Budget"};
                 Object[][] data = new Object[sub.size()][5];
 
                 for (int i = 0; i < sub.size(); i++) {
@@ -115,58 +107,90 @@ public class Dashboard extends JPanel implements Observer {
                     data[i][0] = e.getDate();
                     data[i][1] = e.getDescription();
                     data[i][2] = e.getCategory();
-                    data[i][3] = e.getAmount();
+                    data[i][3] = String.format("$%.2f", e.getAmount());
 
-                    Optional<Double> val = View.controller.getExpensesByCategoryPercent(e.getCategory());
-                    if (!val.isEmpty()) {
-                        int intVal = (int) Math.round(val.get());
+                    Optional<Double>bud = View.controller.getBudgetByCategory(e.getCategory());
+                    if (!bud.isEmpty()) {
+                        int intVal = (int) Math.round(e.getAmount()/bud.get() * 100);
                         data[i][4] = intVal;
-
                     } else {
-                        data[i][4] = 0;
+                        data[i][4] = -1;
                     }
 
                 }
+                Color color = new Color(244,243,239);
+                
                 JTable expensesTable = new JTable(data, columns);
+                expensesTable.setBackground(color);
+                expensesTable.getTableHeader().setBackground(color);
+                expensesTable.setShowGrid(false);
 
-                expensesTable.getColumnModel().getColumn(4).setCellRenderer(new BudgetStatusRenderer());
                 JScrollPane scrollPane = new JScrollPane(expensesTable);
+                scrollPane.getViewport().setBackground(color);
+                expensesTable.getColumnModel().getColumn(4).setCellRenderer(new BudgetStatusRenderer());
+                
                 expensePanel.add(scrollPane, BorderLayout.CENTER);
-
             }
             expensePanel.revalidate();
             expensePanel.repaint();
 
         });
     }
+    
+    public void setDates() {
+    	this.date = LocalDate.now();
+    	this.selectedMonth = this.date.getMonthValue();
+    	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];
+    	this.selectedYear = this.date.getYear();
+    	this.lowDate = setLowDate(this.selectedMonth, this.selectedYear);
+    	this.highDate = setHighDate(this.selectedMonth, this.selectedYear);
+    	//this.budgetProgressText.setText(selectedMonthText + " Budget Progress");
+    	
+    }
+    
+    /**
+     * description:
+     * 	updates the lowDate to the first day of the selected month
+     */
+    private LocalDate setLowDate(int month, int year) {
+    	return LocalDate.of(year, month, 1);
+    }
+    
+    /**
+     * description:
+     * 	updates the highDate to the last day of the selected month
+     */
+    private LocalDate setHighDate(int month, int year) {
+    	return YearMonth.of(year, month).atEndOfMonth();
+    }
 
     @Override
     public void budgetChange() {
         //only change alert box here with budget change
         //update expense labels
-        // need method in the user to get last 10 expesense
+        // need method in the user to get last 10 expenses
+    	setDates();
         showTenExpenses();
 
     }
 
     @Override
     public void loginChange() {
-        String name = View.controller.getUserDetails();
-        welcomeLabel.setText("Welcome, " + name + " to your Dashboard!");
-
+        String name = View.controller.getFirstName();
+        welcomeLabel.setText("<html><span style='white-space:nowrap;'>౨ৎ౨ৎ౨ৎ <b>Welcome to your Dashboard, " + name + "</b> ౨ৎ౨ৎ౨ৎ</span></html>");
+        setDates();
         showTenExpenses();
 
     }
 
     @Override
     public void expenseChange() {
-
+    	setDates();
         showTenExpenses();
 
     }
 
     private class BudgetStatusRenderer extends DefaultTableCellRenderer {
-
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -174,12 +198,16 @@ public class Dashboard extends JPanel implements Observer {
                 int intValue = (Integer) value;
                 if (intValue >= 80) {
                     c.setForeground(Color.RED); // Change color to red for values >= 80
-                } else {
+                    ((JLabel) c).setText(intValue + "%");
+                } else if (intValue == -1) {
+                	c.setForeground(Color.BLACK);
+                	((JLabel) c).setText("N/A");
+            	} else {
                     c.setForeground(Color.BLACK); // Default color for other values
+                    ((JLabel) c).setText(intValue + "%");
                 }
             }
             return c;
         }
     }
-
 }
