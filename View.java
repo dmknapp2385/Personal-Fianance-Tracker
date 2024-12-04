@@ -111,16 +111,17 @@ public class View extends JFrame implements Observer {
     }
 
     @Override
-    public void budgetChange() {
-
-    }
-
-    @Override
     public void loginChange() {
         this.setJMenuBar(mbar);
         //show dashboard panel
         cards.show(this.getContentPane(), "Dashboard");
     }
+    
+    @Override
+    public void budgetChange() {}
+    
+    @Override
+    public void expenseChange() {}
 
     private class MenuBarListener implements ActionListener {
 
