@@ -23,8 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class FinanceView extends JPanel implements Observer{
-	
+public class FinanceView extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 
 	// instance variables
@@ -116,8 +115,7 @@ public class FinanceView extends JPanel implements Observer{
      * description:
      * 	sets up the entire GUI layout
      */
-	public void setup() {
-		
+	private void setup() {
         // Underlying JFrame
         this.setLayout(new BorderLayout());
         this.setSize(600, 550);
@@ -670,7 +668,7 @@ public class FinanceView extends JPanel implements Observer{
          * 	updates values used to draw pie chart
          * @param values - double[], values that pie chart displays, percentage of overall spending for each category
          */
-        public void setValues(double[] values) {
+        private void setValues(double[] values) {
             this.values = values;
             repaint();
         }
@@ -797,7 +795,7 @@ public class FinanceView extends JPanel implements Observer{
      * 	updates the pie chart 
      * @param total - double, the total expenses for the selected month
      */
-    public void updatePieChart(double total) {
+    private void updatePieChart(double total) {
     	double foodPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.FOOD, this.lowDate, this.highDate)/total*100;
     	double transportationPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.TRANSPORTATION, this.lowDate, this.highDate)/total*100;
     	double entertainmentPiePercent = View.controller.getTotalExpensesByCategoryByDate(Category.ENTERTAINMENT, this.lowDate, this.highDate)/total*100;
