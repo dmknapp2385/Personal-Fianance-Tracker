@@ -28,6 +28,15 @@ public class ExpenseView extends JPanel implements Observer {
     private JLabel error;
     private JLabel error2;
     private JTextField fileName;
+    
+    /**
+     * description: constructor that sets up the layout to
+     * display the user's expenses. Expenses can be viewed :
+     * filtered by category, and date range. Expenses can be 
+     * added in using a button individually, or from a text file
+     * as imports. expenses can also be exported to a text file, 
+     * to have a copy of the most recent expenses of the user's.
+     */
 
     public ExpenseView() {
         View.controller.addObserver(this);
@@ -113,8 +122,19 @@ public class ExpenseView extends JPanel implements Observer {
         importPanel.add(error2);
 
     }
+    /**
+     * description: private inner listener class implemented
+     * for the search, edit , delete,export, import and add functions
+     * in the expense's layout. 
+     */
 
     private class ButtonActionListener implements ActionListener {
+    	/**
+    	 * description: invoked when action occurs; in this case,
+    	 * when a button is clicked. 
+    	 * @param: e= ActionEvent that indicates a component-defined
+    	 * action has occured. 
+    	 */
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -212,6 +232,9 @@ public class ExpenseView extends JPanel implements Observer {
         }
     }
 
+    /**
+     * description: observer function called when change in an expense is detected.
+     */
     @Override
     public void expenseChange() {
         //Reset all fields, dropdowns and errors
@@ -223,11 +246,18 @@ public class ExpenseView extends JPanel implements Observer {
         this.fileName.setText("");
         showAllExpenses(View.controller.getAllExpenses());
     }
+    
+    /**
+     * description: observer function called when change in budget detected
+     */
 
     @Override
     public void budgetChange() {
     }
-
+    /**
+     * description: observer function called when change in user's login details
+     * is detected.
+     */
     @Override
     public void loginChange() {
         //Reset all fields, dropdowns and errors
