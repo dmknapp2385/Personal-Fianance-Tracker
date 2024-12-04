@@ -1,11 +1,21 @@
 
 interface Observer {
-
-    //alerts the panel that implements it that the budget has changed
-    public void budgetChange();
-
-    //alerts panel that implemts it that the a user has logged in
+	
+    /**
+     * description:
+     * 	alerts panel that implements it that the a user has logged in
+     */
     public void loginChange();
-    
-    public default void expenseChange() {};
+
+	/**
+	 * description:
+	 * 	alerts the panel that implements it that a budget has changed
+	 */
+    public void budgetChange();
+        
+    /**
+     * description:
+     * 	alerts panel that implements it that an expense has changed
+     */
+    public void expenseChange();
 }
