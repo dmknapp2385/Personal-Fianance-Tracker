@@ -14,12 +14,18 @@ import javax.swing.SwingUtilities;
 
 public class View extends JFrame implements Observer {
 
-	//singleton class for controller
+	// instance variables
 	private static final long serialVersionUID = 1L;
+	
+	// singleton class for controller
     public static final Controller controller = Controller.instanceOf();
     private JMenuBar mbar;
     private CardLayout cards;
 
+    /**
+     * description:
+     * 		instantiates a View object
+     */
     public View() {
     	View.controller.loadData();
     	
@@ -98,7 +104,11 @@ public class View extends JFrame implements Observer {
         });
     }
 
-    //method switches the card view
+    /**
+     * description:
+     * 		method switches the card view
+     * @param card - String, the card that the view switches to
+     */
     private void changeCards(String card) {
         if (!card.equals("Logout")) {
             cards.show(this.getContentPane(), card);
@@ -109,22 +119,42 @@ public class View extends JFrame implements Observer {
             View.controller.logout();
         }
     }
-
+    
+    /**
+     * description:
+     * 	updates display of expenses and resets date information when a login has occurred
+     */
     @Override
     public void loginChange() {
         this.setJMenuBar(mbar);
         //show dashboard panel
         cards.show(this.getContentPane(), "Dashboard");
     }
-    
+
+    /**
+     * description:
+     * 	recognizes when a budget change has occurred
+     */
     @Override
     public void budgetChange() {}
-    
+
+    /**
+     * description:
+     * 	recognizes when an expense change has occurred
+     */
     @Override
     public void expenseChange() {}
-
+    
+    /**
+     * description:
+     * 	action listener class used to change views
+     */
     private class MenuBarListener implements ActionListener {
-
+    	/**
+         * description:
+         * 	updates view based on selection
+         * @param e - ActionEvent, detected event
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
@@ -132,6 +162,10 @@ public class View extends JFrame implements Observer {
         }
     }
 
+    /**
+     * description:
+     * 	main method that instantiates the View and begins the program
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -140,7 +174,5 @@ public class View extends JFrame implements Observer {
                 view.setVisible(true);
             }
         });
-
     }
-
 }
