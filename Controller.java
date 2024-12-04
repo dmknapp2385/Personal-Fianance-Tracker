@@ -241,7 +241,7 @@ public class Controller {
      * @param high - LocalDate, used as the later date for expenses
      * @return an array list sorted by date and category
      */
-    public ArrayList<Expense> getbyDateCategory(Category c, LocalDate low, LocalDate high) {
+    public ArrayList<Expense> getByDateCategory(Category c, LocalDate low, LocalDate high) {
         assert !currUser.isEmpty();
 
         User user = currUser.get();
@@ -446,18 +446,6 @@ public class Controller {
         return budget;
     }
 
-    /**
-     * description:
-     * 	allows user to get expenses by category
-     * @param category - Category, used to find expense for inputed category
-     * @return Optional<Double>, expense or specified category
-     */
-    public Optional<Double> getExpensesByCategoryPercent(Category category) {
-        User user = currUser.get();
-        Optional<Double> catPercent = user.getExpensesByCategoryPercent(category);
-        return catPercent;
-
-    }
 
     /**
      * description: 

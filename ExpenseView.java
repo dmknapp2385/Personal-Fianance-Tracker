@@ -24,7 +24,7 @@ public class ExpenseView extends JPanel implements Observer {
 	private JTextField fromField;
     private JTextField toField;
     private JPanel expensePanel;
-    private JComboBox<String> catDropdown;
+    private JComboBox<String> catDropDown;
     private JLabel error;
     private JLabel error2;
     private JTextField fileName;
@@ -42,8 +42,8 @@ public class ExpenseView extends JPanel implements Observer {
         JLabel catFilter = new JLabel("Filter by category ");
         buttonPanel.add(catFilter);
         String[] categories = {"All", "Food", "Transportation", "Entertainment", "Utilities", "Miscellaneous"};
-        this.catDropdown = new JComboBox<>(categories);
-        buttonPanel.add(catDropdown);
+        this.catDropDown = new JComboBox<>(categories);
+        buttonPanel.add(catDropDown);
 
         //add date filter
         Dimension textDimension = new Dimension(85, 25);
@@ -127,7 +127,7 @@ public class ExpenseView extends JPanel implements Observer {
             String command = e.getActionCommand();
 
             if (command.equals("search")) {
-                String category = (String) catDropdown.getSelectedItem();
+                String category = (String) catDropDown.getSelectedItem();
                 String toDate = toField.getText();
                 String fromDate = fromField.getText();
 
@@ -152,7 +152,7 @@ public class ExpenseView extends JPanel implements Observer {
                         //search by category and date if category is not all
                         if (!category.equals("All")) {
                             Category cat = Category.valueOf(category.toUpperCase());
-                            showAllExpenses(View.controller.getbyDateCategory(cat, fLocalDate, tLocalDate));
+                            showAllExpenses(View.controller.getByDateCategory(cat, fLocalDate, tLocalDate));
                         } else {
                             //only search by date range
                             showAllExpenses(View.controller.getByDate(fLocalDate, tLocalDate));
@@ -215,7 +215,7 @@ public class ExpenseView extends JPanel implements Observer {
     @Override
     public void expenseChange() {
         //Reset all fields, dropdowns and errors
-        this.catDropdown.setSelectedIndex(0);
+        this.catDropDown.setSelectedIndex(0);
         this.toField.setText("");
         this.fromField.setText("");
         this.error.setText("");
@@ -231,7 +231,7 @@ public class ExpenseView extends JPanel implements Observer {
     @Override
     public void loginChange() {
         //Reset all fields, dropdowns and errors
-        this.catDropdown.setSelectedIndex(0);
+        this.catDropDown.setSelectedIndex(0);
         this.toField.setText("");
         this.fromField.setText("");
         this.error.setText("");
