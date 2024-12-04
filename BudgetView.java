@@ -1,4 +1,3 @@
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,9 +18,8 @@ import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 
 
-
 public class BudgetView extends JPanel implements Observer {
-
+	
     private static final long serialVersionUID = 1L;
 	private JLabel foodBudget;
     private JLabel transportBudget;
@@ -45,9 +43,7 @@ public class BudgetView extends JPanel implements Observer {
 
     public BudgetView() {
         View.controller.addObserver(this);
-        
         this.setUp();
-
     }
 
     private void setUp() {
@@ -298,35 +294,8 @@ public class BudgetView extends JPanel implements Observer {
         );
 
     }
-
-//    public void updateBudget() {
-//        //remove old components
-//        SwingUtilities.invokeLater(() -> {
-//            Optional<Double> food = View.controller.getBudgetByCategory(Category.FOOD);
-//            Optional<Double> transport = View.controller.getBudgetByCategory(Category.TRANSPORTATION);
-//            Optional<Double> entertainment = View.controller.getBudgetByCategory(Category.ENTERTAINMENT);
-//            Optional<Double> utilities = View.controller.getBudgetByCategory(Category.UTILITIES);
-//            Optional<Double> misc = View.controller.getBudgetByCategory(Category.MISCELLANEOUS);
-//            if (!food.isEmpty()) {
-//                this.foodBudget.setText(String.format("$%.2f", food.get()));
-//            }
-//            if (!transport.isEmpty()) {
-//                this.transportBudget.setText(String.format("$%.2f", transport.get()));
-//            }
-//            if (!entertainment.isEmpty()) {
-//                this.entertainmentBudget.setText(String.format("$%.2f", entertainment.get()));
-//            }
-//            if (!utilities.isEmpty()) {
-//                this.utilitiesBudget.setText(String.format("$%.2f", utilities.get()));
-//            }
-//            if (!misc.isEmpty()) {
-//                this.miscBudget.setText(String.format("$%.2f", misc.get()));
-//            }
-//        });
-//
-//    }
-    
-    public void updateBudget() {
+ 
+    private void updateBudget() {
         SwingUtilities.invokeLater(() -> {
             Optional<Double> food = View.controller.getBudgetByCategory(Category.FOOD);
             Optional<Double> transport = View.controller.getBudgetByCategory(Category.TRANSPORTATION);
@@ -354,7 +323,7 @@ public class BudgetView extends JPanel implements Observer {
     }
     
     
-    public void setDates() {
+    private void setDates() {
     	this.date = LocalDate.now();
     	this.selectedMonth = this.date.getMonthValue();
     	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];
@@ -381,23 +350,23 @@ public class BudgetView extends JPanel implements Observer {
     	return YearMonth.of(year, month).atEndOfMonth();
     }
 
-    public void updateProgressBars() {
+    private void updateProgressBars() {
         SwingUtilities.invokeLater(() -> {
             Optional<Double> food = View.controller.getExpensesByCategoryPercentByDate(Category.FOOD, this.lowDate, this.highDate);
             Optional<Double> transport = View.controller.getExpensesByCategoryPercentByDate(Category.TRANSPORTATION, this.lowDate, this.highDate);
             Optional<Double> entertainment = View.controller.getExpensesByCategoryPercentByDate(Category.ENTERTAINMENT, this.lowDate, this.highDate);
             Optional<Double> utilities = View.controller.getExpensesByCategoryPercentByDate(Category.UTILITIES, this.lowDate, this.highDate);
             Optional<Double> misc = View.controller.getExpensesByCategoryPercentByDate(Category.MISCELLANEOUS, this.lowDate, this.highDate);
-            updateProgresshelper(food, foodBar);
-            updateProgresshelper(transport, transportBar);
-            updateProgresshelper(entertainment, entertainmentBar);
-            updateProgresshelper(utilities, utilitiesBar);
-            updateProgresshelper(misc, miscBar);
+            updateProgressHelper(food, foodBar);
+            updateProgressHelper(transport, transportBar);
+            updateProgressHelper(entertainment, entertainmentBar);
+            updateProgressHelper(utilities, utilitiesBar);
+            updateProgressHelper(misc, miscBar);
         });
 
     }
 
-    private void updateProgresshelper(Optional<Double> val, JProgressBar bar) {
+    private void updateProgressHelper(Optional<Double> val, JProgressBar bar) {
         SwingUtilities.invokeLater(() -> {
             if (val.isEmpty()) {
                 bar.setValue(0);
@@ -420,7 +389,6 @@ public class BudgetView extends JPanel implements Observer {
 
 
     private class ButtonActionListener implements ActionListener {
-
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             Category cat = null;
