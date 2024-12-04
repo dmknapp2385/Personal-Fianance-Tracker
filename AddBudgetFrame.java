@@ -58,9 +58,12 @@ public class AddBudgetFrame extends JFrame{
                  try {
                      Double amountD = Double.parseDouble(amount.trim());
                      if (command.equals("add")) {
-                         View.controller.addBudget(cat, amountD);
-                      
-
+                    	 if (amountD == 0.0) {
+                    		 View.controller.removeBudget(cat);
+                    	 }
+                    	 else {
+                    		 View.controller.addBudget(cat, amountD); 
+                    	 }
                      }
                      closeFrame();
 

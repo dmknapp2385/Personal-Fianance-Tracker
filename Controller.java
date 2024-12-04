@@ -220,6 +220,13 @@ public class Controller {
         User user = currUser.get();
         user.addBudget(cat, amount);
     }
+    
+    
+    public void removeBudget(Category cat) {
+    	assert !currUser.isEmpty();
+    	User user = currUser.get();
+        user.removeBudget(cat);
+    }
 
     /**
      * description: allows the user to get their expenses sorted by date and
