@@ -11,9 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-@SuppressWarnings("serial")
+
 public class AddBudgetFrame extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
 	private JTextField amountField = new JTextField("");
     private JPanel mainPanel = new JPanel();
     private JLabel errorTxt = new JLabel("");
@@ -22,20 +23,21 @@ public class AddBudgetFrame extends JFrame{
 
     public AddBudgetFrame(Category cat) {
     	this.cat = cat;
-        this.setTitle("Personal Finance Tracker : Add Budget");
+        this.setTitle("｡˚✧ Personal Finance Tracker: Add Budget ✧˚｡");
         setUp();
         this.btn.setText("Add");
         this.btn.setActionCommand("add");
-
     }
+
     
-    
-    public void setUp() {
+    private void setUp() {
     	 //Color color = new Color(217, 214, 176);
          //this.setBackground(color);
+
          this.setSize(500, 500);
          this.add(mainPanel, BorderLayout.CENTER);
          mainPanel.setLayout(new FlowLayout());
+         mainPanel.setBackground(new Color(244,243,239));
 
          Dimension textFieldDim = new Dimension(175, 25);
          JLabel amount = new JLabel("Amount: ");

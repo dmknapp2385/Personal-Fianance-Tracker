@@ -1,10 +1,11 @@
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Optional;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -13,27 +14,36 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.EmptyBorder;
 
-@SuppressWarnings("serial")
+
 public class BudgetView extends JPanel implements Observer {
-
-    private JLabel foodBudget;
+	
+    private static final long serialVersionUID = 1L;
+	private JLabel foodBudget;
     private JLabel transportBudget;
     private JLabel entertainmentBudget;
     private JLabel utilitiesBudget;
-    private JLabel miscBudget; 
+    private JLabel miscBudget;
+    private JLabel budgetProgressText;
     private JProgressBar foodBar = new JProgressBar(0, 100);
     private JProgressBar transportBar = new JProgressBar(0, 100);
     private JProgressBar entertainmentBar = new JProgressBar(0, 100);
     private JProgressBar utilitiesBar = new JProgressBar(0, 100);
     private JProgressBar miscBar = new JProgressBar(0, 100);
+    
+	private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private LocalDate date;
+	private int selectedMonth;
+	private String selectedMonthText;
+	private int selectedYear;
+	private LocalDate lowDate;
+	private LocalDate highDate;
 
     public BudgetView() {
         View.controller.addObserver(this);
         this.setUp();
-
     }
 
     private void setUp() {
@@ -46,7 +56,6 @@ public class BudgetView extends JPanel implements Observer {
         //create header text label
         JLabel title = new JLabel("Budget Management");
         title.setFont(new Font("Calibri", Font.BOLD, 20));
-        title.setBorder(new EmptyBorder(15, 5, 8, 15));
         this.add(title, BorderLayout.NORTH);
 
         JPanel centerP = new JPanel();
@@ -60,13 +69,15 @@ public class BudgetView extends JPanel implements Observer {
         //create dimension for text fields and buttons
         Dimension buttonDimension = new Dimension(125, 25);
 
-        JLabel currBudgetText = new JLabel("Current Budgets: ");
+        JLabel currBudgetText = new JLabel("Current Budgets");
         currBudgetText.setFont(new Font("Calibri", Font.BOLD, 16));
         centerP.add(currBudgetText);
 
-        JLabel budgetProgressText = new JLabel("Budget Progress: ");
+        this.budgetProgressText = new JLabel();
         budgetProgressText.setFont(new Font("Calibri", Font.BOLD, 16));
         centerP.add(budgetProgressText);
+        UIManager.put("ProgressBar.selectionForeground", Color.BLACK); // Text on light areas
+        UIManager.put("ProgressBar.selectionBackground", Color.BLACK); // Text on dark areas
 
         //food
         JLabel foodBudgetTxt = new JLabel("Food: ");
@@ -87,7 +98,7 @@ public class BudgetView extends JPanel implements Observer {
         centerP.add(foodBarTxt);
 
         this.foodBar.setValue(0);
-        this.foodBar.setStringPainted(true);
+        this.foodBar.setStringPainted(true); 
         foodBar.setUI(new javax.swing.plaf.basic.BasicProgressBarUI());
         centerP.add(this.foodBar);
 
@@ -227,6 +238,7 @@ public class BudgetView extends JPanel implements Observer {
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(title)
                         )
+                        .addGap(20)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(currBudgetText)
                         )
@@ -255,7 +267,7 @@ public class BudgetView extends JPanel implements Observer {
                                 .addComponent(miscBudget)
                                 .addComponent(miscButton)
                         )
-                        .addGap(20)
+                        .addGap(70)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(budgetProgressText)
                         )
@@ -282,54 +294,83 @@ public class BudgetView extends JPanel implements Observer {
         );
 
     }
-
-    public void updateBudget() {
-        //remove old components
+ 
+    private void updateBudget() {
         SwingUtilities.invokeLater(() -> {
             Optional<Double> food = View.controller.getBudgetByCategory(Category.FOOD);
             Optional<Double> transport = View.controller.getBudgetByCategory(Category.TRANSPORTATION);
             Optional<Double> entertainment = View.controller.getBudgetByCategory(Category.ENTERTAINMENT);
             Optional<Double> utilities = View.controller.getBudgetByCategory(Category.UTILITIES);
             Optional<Double> misc = View.controller.getBudgetByCategory(Category.MISCELLANEOUS);
-            if (!food.isEmpty()) {
-                this.foodBudget.setText(String.format("$%.2f", food.get()));
-            }
-            if (!transport.isEmpty()) {
-                this.transportBudget.setText(String.format("$%.2f", transport.get()));
-            }
-            if (!entertainment.isEmpty()) {
-                this.entertainmentBudget.setText(String.format("$%.2f", entertainment.get()));
-            }
-            if (!utilities.isEmpty()) {
-                this.utilitiesBudget.setText(String.format("$%.2f", utilities.get()));
-            }
-            if (!misc.isEmpty()) {
-                this.miscBudget.setText(String.format("$%.2f", misc.get()));
-            }
+            updateBudgetHelper(food, foodBudget);
+            updateBudgetHelper(transport, transportBudget);
+            updateBudgetHelper(entertainment, entertainmentBudget);
+            updateBudgetHelper(utilities, utilitiesBudget);
+            updateBudgetHelper(misc, miscBudget);
         });
-
+    }
+    
+    private void updateBudgetHelper(Optional<Double> val, JLabel label) {
+    	if (val.isEmpty()) {
+    		label.setText("No budget set!");
+    	}
+    	else if (val.get() == 0) {
+    		label.setText("No budget set!");
+    	}
+    	else {
+    		label.setText(String.format("$%.2f", val.get()));
+    	}
+    }
+    
+    
+    private void setDates() {
+    	this.date = LocalDate.now();
+    	this.selectedMonth = this.date.getMonthValue();
+    	this.selectedMonthText = this.monthNames[this.selectedMonth - 1];
+    	this.selectedYear = this.date.getYear();
+    	this.lowDate = setLowDate(this.selectedMonth, this.selectedYear);
+    	this.highDate = setHighDate(this.selectedMonth, this.selectedYear);
+    	this.budgetProgressText.setText(selectedMonthText + " Budget Progress");
+    	
+    }
+    
+    /**
+     * description:
+     * 	updates the lowDate to the first day of the selected month
+     */
+    private LocalDate setLowDate(int month, int year) {
+    	return LocalDate.of(year, month, 1);
+    }
+    
+    /**
+     * description:
+     * 	updates the highDate to the last day of the selected month
+     */
+    private LocalDate setHighDate(int month, int year) {
+    	return YearMonth.of(year, month).atEndOfMonth();
     }
 
-    public void updateProgressBars() {
+    private void updateProgressBars() {
         SwingUtilities.invokeLater(() -> {
-            Optional<Double> food = View.controller.getExpensesByCategoryPercent(Category.FOOD);
-            Optional<Double> transport = View.controller.getExpensesByCategoryPercent(Category.TRANSPORTATION);
-            Optional<Double> entertainment = View.controller.getExpensesByCategoryPercent(Category.ENTERTAINMENT);
-            Optional<Double> utilities = View.controller.getExpensesByCategoryPercent(Category.UTILITIES);
-            Optional<Double> misc = View.controller.getExpensesByCategoryPercent(Category.MISCELLANEOUS);
-            updateProgresshelper(food, foodBar);
-            updateProgresshelper(transport, transportBar);
-            updateProgresshelper(entertainment, entertainmentBar);
-            updateProgresshelper(utilities, utilitiesBar);
-            updateProgresshelper(misc, miscBar);
+            Optional<Double> food = View.controller.getExpensesByCategoryPercentByDate(Category.FOOD, this.lowDate, this.highDate);
+            Optional<Double> transport = View.controller.getExpensesByCategoryPercentByDate(Category.TRANSPORTATION, this.lowDate, this.highDate);
+            Optional<Double> entertainment = View.controller.getExpensesByCategoryPercentByDate(Category.ENTERTAINMENT, this.lowDate, this.highDate);
+            Optional<Double> utilities = View.controller.getExpensesByCategoryPercentByDate(Category.UTILITIES, this.lowDate, this.highDate);
+            Optional<Double> misc = View.controller.getExpensesByCategoryPercentByDate(Category.MISCELLANEOUS, this.lowDate, this.highDate);
+            updateProgressHelper(food, foodBar);
+            updateProgressHelper(transport, transportBar);
+            updateProgressHelper(entertainment, entertainmentBar);
+            updateProgressHelper(utilities, utilitiesBar);
+            updateProgressHelper(misc, miscBar);
         });
 
     }
 
-    private void updateProgresshelper(Optional<Double> val, JProgressBar bar) {
+    private void updateProgressHelper(Optional<Double> val, JProgressBar bar) {
         SwingUtilities.invokeLater(() -> {
             if (val.isEmpty()) {
                 bar.setValue(0);
+                bar.setString("0% Used");
                 return;
             }
             int intValue = (int) Math.round(val.get());
@@ -344,9 +385,10 @@ public class BudgetView extends JPanel implements Observer {
         });
 
     }
+    
+
 
     private class ButtonActionListener implements ActionListener {
-
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             Category cat = null;
@@ -379,6 +421,7 @@ public class BudgetView extends JPanel implements Observer {
 
     @Override
     public void loginChange() {
+    	this.setDates();
         this.updateBudget();
         this.updateProgressBars();
 
@@ -386,12 +429,14 @@ public class BudgetView extends JPanel implements Observer {
 
     @Override
     public void budgetChange() {
+    	this.setDates();
         this.updateBudget();
         this.updateProgressBars();
     }
 
     @Override
     public void expenseChange() {
+    	this.setDates();
         this.updateProgressBars();
     }
 

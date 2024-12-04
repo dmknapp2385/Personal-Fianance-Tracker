@@ -416,23 +416,11 @@ public class Controller {
     /**
      * description: alerts of login change
      */
-    private void userLogin() { 
+    private void userLogin() {
         this.currUser.get().alertLogin();
         this.currUser.get().alertBudget();
         this.currUser.get().alertExpense();
     }
-    
-    
-    public String getUserDetails() {
-        if (currUser.isEmpty()) {
-        	return null;
-        }
-        
-     	User user=currUser.get();
-     	String name= user.getUsername();
-     	return name;
-     }
-        	
 
     /**
      * description: allows user to get budget by category
@@ -457,5 +445,35 @@ public class Controller {
         Optional<Double> catPercent = user.getExpensesByCategoryPercent(category);
         return catPercent;
 
+    }
+
+    /**
+     * description: gets username
+     *
+     * @return String, username
+     */
+    public String getUserDetails() {
+        if (currUser.isEmpty()) {
+            return null;
+        }
+
+        User user = currUser.get();
+        String name = user.getUsername();
+        return name;
+    }
+    
+    /**
+     * description: gets first name
+     *
+     * @return String, first name
+     */
+    public String getFirstName() {
+        if (currUser.isEmpty()) {
+            return null;
+        }
+
+        User user = currUser.get();
+        String name = user.getFirstName();
+        return name;
     }
 }

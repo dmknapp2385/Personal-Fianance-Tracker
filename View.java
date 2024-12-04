@@ -1,7 +1,6 @@
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,12 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class View extends JFrame implements Observer {
 
-    //singleton class for controller
+	//singleton class for controller
+	private static final long serialVersionUID = 1L;
     public static final Controller controller = Controller.instanceOf();
     private JMenuBar mbar;
     private CardLayout cards;
@@ -27,7 +26,7 @@ public class View extends JFrame implements Observer {
         View.controller.addObserver(this);
         View.controller.loadData();
         //Set frame styles
-        this.setTitle("Personal Finance Tracker");
+        this.setTitle("｡˚⋆♡˚ Personal Finance Tracker ˚♡⋆˚｡");
         Color color = new Color(244,243,239); 
         this.setBackground(color);
         this.setSize(900, 750); 

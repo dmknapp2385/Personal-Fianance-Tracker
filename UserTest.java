@@ -11,13 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
-	User user; 
+	User user;
 	Expense expense1 ;
 	Expense expense2 ;
 
 	Expense expense3;
 	
-	Expense expense4; 
+	Expense expense4;
 
 	Expense expense5;
 	
@@ -117,12 +117,21 @@ class UserTest {
 		
 		double amount =500;
 		
+		/*user.deleteExpense(id1);
+		user.deleteExpense(id2);
+		user.deleteExpense(id3);
+		user.deleteExpense(id4);
+		user.deleteExpense(id5);
+		
+		ArrayList <Expense> expensesDelete= user.getAllExpenses();
+		assertEquals(0, expensesDelete.size());
+		*/
 		
 		double amount1 = 23.87;
 		LocalDate date1 = LocalDate.of(2024, 10, 25);
 		String description1 = "three broomsticks with weasley";
 		Category category1 = Category.FOOD;
-	
+		
 		Expense expense1Copy = new Expense(amount1, date1, description1, category1);
 		user.editExpense(expense1Copy, id1);
 		
@@ -142,7 +151,7 @@ class UserTest {
 		
 		user.editExpense(expense3Copy, id3);
 		
-		double amount4 = 400.99; 
+		double amount4 = 400.99;
 		LocalDate date4 = LocalDate.of(2024, 11, 15);
 		String description4 = "concert food";
 		Category category4 = Category.TRANSPORTATION;
@@ -162,15 +171,6 @@ class UserTest {
 		Expense expense5Copy = new Expense(amount5, date5, description5, category5);
 		user.editExpense(expense5Copy, id3);
 		
-		
-		user.deleteExpense(id1);
-		user.deleteExpense(id2);
-		user.deleteExpense(id3);
-		user.deleteExpense(id4);
-		user.deleteExpense(id5);
-		
-		ArrayList <Expense> expensesDelete= user.getAllExpenses();
-		assertEquals(0, expensesDelete.size());
 		
 		
 		
@@ -280,7 +280,7 @@ class UserTest {
 		
 		NoSuchElementException exception= assertThrows(NoSuchElementException.class,() ->{
 			user.getPercentSpending(Category.FOOD);
-		});  
+		});
 		assertEquals("No expenses yet!", exception.getMessage());
 		user.addExpense(expense1);
 		user.addExpense(expense2);

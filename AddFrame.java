@@ -16,19 +16,20 @@ import javax.swing.JTextField;
 
 public class AddFrame extends JFrame {
 
-    private JTextField dField = new JTextField("");
+    private static final long serialVersionUID = 1L;
+	private JTextField dField = new JTextField("");
     private JTextField dateField = new JTextField("");
     private JTextField amountField = new JTextField("");
-    private JComboBox categories;
+	private JComboBox<String> categories;
     private JPanel mainPanel = new JPanel();
     private Long expenseId;
     private JLabel errorTxt = new JLabel("");
     private JButton btn;
 
-    //constructor one, empty textfields
+    //constructor one, empty text fields
     public AddFrame() {
         //Set frame styles
-        this.setTitle("Personal Finance Tracker : Add Expense");
+        this.setTitle("｡˚✧ Personal Finance Tracker: Add Expense ✧˚｡");
         setup();
         this.btn.setText("Add");
         this.btn.setActionCommand("add");
@@ -36,7 +37,7 @@ public class AddFrame extends JFrame {
 
     }
 
-    //construct two, fill textfields with expense that was clicked.
+    //construct two, fill text fields with expense that was clicked.
     public AddFrame(Expense e) {
         //set current expense id
         this.expenseId = e.getId();
@@ -65,13 +66,14 @@ public class AddFrame extends JFrame {
         mainPanel.add(deletebtn);
     }
 
-    //method initiaizes frame with empty fields and button text
+    //method initializes frame with empty fields and button text
     private void setup() {
         Color color = new Color(217, 214, 176);
         this.setBackground(color);
         this.setSize(500, 500);
         this.add(mainPanel, BorderLayout.CENTER);
         mainPanel.setLayout(new FlowLayout());
+        mainPanel.setBackground(new Color(244,243,239));
 
         Dimension textFieldDim = new Dimension(175, 25);
         JLabel description = new JLabel("Description: ");
