@@ -191,7 +191,9 @@ public class Dashboard extends JPanel implements Observer {
      */
 
     private class BudgetStatusRenderer extends DefaultTableCellRenderer {
-        @Override
+        private static final long serialVersionUID = 1L;
+
+		@Override
         /**
          * description: function that returns the rendered cell as per the 
          * specifications. 

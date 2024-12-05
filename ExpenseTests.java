@@ -22,7 +22,6 @@ class ExpenseTests {
 		assertEquals(expense1.getAmount(), 23.87);
 		expense1.setAmount(57.33);
 		assertEquals(expense1.getAmount(), 57.33);
-		
 		assertEquals(expense2.getAmount(), 400.99);
 		expense1.setAmount(57.33);
 		assertEquals(expense1.getAmount(), 57.33);
@@ -36,8 +35,6 @@ class ExpenseTests {
 		LocalDate newDate = LocalDate.of(2024, 10, 28);
 		expense1.setDate(newDate);
 		assertEquals(expense1.getDate(), newDate);
-		
-		
 		LocalDate date2 = LocalDate.of(2024, 11, 15);
 		assertEquals(expense2.getDate(), date2);
 		LocalDate newDate2 = LocalDate.of(2024, 11, 18);
@@ -53,8 +50,6 @@ class ExpenseTests {
 		String newDescription = "FANCY Dinner";
 		expense1.setDescription(newDescription);
 		assertEquals(expense1.getDescription(), "fancy dinner");
-		
-		
 		String description2 = "concert";
 		assertEquals(expense2.getDescription(), description2);
 		String newDescription2 = "fun conCERt";
@@ -70,8 +65,6 @@ class ExpenseTests {
 		Category newCategory = Category.UTILITIES;
 		expense1.setCategory(newCategory);
 		assertEquals(expense1.getCategory(), newCategory);
-		
-		
 		Category category2 = Category.ENTERTAINMENT;
 		assertEquals(expense2.getCategory(), category2);
 		Category newCategory2 = Category.TRANSPORTATION;
