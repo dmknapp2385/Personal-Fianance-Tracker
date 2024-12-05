@@ -32,7 +32,8 @@ public class FinanceView extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 
 	// instance variables
-	private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July",
+			                            "August", "September", "October", "November", "December"};
 	
 	private LocalDate date;
 	private int selectedMonth;

@@ -452,7 +452,9 @@ public class BudgetView extends JPanel implements Observer {
     	 * description:
     	 * 	handles action events for when a user modifies the budget.
     	 *  it creates an instance of the addBudgetFrame class to create 
-    	 *  a pop up, allowing the user to edit/add/delete their budget
+    	 *  a pop up, allowing the user to edit/add/delete their budget. 
+    	 *  initializes it as null which is never used because of the switch
+    	 *  statement
     	 * @param e - ActionEvent, detected event
     	 */
         public void actionPerformed(ActionEvent e) {
@@ -472,10 +474,8 @@ public class BudgetView extends JPanel implements Observer {
                 case "UtilitiesEdit":
                     cat = Category.UTILITIES;
                     break;
-                case "MiscEdit":
+                default: //misc
                     cat = Category.MISCELLANEOUS;
-                    break;
-                default:
                     break;
 
             }
