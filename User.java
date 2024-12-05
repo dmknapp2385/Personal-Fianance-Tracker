@@ -106,14 +106,13 @@ public class User implements Serializable {
         return copy;
     }
 
-    // TODO: Should this throw a NoSuchElementException instead of returning null?
-    // TODO: Compare with find below--do we need both?
+
     /**
      * description:
      * 	gets a copy of an expense by id
      * @param id - long, id of expense to be returned
-     * @return Expense, returns a copy of an expense by id, returns null if
-     * expense does not match
+     * @return Expense, returns a copy of an expense by id, would return null
+     * if expense does not match, which is impossible because of how it is called
      */
     public Expense getExpense(long id) {
         for (Expense e : expenses) {
@@ -128,8 +127,10 @@ public class User implements Serializable {
      * description:
      * 	gets a copy of an expense by id
      * @param id - long, id of expense to be returned
-     * @return Expense, returns the expense by id, returns null if expense does
-     * not match
+     * @return Expense, returns the expense by id, which is not an escaping
+     * reference because it is private and only used in this class to remove 
+     * expenses, would return null if expense does not match, which is impossible
+     * because of how it is called
      */
     private Expense find(long id) {
         for (Expense e : expenses) {
@@ -359,8 +360,7 @@ public class User implements Serializable {
         return (getExpense / getTotal) * 100;
     }
 
-    // additional methods
-    // TODO: Check functionality on this--do we want to maintain id unless the category changes?
+
     /**
      * description:
      * 	edits an existing expense
@@ -411,7 +411,7 @@ public class User implements Serializable {
         alertExpense();
     }
 
-    // TODO: Compare with addExpense above--do we need both?
+
     /**
      * description:
      * 	add a copy of an expense to the expense list and appropriate
@@ -441,7 +441,7 @@ public class User implements Serializable {
         }
     }
 
-    // TODO: Compare with deleteExpense below--do we need both?
+   
     /**
      * description:
      * 	deletes an expense
@@ -490,7 +490,7 @@ public class User implements Serializable {
         alertBudget();
     }
 
-    // TODO: This does not appear to be used anywhere
+   
     /**
      * description:
      * 	removes a budget for a category

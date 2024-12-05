@@ -367,9 +367,7 @@ class UserTest {
 		} catch (FileNotFoundException e) {
 			System.out.println("File doesnt exist!");
 			e.printStackTrace();
-		} 
-		
-		
+		} 	
 	}
 	
 	

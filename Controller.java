@@ -144,10 +144,9 @@ public class Controller {
             }
             userInputStream.close();
         } catch (EOFException e) {
-            // end of file
+        // end of file
         } catch (IOException | ClassNotFoundException e) {
-            //e.printStackTrace();
-            System.out.println("No stored users.");
+        	System.out.println("No stored users");
         }
         if (loadedUsers.size() > 0) {
             this.users = new ArrayList<>(loadedUsers);
@@ -367,7 +366,9 @@ public class Controller {
      * description:
      * 	returns user with input username
      * @param username - String, used to find user
-     * @return User, the found user
+     * @return User, the found user, would return null if 
+     * user is not found, which is immediately caught and
+     * dealt with in this class
      */
     private User findUser(String username) {
         for (User user : users) {
@@ -382,7 +383,7 @@ public class Controller {
      * description:
      * 	checks if login password is correct
      * @param user - User, used to find user
-     * @param pw - String, used to compare to inputted password
+     * @param pw - String, used to compare to inputed password
      * @return boolean, whether or not the password is correct
      */
     private boolean checkPassword(User user, String pw) {
@@ -455,7 +456,8 @@ public class Controller {
     /**
      * description: 
      * 	gets username
-     * @return String, username
+     * @return String, username, returns null if no current user, 
+     * which is immediately caught and dealt with in this class
      */
     public String getUserDetails() {
         if (currUser.isEmpty()) {
@@ -470,7 +472,8 @@ public class Controller {
     /**
      * description: 
      * 	gets first name
-     * @return String, first name
+     * @return String, first name returns null if no current user, 
+     * which is immediately caught and dealt with in this class
      */
     public String getFirstName() {
         if (currUser.isEmpty()) {
