@@ -65,10 +65,12 @@ class UserTest {
 		assertEquals("salt", user.getSalt());
 	}
 	
+	
 	@Test
 	void testFirstName() {
 		assertEquals("Harry", user.getFirstName());
 	}
+	
 	
 	@Test
 	void testAddExpenses() {
@@ -86,6 +88,7 @@ class UserTest {
 		assertEquals(expense1.getDescription(), e1.getDescription());
 		
 	}
+	
 	
 	@Test
 	void testDeleteExpenseFood() {
@@ -113,7 +116,6 @@ class UserTest {
 	}
 	
 	
-	
 	@Test
 	void testDeleteExpenseUtilities() {
 		user.addExpense(expense4);
@@ -122,6 +124,7 @@ class UserTest {
 		assertEquals(0, user.getAllExpenses().size());
 	}
 	
+	
 	@Test
 	void testDeleteExpenseMisc() {
 		user.addExpense(expense5);
@@ -129,6 +132,7 @@ class UserTest {
 		user.deleteExpense(id);
 		assertEquals(0, user.getAllExpenses().size());
 	}
+	
 	
 	@Test
 	void testEditExpenseEntertainment() {
@@ -153,6 +157,7 @@ class UserTest {
 		user.editExpense(expense1Copy, id1);
 	}
 	
+	
 	@Test 
 	void testEditExpenseUtilities() {
 		this.expenseHelper();
@@ -166,6 +171,7 @@ class UserTest {
 		
 	}
 	
+	
 	@Test 
 	void testEditExpenseMisc() {
 		this.expenseHelper();
@@ -177,6 +183,7 @@ class UserTest {
 		Expense expense3Copy = new Expense(amount3, date3, description3, category3);
 		user.editExpense(expense3Copy, id3);
 	}
+	
 	
 	@Test
 	void testEditExpenseTransport() {
@@ -214,7 +221,6 @@ class UserTest {
 	}
 	
 	
-
 	@Test
 	void testDatesAndBudget() {
 		this.dateHelper();
