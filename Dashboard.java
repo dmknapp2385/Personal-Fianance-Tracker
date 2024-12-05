@@ -1,3 +1,8 @@
+/*
+ * File Name: Dashboard.java
+ * Authors: Paulina Aguirre (paulinaa3), David Herring (dherring), Chitrangada Juneja(cj21), Elle Knapp (dmknapp2385)
+ * Description: This class creates the landing page Dashboard GUI.   
+ */
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;

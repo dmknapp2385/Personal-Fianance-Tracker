@@ -1,3 +1,8 @@
+/*
+ * File Name: Controller.java
+ * Authors: Paulina Aguirre (paulinaa3), David Herring (dherring), Chitrangada Juneja(cj21), Elle Knapp (dmknapp2385)
+ * Description: This class serves as the controller which handles interactions between the different view and model classes.  
+ */
 
 import java.io.*;
 import java.security.MessageDigest;

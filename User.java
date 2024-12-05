@@ -1,3 +1,8 @@
+/*
+ * File Name: User.java
+ * Authors: Paulina Aguirre (paulinaa3), David Herring (dherring), Chitrangada Juneja(cj21), Elle Knapp (dmknapp2385)
+ * Description: This class models user objects. 
+ */
 
 import java.io.BufferedWriter;
 import java.io.File;

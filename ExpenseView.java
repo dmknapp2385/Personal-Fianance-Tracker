@@ -1,3 +1,8 @@
+/*
+ * File Name: ExpenseView.java
+ * Authors: Paulina Aguirre (paulinaa3), David Herring (dherring), Chitrangada Juneja(cj21), Elle Knapp (dmknapp2385)
+ * Description: This class creates the Expenses GUI. 
+ */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
