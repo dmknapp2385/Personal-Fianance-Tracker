@@ -123,6 +123,14 @@ public class Expense implements Serializable, Comparable<Expense> {
     public Category getCategory() {
         return this.category;
     }
+    
+    /**
+     * description:
+     * 	compares current Expense object with another based on dates
+     */
+    public int compareTo(Expense o) {
+        return this.getDate().compareTo(o.getDate());
+    }
 
     /**
      * description:
@@ -134,14 +142,6 @@ public class Expense implements Serializable, Comparable<Expense> {
                 + this.category + ", "
                 + this.amount + ", "
                 + this.description;
-    }
-
-    /**
-     * description:
-     * 	compares current Expense object with another based on dates
-     */
-    public int compareTo(Expense o) {
-        return this.getDate().compareTo(o.getDate());
     }
 
 }
