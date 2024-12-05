@@ -23,6 +23,14 @@ class ExpenseTests {
 	Category category2 = Category.ENTERTAINMENT;
 	Expense expense2 = new Expense(amount2, date2, description2, category2);
 	
+	Expense copyExpense = new Expense(expense1);
+	
+	
+	@Test
+	void testCopy() {
+		assertEquals(expense1.getId(), copyExpense.getId());
+	}
+	
 	@Test
 	void testAmount() {
 		assertEquals(expense1.getAmount(), 23.87);
@@ -77,6 +85,12 @@ class ExpenseTests {
 		expense1.setCategory(newCategory2);
 		assertEquals(expense1.getCategory(), newCategory2);
 		
+	}
+	
+	@Test
+	void testCompareTo() {
+		assertEquals(expense1.compareTo(copyExpense), 0);
+		assertEquals(expense1.compareTo(expense2), -1);
 	}
 	
 	@Test
