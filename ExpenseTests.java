@@ -1,3 +1,9 @@
+/*
+ * File Name: ExpenseTests.java
+ * Authors: Paulina Aguirre (paulinaa3), David Herring (dherring), Chitrangada Juneja(cj21), Elle Knapp (dmknapp2385)
+ * Description: This class tests the functionality of the Expense class. 
+ */
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;

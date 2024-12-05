@@ -1,3 +1,8 @@
+/*
+ * File Name: Expense.java
+ * Authors: Paulina Aguirre (paulinaa3), David Herring (dherring), Chitrangada Juneja(cj21), Elle Knapp (dmknapp2385)
+ * Description: This class models expense objects. 
+ */
 
 import java.io.Serializable;
 import java.time.LocalDate;

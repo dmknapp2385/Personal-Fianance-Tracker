@@ -1,3 +1,9 @@
+/*
+ * File Name: View.java
+ * Authors: Paulina Aguirre (paulinaa3), David Herring (dherring), Chitrangada Juneja(cj21), Elle Knapp (dmknapp2385)
+ * Description: This class creates the basic JFrame that aggregates all of the different views. This class also contains
+ * 		the main method
+ */
 
 import java.awt.CardLayout;
 import java.awt.Color;
