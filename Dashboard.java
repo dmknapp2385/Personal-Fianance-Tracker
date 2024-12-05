@@ -26,8 +26,8 @@ public class Dashboard extends JPanel implements Observer {
     JLabel expensesLabel;
 	
 	/**
-	 * description: Constructor that sets up the 
-	 * dashboard's default view
+	 * description:
+	 * 	Constructor that sets up the dashboard's default view
 	 */
 
     public Dashboard() {
@@ -36,9 +36,10 @@ public class Dashboard extends JPanel implements Observer {
     }
     
     /**
-     * description: function that sets up the base view for the user once logged in. 
-     * sets up panels and labels accordingly, to show any expenses if present
-     * for current user logged in. 
+     * description:
+     * 	function that sets up the base view for the user once logged in. 
+     * 	sets up panels and labels accordingly, to show any expenses if present
+     * 	for current user logged in. 
      */
 
     private void setup() {
@@ -68,13 +69,14 @@ public class Dashboard extends JPanel implements Observer {
     }
     
     /** 
-     * description:provides a comprehensive look for the user's expenses.
-     * private function runnable that displays the expenses so far incurred;
-     * displays the most recent 10 expense inputs by the user. uses a JTable to show
-     * the following info about an expense: date, description,
-     * category, amount, and the percent of the monthly budget it accounts for. shows 
-     * an alert if expense causes 80% over budget.
-     * updates accordingly. 
+     * description:
+     *	provides a comprehensive look for the user's expenses.
+     * 	private function runnable that displays the expenses so far incurred;
+     * 	displays the most recent 10 expense inputs by the user. uses a JTable to show
+     * 	the following info about an expense: date, description,
+     * 	category, amount, and the percent of the monthly budget it accounts for. shows 
+     * 	an alert if expense causes 80% over budget.
+     * 	updates accordingly. 
      */
 
     private void showTenExpenses() {
@@ -151,20 +153,21 @@ public class Dashboard extends JPanel implements Observer {
         });
     }
    /**
-    * description: observer function called when change in budget detected
+    * description:
+    * 	observer function called when change in budget detected
     */
     @Override
     public void budgetChange() {
         //only change alert box here with budget change
         //update expense labels
         // need method in the user to get last 10 expenses
-    	
         showTenExpenses();
 
     }
     /**
-     * description: observer function called when change in user's login details
-     * is detected.
+     * description:
+     * 	observer function called when change in user's login details
+     * 	is detected.
      */
 
     @Override
@@ -176,7 +179,8 @@ public class Dashboard extends JPanel implements Observer {
 
     }
     /**
-     * description: observer function called when change in an expense is detected.
+     * description:
+     * 	observer function called when change in an expense is detected.
      */
 
     @Override
@@ -186,15 +190,19 @@ public class Dashboard extends JPanel implements Observer {
 
     }
     /**
-     * description: private inner class used for the budget column's 
-     * display. if over 80%, changes color of cell in the table to reflect that.
+     * description:
+     * 	private inner class used for the budget column's 
+     * 	display. if over 80%, changes color of cell in the table to reflect that.
      */
 
     private class BudgetStatusRenderer extends DefaultTableCellRenderer {
-        @Override
+        private static final long serialVersionUID = 1L;
+
+		@Override
         /**
-         * description: function that returns the rendered cell as per the 
-         * specifications. 
+         * description:
+         * 	function that returns the rendered cell as per the 
+         * 	specifications. 
          * @param:table - the JTable
          * @param:value - the value to assign to the cell at [row, column]
          * @param:isSelected - true if cell is selected

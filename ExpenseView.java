@@ -30,12 +30,13 @@ public class ExpenseView extends JPanel implements Observer {
     private JTextField fileName;
     
     /**
-     * description: constructor that sets up the layout to
-     * display the user's expenses. Expenses can be viewed :
-     * filtered by category, and date range. Expenses can be 
-     * added in using a button individually, or from a text file
-     * as imports. expenses can also be exported to a text file, 
-     * to have a copy of the most recent expenses of the user's.
+     * description:
+     * 	constructor that sets up the layout to
+     * 	display the user's expenses. Expenses can be viewed :
+     * 	filtered by category, and date range. Expenses can be 
+     * 	added in using a button individually, or from a text file
+     * 	as imports. expenses can also be exported to a text file, 
+     * 	to have a copy of the most recent expenses of the user's.
      */
 
     public ExpenseView() {
@@ -123,15 +124,17 @@ public class ExpenseView extends JPanel implements Observer {
 
     }
     /**
-     * description: private inner listener class implemented
-     * for the search, edit , delete,export, import and add functions
-     * in the expense's layout. 
+     * description:
+     * 	private inner listener class implemented
+     * 	for the search, edit , delete,export, import and add functions
+     * 	in the expense's layout. 
      */
 
     private class ButtonActionListener implements ActionListener {
     	/**
-    	 * description: invoked when action occurs; in this case,
-    	 * when a button is clicked. 
+    	 * description:
+    	 * 	invoked when action occurs; in this case,
+    	 * 	when a button is clicked. 
     	 * @param: e= ActionEvent that indicates a component-defined
     	 * action has occured. 
     	 */
@@ -233,7 +236,8 @@ public class ExpenseView extends JPanel implements Observer {
     }
 
     /**
-     * description: observer function called when change in an expense is detected.
+     * description:
+     * 	observer function called when change in an expense is detected.
      */
     @Override
     public void expenseChange() {
@@ -248,15 +252,17 @@ public class ExpenseView extends JPanel implements Observer {
     }
     
     /**
-     * description: observer function called when change in budget detected
+     * description:
+     * 	observer function called when change in budget detected
      */
 
     @Override
     public void budgetChange() {
     }
     /**
-     * description: observer function called when change in user's login details
-     * is detected.
+     * description:
+     * 	observer function called when change in user's login details
+     * 	is detected.
      */
     @Override
     public void loginChange() {
