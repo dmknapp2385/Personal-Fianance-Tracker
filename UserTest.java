@@ -12,8 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
@@ -360,7 +358,7 @@ class UserTest {
 	@Test
 	void testFile() {
 		try {
-			String incorrect= user.addFile("Expenses.txt");
+			user.addFile("Expenses.txt");
 			ArrayList <Expense> expenses= user.getAllExpenses();
 			assertEquals(3, expenses.size());
 			
