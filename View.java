@@ -166,7 +166,7 @@ public class View extends JFrame implements Observer {
             String command = e.getActionCommand();
             changeCards(command);
         }
-    }
+    } 
 
     /**
      * description:

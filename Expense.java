@@ -20,6 +20,9 @@ public class Expense implements Serializable, Comparable<Expense> {
     /**
      * description:
      * 	this method constructs an Expense object
+     * @pre date != null
+     * @pre description != null
+     * @pre category != null
      * @param amount - double, used to calculate expense amount
      * @param date - LocalDate, used for date
      * @param description - String, used for expense description
@@ -37,6 +40,7 @@ public class Expense implements Serializable, Comparable<Expense> {
      * description:
      * 	this method constructs an Expense object by copying an
      * 	existing Expense object
+     * @pre expense != null
      * @param expense - Expense, Expense object to be copied
      */
     public Expense(Expense expense) {
@@ -59,6 +63,7 @@ public class Expense implements Serializable, Comparable<Expense> {
     /**
      * description:
      * 	setter for date instance variable, sets date
+     * @pre date != null
      * @param date - LocalDate, used to set date
      */
     public void setDate(LocalDate date) {
@@ -69,7 +74,7 @@ public class Expense implements Serializable, Comparable<Expense> {
      * description:
      * 	setter for description instance variable, sets description
      * 	for the expense
-     *
+     * @pre description != null
      * @param description - String, used to create expense description
      */
     public void setDescription(String description) {
@@ -79,6 +84,7 @@ public class Expense implements Serializable, Comparable<Expense> {
     /**
      * description:
      * 	setter for category instance variable, sets category
+     * @pre category != null
      * @param category - Category enum, used to create category for expense
      */
     public void setCategory(Category category) {

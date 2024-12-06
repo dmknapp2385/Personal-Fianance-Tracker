@@ -840,7 +840,7 @@ public class FinanceView extends JPanel implements Observer {
     @Override
     public void loginChange() {
     	this.setDates();
-    	this.updateExpenses();
+    	this.updateExpenses(); 
     }
     
     /**

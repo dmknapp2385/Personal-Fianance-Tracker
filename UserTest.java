@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-class UserTest {
+class UserTest { 
 	
 	//set up to avoid duplicate code
 	String fName= "Harry";
@@ -60,7 +60,7 @@ class UserTest {
 	LocalDate upper= LocalDate.of(2024, 11, 21);
 	
 	
-	
+
 
 	@Test
 	void testConstructor() {

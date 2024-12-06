@@ -176,7 +176,7 @@ public class ExpenseView extends JPanel implements Observer {
                         if (toDate.compareTo(fromDate) < 0) {
                             throw new IllegalArgumentException();
                         }
-
+ 
                         //search by category and date if category is not all
                         if (!category.equals("All")) {
                             Category cat = Category.valueOf(category.toUpperCase());
