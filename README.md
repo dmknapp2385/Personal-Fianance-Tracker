@@ -36,7 +36,7 @@ _Program Execution Guide_
 4. Run the program with Java View
 5. Create a user in the login window (or log in if you already have an account)
 6. The first page is the user Dashboard, which gives an overview of the last 10 expenses added and alerts the user to any spending over set budget limits. The menu bar has options for viewing expenses, budget, or finance views.
-7. Options to import expense files are available on the expense page once the user is logged in. To do this, ensure a txt file is inside the main folder. List expense items in the form 'YYYY-MM-DD, Food,50.0, Description', with one expense per line in the text file.
+7. Options to import expense files are available on the expense page once the user is logged in. To do this, ensure a txt file is inside the main folder (it should be outside the src folder in Eclipse). List expense items in the form 'YYYY-MM-DD, Food,50.0, Description', with one expense per line in the text file.
 8. The user can add an expense with the + button in the Expense page, or edit an expense from the Expense page by clicking on the expense and editing the expense in the popup window.
 9. User can delete an expense by clicking on the expense and clicking the delete button in the popup window.
 10. User can search for expenses based on category, date range, or both in the expense view page
