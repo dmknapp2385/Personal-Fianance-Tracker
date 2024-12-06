@@ -15,6 +15,7 @@ public class Expense implements Serializable, Comparable<Expense> {
     private LocalDate date;
     private String description;
     private Category category;
+    private static long idNumber = 0;
 
     /**
      * description:
@@ -29,7 +30,7 @@ public class Expense implements Serializable, Comparable<Expense> {
         this.date = date;
         this.description = description.toLowerCase();
         this.category = category;
-        this.id = System.currentTimeMillis();
+        this.id = Expense.idNumber++;
     }
 
     /**
