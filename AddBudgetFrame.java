@@ -31,6 +31,8 @@ public class AddBudgetFrame extends JFrame{
     /**
      * description:
      * 	creates a frame, allowing user to add budgets
+     * @pre cat != null
+     * @post a new AddBudgetFrame instance is created with the inputted category
      * @param cat - Category, used to determine where to add budget
      */
     public AddBudgetFrame(Category cat) {
@@ -85,7 +87,7 @@ public class AddBudgetFrame extends JFrame{
 
                  } catch (Exception exception) {
                      errorTxt.setText("Data not properly formatted, use proper amount");
-                 }
+                 } 
              }
          });
 

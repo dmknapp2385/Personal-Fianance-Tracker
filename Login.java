@@ -273,7 +273,7 @@ public class Login extends JPanel {
                 String ln = lNameField.getText();
                 String em = emailField.getText();
                 String un = regUsernameField.getText();
-
+ 
                 if (!regPw.equals(confirmPw)) {
                     error.setText("Passwords Must Match!");
                 } else if (fn.equals("") || ln.equals("") || em.equals("")

@@ -28,7 +28,7 @@ public class Controller {
      * 	this method initializes currUser to empty optional
      */
     private Controller() {
-        this.currUser = Optional.empty();
+        this.currUser = Optional.empty(); 
     }
 
     /**
@@ -49,10 +49,10 @@ public class Controller {
      * @param username - String, used to login
      * @param password - String, used to login
      * @throws NoSuchElementException if user isn't found
-     */
+     */ 
     public void login(String username, String password) throws NoSuchElementException {
         User user = findUser(username);
-
+ 
         if (user == null) {
             throw new NoSuchElementException();
         }
@@ -91,7 +91,7 @@ public class Controller {
      * @param email - String, used to create account
      * @param username - String, used to create account
      * @param password - String, used to create account
-     * @throws IllegalArgumentException if user already exists
+     * @throws IllegalArgumentException if user already exists 
      */
     public void register(String fName, String lName, String email, String username, String password) throws IllegalArgumentException {
         //only creating account, if user doesn't already exist
@@ -156,6 +156,8 @@ public class Controller {
     /**
      * description:
      * 	allows user to add an expense
+     * @pre currUser != Optional.Empty()
+     * @post will add an expense
      * @param expense - Expense, used to add expense
      */
     public void addExpense(Expense expense) {
@@ -170,6 +172,8 @@ public class Controller {
     /**
      * description:
      * 	allows user to delete an expense
+     * @pre currUser != Optional.Empty()
+     * @post will delete an expense
      * @param id - long, used for identification
      */
     public void deleteExpense(long id) {
@@ -183,6 +187,8 @@ public class Controller {
     /**
      * description:
      * 	allows user to edit their expense
+     * @pre currUser != Optional.Empty()
+     * @post will edit an expense
      * @param expense - Expense, used to edit expense
      * @param id - long, used to find expense
      */
@@ -197,6 +203,8 @@ public class Controller {
     /**
      * description:
      * 	allows the user to get an expense
+     * @pre currUser != Optional.Empty()
+     * @post will get an expense
      * @param id - long, used for identification
      * @return an expense
      */
@@ -208,6 +216,8 @@ public class Controller {
     /**
      * description:
      * 	allows the user to get all of their expenses
+     * @pre currUser != Optional.Empty()
+     * @post will get all expenses
      * @return an array list (user returns a copy, so encapsulation is
      * protected), of all expenses
      */
@@ -220,6 +230,8 @@ public class Controller {
     /**
      * description:
      * 	allows the user to add a budget in their preferred category
+     * @pre currUser != Optional.Empty()
+     * @post will add budget
      * @param cat - Category enum, used to determine where to add budget
      * @param amount - double, used to add budget amount
      */
@@ -230,6 +242,13 @@ public class Controller {
     }
     
     
+    /**
+     * description:
+     * 	allows the user to remove a budget
+     * @pre currUser != Optional.Empty()
+     * @post will remove budget
+     * @param cat - Category enum, used to remove budget
+     */
     public void removeBudget(Category cat) {
     	assert !currUser.isEmpty();
     	User user = currUser.get();
@@ -240,6 +259,11 @@ public class Controller {
      * description: 
      * 	allows the user to get their expenses sorted by date and
      * 	category
+     * @pre c != null
+     * @pre low != null && low < high
+     * @pre high != null && high > low
+     * @pre currUser != Optional.Empty()
+     * @post will get expenses by date and category
      * @param c - Category enum, used to find expenses by category
      * @param low - LocalDate, used as the earlier date for expenses
      * @param high - LocalDate, used as the later date for expenses
@@ -255,8 +279,10 @@ public class Controller {
     /**
      * description:
      * 	allows the user to get their expenses sorted by date
-     * @param low - LocalDate, used as low date for expenses
-     * @param high - LocalDate, used as high date for expenses
+    *  @pre low != null && low < high
+     * @pre high != null && high > low
+     * @pre currUser != Optional.Empty()
+     * @post will get expenses by date
      * @return an array list sorted by date
      */
     public ArrayList<Expense> getByDate(LocalDate low, LocalDate high) {
@@ -270,6 +296,11 @@ public class Controller {
      * description: 
      * 	allows the user to get their total expenses in a category by
      * 	date
+     * @pre category != null
+     * @pre startDate != null && startDate < endDate
+     * @pre endDate != null && endDate > startDate
+     * @pre currUser != Optional.Empty()
+     * @post will get total expense by category and by date
      * @param category - Category, the category of expenses
      * @param startDate - LocalDate, used as low date for expenses
      * @param endDate - LocalDate, used as high date for expenses
@@ -287,6 +318,11 @@ public class Controller {
      * description: 
      * 	allows the user to get the percent of their budget they have
      * 	used in a category by dates
+     * @pre category != null
+     * @pre startDate != null && startDate < endDate
+     * @pre endDate != null && endDate > startDate
+     * @pre currUser != Optional.Empty()
+     * @post will get expenses by category percent and by date
      * @param category - Category, the category of expenses
      * @param startDate - LocalDate, used as low date for expenses
      * @param endDate - LocalDate, used as high date for expenses
@@ -304,6 +340,8 @@ public class Controller {
     /**
      * description:
      * 	allows the user to get their expenses sorted by category
+     * @pre c != null
+     * @post will get expenses by category
      * @param c - Category enum, used for sorting
      * @return an array list sorted by category
      */
@@ -331,6 +369,8 @@ public class Controller {
     /**
      * description:
      * 	exports current users expenses as a csv file
+     * @pre currUser != Optional.empty()
+     * @post will export expenses
      * @return boolean, whether or not expenses were exported
      */
     public boolean exportExpenses() {
@@ -343,28 +383,20 @@ public class Controller {
     /**
      * description:
      * 	add observers to controller store
+     * @pre o != null
+     * @post will add an observer
      * @param o - Observer, used to add observer
      */
     public void addObserver(Observer o) {
         observers.add(o);
     }
 
-    /**
-     * description:
-     * 	gets percentage of current month spending by category
-     * @param cat - Category, used to find spending based on category
-     * @return double, used to find percent spending
-     */
-    public double getpercentSpending(Category cat) {
-        assert !currUser.isEmpty();
-
-        User user = currUser.get();
-        return user.getPercentSpending(cat);
-    }
 
     /**
      * description:
      * 	returns user with input username
+     * @pre username != null
+     * @post will find user
      * @param username - String, used to find user
      * @return User, the found user, would return null if 
      * user is not found, which is immediately caught and
@@ -443,6 +475,9 @@ public class Controller {
     /**
      * description:
      * 	allows user to get budget by category
+     * @pre category != null
+     * @pre currUser != Optional.Empty()
+     * @post will get budget by category
      * @param category - Category, used to find budget for inputed category
      * @return Optional<Double>, budget for specified category
      */
@@ -456,6 +491,8 @@ public class Controller {
     /**
      * description: 
      * 	gets username
+     * @pre currUser != Optional.Empty()
+     * @post will get user details
      * @return String, username, returns null if no current user, 
      * which is immediately caught and dealt with in this class
      */
@@ -472,6 +509,8 @@ public class Controller {
     /**
      * description: 
      * 	gets first name
+     * @pre currUser != Optional.Empty()
+     * @post will get first name of user
      * @return String, first name returns null if no current user, 
      * which is immediately caught and dealt with in this class
      */

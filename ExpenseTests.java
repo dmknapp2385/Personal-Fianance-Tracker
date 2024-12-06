@@ -24,7 +24,7 @@ class ExpenseTests {
 	Expense expense2 = new Expense(amount2, date2, description2, category2);
 	
 	Expense copyExpense = new Expense(expense1);
-	
+	 
 	
 	@Test
 	void testCopy() {

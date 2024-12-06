@@ -461,7 +461,7 @@ public class BudgetView extends JPanel implements Observer {
             String command = e.getActionCommand();
             Category cat = null;
             JFrame popup;
-            switch (command) {
+            switch (command) { 
                 case "FoodEdit":
                     cat = Category.FOOD;
                     break;
@@ -505,7 +505,7 @@ public class BudgetView extends JPanel implements Observer {
     public void budgetChange() {
     	this.setDates();
         this.updateBudget();
-        this.updateProgressBars();
+        this.updateProgressBars(); 
     }
 
     /**

@@ -53,7 +53,7 @@ public class User implements Serializable {
         this.password = password;
         this.username = username;
         this.salt = salt;
-    }
+    } 
 
     //getters
     /**
@@ -101,7 +101,7 @@ public class User implements Serializable {
     public ArrayList<Expense> getAllExpenses() {
         ArrayList<Expense> copy = new ArrayList<>();
         for (Expense expense : this.expenses) {
-            copy.add(new Expense(expense));
+            copy.add(new Expense(expense)); 
         }
         return copy;
     }
@@ -146,6 +146,10 @@ public class User implements Serializable {
      * description:
      * 	get an array list of copies of expenses between two given
      * 	dates from a given category
+     * @pre cat != null
+     * @pre lowerRangeDate != null && lowerRangeDate < upperRangeDate
+     * @pre upperRangeDate != null && upperRangeDate > lowerRangeDate
+     * @post will get expenses by date and category
      * @param cat - Category, category of expenses to be returned
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
@@ -195,13 +199,16 @@ public class User implements Serializable {
      * description:
      * 	get an array list of copies of expenses between two given
      * 	dates
+     * @pre lowerRangeDate != null && lowerRangeDate < upperRangeDate
+     * @pre upperRangeDate != null && upperRangeDate > lowerRangeDate
+     * @post will return an array list with copy objects sorted by date
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
      * @param upperRangeDate - LocalDate, last chronological date which is upper
      * bound of search range
      * @return ArrayList<Expense>, returns an array list of copies of expenses
      * between two given dates from a supplied list
-     */
+     */ 
     public ArrayList<Expense> getByDateCategory(LocalDate lowerRangeDate, LocalDate upperRangeDate) {
         ArrayList<Expense> dateRangeExpenses = new ArrayList<Expense>();
         for (Expense e : expenses) {
@@ -221,6 +228,8 @@ public class User implements Serializable {
      * description:
      * 	get an array list of copies of expenses from a given
      * 	category
+     * @pre c != null
+     * @post will return an array list with copy objects sorted by date
      * @param cat - Category, category of expenses to be returned
      * @return ArrayList<Expense>, returns an array list of copies of expenses
      * from a given category
@@ -254,6 +263,8 @@ public class User implements Serializable {
     /**
      * description:
      * 	get the sum of all expenses in a category
+     * @pre category != null
+     * @post will return total expense by category
      * @param category - Category, category of expenses to be returned
      * @return double, returns the sum of all expenses in a category
      */
@@ -269,6 +280,10 @@ public class User implements Serializable {
     /**
      * description:
      * 	get the sum of all expenses in a category between two dates
+     * @pre category != null
+     * @pre lowerRangeDate != null && lowerRangeDate < upperRangeDate
+     * @pre upperRangeDate != null && upperRangeDate > lowerRangeDate
+     * @post will return total expense by both category and date
      * @param category - Category, category of expenses to be returned
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
@@ -289,6 +304,8 @@ public class User implements Serializable {
     /**
      * description:
      * 	get the budget of a given category
+     * @pre category != null
+     * @post will return budget by category
      * @param category - Category, category of budget to be returned
      * @return Optional<Double>, returns the budget of a given category,
      * Optional.empty() if budget is not set
@@ -304,6 +321,8 @@ public class User implements Serializable {
      * description:
      * 	get the percent of a budget that has been reached by
      * 	expenses in that category
+     * @pre category != null
+     * @post will return exepense by category percent
      * @param category - Category, category of budget to be returned
      * @return Optional<Double>, returns the percent (between 0 and 100) of a
      * budget that has been reached by expenses in that category,
@@ -322,6 +341,10 @@ public class User implements Serializable {
      * description:
      * 	get the percent of a budget that has been reached by
      * 	expenses in that category between two dates
+     * @pre category != null
+     * @pre lowerRangeDate != null && lowerRangeDate < higherRangeDate
+     * @pre higherRangeDate != null && higherRangeDate > lowerRangeDate
+     * @post will return expenses by category percent and date
      * @param category - Category, category of budget to be returned
      * @param lowerRangeDate - LocalDate, first chronological date which is
      * lower bound of search range
@@ -390,6 +413,8 @@ public class User implements Serializable {
      * description:
      * 	Add a copy of an expense to the expense list and appropriate
      * 	category list
+     * @pre expense != null
+     * @post will add an expense
      * @param expense - Expense, expense to be copied and added
      */
     public void addExpense(Expense expense) {
@@ -414,8 +439,10 @@ public class User implements Serializable {
 
     /**
      * description:
-     * 	add a copy of an expense to the expense list and appropriate
+     * 	helper method a copy of an expense to the expense list and appropriate
      * 	category list
+     * @pre expense != null
+     * @post will add an expense
      * @param expense - Expense, expense to be copied and added
      */
     private void add(Expense expense) {
@@ -478,6 +505,8 @@ public class User implements Serializable {
     /**
      * description:
      * 	adds or updates a budget for a category
+     * @pre cat != null
+     * @post will add a budget
      * @param cat - Category, name of category that will have a new budget
      * @param amount - double, amount of budget
      */
@@ -494,6 +523,8 @@ public class User implements Serializable {
     /**
      * description:
      * 	removes a budget for a category
+     * @pre cat != null
+     * @post will remove a budget
      * @param cat - Category, name of category that will have budget removed
      */
     public void removeBudget(Category cat) {
@@ -617,7 +648,6 @@ public class User implements Serializable {
     /**
      * description:
      * 	adds an observer to the list of observers
-     *
      * @param o - Observer, the Observer to be added
      */
     public void addObserver(Observer o) {
