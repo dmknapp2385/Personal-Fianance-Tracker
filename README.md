@@ -49,7 +49,7 @@ _Program Execution Guide_
 
 Below are several screenshots of the Personal Finance Assistant application:
 The main login page:
-![Login Page](./Images/expensepg.png)
+![Login Page](./Images/loginview.png)
 The user's personal dashboard showing last 10 monthly purchases
 ![Dashboard](./Images/dashboardView.png)
 The expense page where user can add, edit or delete an expense. Import and export features are found here.
